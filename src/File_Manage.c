@@ -5,6 +5,7 @@
 #include <string.h>
 #include <io.h>
 #include <windows.h>
+
 // #include "cJSON.h"
 
 // 普通的读写
@@ -157,21 +158,21 @@ int moveFile(const char* originalFilename, const char* newDirectory) {
 
 
 
-// opfile打开文件后使用该函数获取文件句柄
-HANDLE getFileHandleFromFilePointer(FILE* file) {
-    if (file == NULL) {
-        return INVALID_HANDLE_VALUE;
-    }
+// // opfile打开文件后使用该函数获取文件句柄
+// HANDLE getFileHandleFromFilePointer(FILE* file) {
+//     if (file == NULL) {
+//         return INVALID_HANDLE_VALUE;
+//     }
 
-    int fileDescriptor = _fileno(file);
-    HANDLE fileHandle = (HANDLE)_get_osfhandle(fileDescriptor);
+//     int fileDescriptor = _fileno(file);
+//     HANDLE fileHandle = (HANDLE)_get_osfhandle(fileDescriptor);
 
-    if (fileHandle == INVALID_HANDLE_VALUE) {
-        printf("Unable to get file handle.\n");
-    }
+//     if (fileHandle == INVALID_HANDLE_VALUE) {
+//         printf("Unable to get file handle.\n");
+//     }
 
-    return fileHandle;
-}
+//     return fileHandle;
+// }
 
 
 
@@ -222,51 +223,51 @@ int unlockFile(HANDLE file) {
 }
 
 
-// 使用WindowsAPI创建文件并取得文件句柄
-HANDLE createFileAndGetHandle(const char* filename) {
-    HANDLE fileHandle = CreateFile(
-        filename,                           // 文件名
-        GENERIC_READ | GENERIC_WRITE,       // 打开文件进行读写
-        0,                                  // 不共享文件
-        NULL,                               // 默认安全属性
-        OPEN_ALWAYS,                        // 打开文件，如果文件不存在则创建
-        FILE_ATTRIBUTE_NORMAL,              // 普通文件
-        NULL);                              // 没有模板文件
+// // 使用WindowsAPI创建文件并取得文件句柄
+// HANDLE createFileAndGetHandle(const char* filename) {
+//     HANDLE fileHandle = CreateFile(
+//         filename,                           // 文件名
+//         GENERIC_READ | GENERIC_WRITE,       // 打开文件进行读写
+//         0,                                  // 不共享文件
+//         NULL,                               // 默认安全属性
+//         OPEN_ALWAYS,                        // 打开文件，如果文件不存在则创建
+//         FILE_ATTRIBUTE_NORMAL,              // 普通文件
+//         NULL);                              // 没有模板文件
 
-    if (fileHandle == INVALID_HANDLE_VALUE) {
-        printf("Unable to open or create file '%s'. Error: %lu\n", filename, GetLastError());
-        return NULL; // 打开或创建失败
-    }
+//     if (fileHandle == INVALID_HANDLE_VALUE) {
+//         printf("Unable to open or create file '%s'. Error: %lu\n", filename, GetLastError());
+//         return NULL; // 打开或创建失败
+//     }
 
-    // 检查文件是否是新创建的
-    if (GetLastError() == ERROR_ALREADY_EXISTS) {
-        printf("File '%s' already exists.\n", filename);
-        CloseHandle(fileHandle); // 关闭句柄
-        return NULL; // 文件重名
-    }
+//     // 检查文件是否是新创建的
+//     if (GetLastError() == ERROR_ALREADY_EXISTS) {
+//         printf("File '%s' already exists.\n", filename);
+//         CloseHandle(fileHandle); // 关闭句柄
+//         return NULL; // 文件重名
+//     }
 
-    return fileHandle; // 返回有效的文件句柄
-}
+//     return fileHandle; // 返回有效的文件句柄
+// }
 
 
-// 使用WindowsAPI打开文件并获得句柄
-HANDLE openFileAndGetHandle(const char* filename) {
-    HANDLE fileHandle = CreateFile(
-        filename,               // 文件名
-        GENERIC_READ,           // 打开文件进行读取
-        FILE_SHARE_READ,        // 允许其他进程读取文件
-        NULL,                   // 默认安全属性
-        OPEN_EXISTING,          // 打开现有文件
-        FILE_ATTRIBUTE_NORMAL,  // 普通文件
-        NULL);                  // 没有模板文件
+// // 使用WindowsAPI打开文件并获得句柄
+// HANDLE openFileAndGetHandle(const char* filename) {
+//     HANDLE fileHandle = CreateFile(
+//         filename,               // 文件名
+//         GENERIC_READ,           // 打开文件进行读取
+//         FILE_SHARE_READ,        // 允许其他进程读取文件
+//         NULL,                   // 默认安全属性
+//         OPEN_EXISTING,          // 打开现有文件
+//         FILE_ATTRIBUTE_NORMAL,  // 普通文件
+//         NULL);                  // 没有模板文件
 
-    if (fileHandle == INVALID_HANDLE_VALUE) {
-        printf("Unable to open file '%s'. Error: %lu\n", filename, GetLastError());
-        return NULL; // 打开失败
-    }
+//     if (fileHandle == INVALID_HANDLE_VALUE) {
+//         printf("Unable to open file '%s'. Error: %lu\n", filename, GetLastError());
+//         return NULL; // 打开失败
+//     }
 
-    return fileHandle; // 返回有效的文件句柄
-}
+//     return fileHandle; // 返回有效的文件句柄
+// }
 
 
 // 库示例

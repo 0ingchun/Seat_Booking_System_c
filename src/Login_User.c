@@ -39,6 +39,8 @@ void viewUser(const char* jsonStr) {
 
 // 查找用户并返回其他信息
 int findUser(const char* jsonStr, const char* username, char* outPasswd, short* outAuth, unsigned int* outBalance) {
+    // jsonStr = "{\"users\":[{\"username\":\"user1\",\"passwd\":\"pass1\",\"auth\":1,\"balance\":1000},{\"username\":\"user2\",\"passwd\":\"pass2\",\"auth\":0,\"balance\":500}]}";
+    printf("File content:\n%s\n", jsonStr);
     cJSON* jsonObj = cJSON_Parse(jsonStr);
     if (jsonObj == NULL) {
         printf("Failed to parse JSON string\n");

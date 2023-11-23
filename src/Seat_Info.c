@@ -4,6 +4,7 @@
 #include <windows.h>
 #include "cJSON.h"
 
+
 // 查看座位
 void viewSeat(const char* jsonStr) {
     cJSON* jsonObj = cJSON_Parse(jsonStr);
@@ -36,6 +37,40 @@ void viewSeat(const char* jsonStr) {
 
     cJSON_Delete(jsonObj);
 }
+
+
+// 更新座位
+char* updateSeat(const char* jsonStr, const char* name, unsigned int id, unsigned int amount, const char* subscriber, const char* datetime) {
+    cJSON* jsonObj = cJSON_Parse(jsonStr);
+    if (jsonObj == NULL) {
+        printf("Failed to parse JSON string\n");
+        return NULL;
+    }
+
+    cJSON* seatsArray = cJSON_GetObjectItem(jsonObj, "seats");
+    if (!cJSON_IsArray(seatsArray)) {
+        cJSON_Delete(jsonObj);
+        return NULL;
+    }
+
+    cJSON* seatObj;
+    cJSON_ArrayForEach(seatObj, seatsArray) {
+        cJSON* idObj = cJSON_GetObjectItem(seatObj, "id");
+        if (cJSON_IsNumber(idObj) && idObj->valueint == id) {
+            // 更新座位信息
+            cJSON_ReplaceItemInObject(seatObj, "name", cJSON_CreateString(name));
+            cJSON_ReplaceItemInObject(seatObj, "amount", cJSON_CreateNumber(amount));
+            cJSON_ReplaceItemInObject(seatObj, "subscriber", cJSON_CreateString(subscriber));
+            cJSON_ReplaceItemInObject(seatObj, "datetime", cJSON_CreateString(datetime));
+            break;
+        }
+    }
+
+    char* updatedJsonStr = cJSON_Print(jsonObj);
+    cJSON_Delete(jsonObj);
+    return updatedJsonStr;
+}
+
 
 
 // 查找订阅者的座位
@@ -196,6 +231,15 @@ char* deleteSeat(const char* jsonStr, unsigned int id) {
 //     printf("原始座位信息：\n");
 //     viewSeat(jsonStr);
 //     printf("\n");
+
+//     char* updatedJsonStr = updateSeat(jsonStr, "VIP", 101, 1500, "Bob", "2023-04-02 09:00:00");
+//     if (updatedJsonStr != NULL) {
+//         printf("更新后的座位信息：\n");
+//         viewSeat(updatedJsonStr);
+//         free(updatedJsonStr);
+//     } else {
+//         printf("座位更新失败。\n");
+//     }
 
 //     findSeatsBySubscriber(jsonStr, "Alice");
 //     printf("\n");

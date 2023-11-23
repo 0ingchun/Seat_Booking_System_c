@@ -31,10 +31,10 @@ add_executable(${CMAKE_PROJECT_NAME} ${SRC_FILES})
 target_compile_features(${CMAKE_PROJECT_NAME} PRIVATE cxx_std_17)
 
 # Copy assets files after build.
-add_custom_command(
-	TARGET ${CMAKE_PROJECT_NAME}
-	POST_BUILD
-	COMMAND ${CMAKE_COMMAND} -E copy_directory
-		"${PROJECT_SOURCE_DIR}/assets"
-		"$<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>/assets"
-)
+# add_custom_command(
+# 	TARGET ${CMAKE_PROJECT_NAME}
+# 	POST_BUILD
+# 	COMMAND ${CMAKE_COMMAND} -E copy_directory
+# 		"${PROJECT_SOURCE_DIR}/assets"
+# 		"$<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>/assets"
+# )

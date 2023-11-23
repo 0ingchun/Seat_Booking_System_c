@@ -16,5 +16,10 @@
             "command": "extension.execute",
             "priority": 4
         }
-    ]
+    ],
+    "files.encoding": "gbk",
+    "files.associations": {
+        "*.rh": "c",
+        "windows.h": "c"
+    }
 }
