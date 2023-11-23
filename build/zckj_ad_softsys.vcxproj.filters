@@ -1,48 +1,48 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="E:\Document\Code\c\zckj_ad_softsys\src\File_Manage.c">
+    <ClCompile Include="E:\Document\Code\c\Seat_Booking_System_c\src\File_Manage.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Document\Code\c\zckj_ad_softsys\src\Login_User.c">
+    <ClCompile Include="E:\Document\Code\c\Seat_Booking_System_c\src\Login_User.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Document\Code\c\zckj_ad_softsys\src\Seat_Info.c">
+    <ClCompile Include="E:\Document\Code\c\Seat_Booking_System_c\src\Seat_Info.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Document\Code\c\zckj_ad_softsys\src\cJSON.c">
+    <ClCompile Include="E:\Document\Code\c\Seat_Booking_System_c\src\cJSON.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E:\Document\Code\c\zckj_ad_softsys\src\main.c">
+    <ClCompile Include="E:\Document\Code\c\Seat_Booking_System_c\src\main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="E:\Document\Code\c\zckj_ad_softsys\include\File_Manage.h">
+    <ClInclude Include="E:\Document\Code\c\Seat_Booking_System_c\include\File_Manage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="E:\Document\Code\c\zckj_ad_softsys\include\Login_User.h">
+    <ClInclude Include="E:\Document\Code\c\Seat_Booking_System_c\include\Login_User.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="E:\Document\Code\c\zckj_ad_softsys\include\Seat_Info.h">
+    <ClInclude Include="E:\Document\Code\c\Seat_Booking_System_c\include\Seat_Info.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="E:\Document\Code\c\zckj_ad_softsys\include\cJSON.h">
+    <ClInclude Include="E:\Document\Code\c\Seat_Booking_System_c\include\cJSON.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="E:\Document\Code\c\zckj_ad_softsys\include\main.h">
+    <ClInclude Include="E:\Document\Code\c\Seat_Booking_System_c\include\main.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="E:\Document\Code\c\zckj_ad_softsys\CmakeLists.txt" />
+    <CustomBuild Include="E:\Document\Code\c\Seat_Booking_System_c\CmakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{A744ECEC-C271-3ABA-92EA-7FE1E52A465A}</UniqueIdentifier>
+      <UniqueIdentifier>{E940290C-94EC-3D28-AC8C-19EE2A485815}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{11D953CB-57C2-3F29-9D5B-F924E89FE97E}</UniqueIdentifier>
+      <UniqueIdentifier>{E970BFF7-BCB9-35A6-8D8D-B589641FFE36}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

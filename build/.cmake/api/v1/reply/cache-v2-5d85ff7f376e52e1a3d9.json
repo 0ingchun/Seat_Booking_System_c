@@ -27,7 +27,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "e:/Document/Code/c/zckj_ad_softsys/build"
+			"value" : "e:/Document/Code/c/Seat_Booking_System_c/build"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -431,7 +431,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "E:/Document/Code/c/zckj_ad_softsys/build/CMakeFiles/pkgRedirects"
+			"value" : "E:/Document/Code/c/Seat_Booking_System_c/build/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -491,7 +491,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "E:/Document/Code/c/zckj_ad_softsys"
+			"value" : "E:/Document/Code/c/Seat_Booking_System_c"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -503,7 +503,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "C:/Program Files/Example"
+			"value" : "C:/Program Files/zckj_ad_softsys"
 		},
 		{
 			"name" : "CMAKE_LINKER",
@@ -1018,42 +1018,6 @@
 			"value" : "FALSE"
 		},
 		{
-			"name" : "Example_BINARY_DIR",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "E:/Document/Code/c/zckj_ad_softsys/build"
-		},
-		{
-			"name" : "Example_IS_TOP_LEVEL",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "ON"
-		},
-		{
-			"name" : "Example_SOURCE_DIR",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "E:/Document/Code/c/zckj_ad_softsys"
-		},
-		{
 			"name" : "zckj_ad_softsys_BINARY_DIR",
 			"properties" : 
 			[
@@ -1063,7 +1027,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "E:/Document/Code/c/zckj_ad_softsys/build"
+			"value" : "E:/Document/Code/c/Seat_Booking_System_c/build"
 		},
 		{
 			"name" : "zckj_ad_softsys_IS_TOP_LEVEL",
@@ -1087,7 +1051,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "E:/Document/Code/c/zckj_ad_softsys"
+			"value" : "E:/Document/Code/c/Seat_Booking_System_c"
 		}
 	],
 	"kind" : "cache",

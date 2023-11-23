@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <CustomBuild Include="E:\Document\Code\c\zckj_ad_softsys\CmakeLists.txt" />
+    <CustomBuild Include="E:\Document\Code\c\Seat_Booking_System_c\CmakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>

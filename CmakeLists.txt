@@ -2,6 +2,11 @@ cmake_minimum_required(VERSION 2.7)
 
 project(zckj_ad_softsys)
 
+# # 设置 C 编译器（如果不指定版本的话，使用的是 gcc 的默认版本）
+# set (CMAKE_C_COMPILER /usr/bin/gcc)
+# # 设置 C++ 编译器 (指定的编译器为 g++9 )
+# set (CMAKE_CXX_COMPILER /usr/bin/g++-9)
+
 # find_package()
 
 # 明确包含目录

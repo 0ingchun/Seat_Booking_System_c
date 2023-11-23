@@ -1,8 +1,8 @@
-# Install script for directory: E:/Document/Code/c/zckj_ad_softsys
+# Install script for directory: E:/Document/Code/c/Seat_Booking_System_c
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Program Files/Example")
+  set(CMAKE_INSTALL_PREFIX "C:/Program Files/zckj_ad_softsys")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "E:/Document/Code/c/zckj_ad_softsys/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "E:/Document/Code/c/Seat_Booking_System_c/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

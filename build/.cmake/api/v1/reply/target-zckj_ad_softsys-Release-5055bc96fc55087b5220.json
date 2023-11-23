@@ -2,10 +2,10 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "RelWithDebInfo/zckj_ad_softsys.exe"
+			"path" : "Release/zckj_ad_softsys.exe"
 		},
 		{
-			"path" : "RelWithDebInfo/zckj_ad_softsys.pdb"
+			"path" : "Release/zckj_ad_softsys.pdb"
 		}
 	],
 	"backtrace" : 1,
@@ -28,19 +28,19 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 20,
+				"line" : 25,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 8,
+				"line" : 13,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 9,
+				"line" : 14,
 				"parent" : 0
 			}
 		]
@@ -51,18 +51,18 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "/DWIN32 /D_WINDOWS /W3 /MD /Zi /O2 /Ob1 /DNDEBUG"
+					"fragment" : "/DWIN32 /D_WINDOWS /W3 /MD /O2 /Ob2 /DNDEBUG"
 				}
 			],
 			"includes" : 
 			[
 				{
 					"backtrace" : 2,
-					"path" : "E:/Document/Code/c/zckj_ad_softsys/include"
+					"path" : "E:/Document/Code/c/Seat_Booking_System_c/include"
 				},
 				{
 					"backtrace" : 3,
-					"path" : "E:/Document/Code/c/zckj_ad_softsys/src"
+					"path" : "E:/Document/Code/c/Seat_Booking_System_c/src"
 				}
 			],
 			"language" : "C",
@@ -88,11 +88,11 @@
 		"commandFragments" : 
 		[
 			{
-				"fragment" : "/DWIN32 /D_WINDOWS /W3 /MD /Zi /O2 /Ob1 /DNDEBUG",
+				"fragment" : "/DWIN32 /D_WINDOWS /W3 /MD /O2 /Ob2 /DNDEBUG",
 				"role" : "flags"
 			},
 			{
-				"fragment" : "/machine:x64 /debug /INCREMENTAL /subsystem:console",
+				"fragment" : "/machine:x64 /INCREMENTAL:NO /subsystem:console",
 				"role" : "flags"
 			},
 			{

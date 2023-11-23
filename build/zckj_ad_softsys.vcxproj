@@ -22,7 +22,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{2794E91E-18AA-38DD-99BC-052CC9318847}</ProjectGuid>
+    <ProjectGuid>{A922DA1E-829A-345C-ABD2-6CCA3873954C}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
     <Platform>x64</Platform>
@@ -59,25 +59,25 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:\Document\Code\c\zckj_ad_softsys\build\Debug\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:\Document\Code\c\Seat_Booking_System_c\build\Debug\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">zckj_ad_softsys.dir\Debug\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">zckj_ad_softsys</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.exe</TargetExt>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\Document\Code\c\zckj_ad_softsys\build\Release\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\Document\Code\c\Seat_Booking_System_c\build\Release\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">zckj_ad_softsys.dir\Release\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">zckj_ad_softsys</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.exe</TargetExt>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">E:\Document\Code\c\zckj_ad_softsys\build\MinSizeRel\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">E:\Document\Code\c\Seat_Booking_System_c\build\MinSizeRel\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">zckj_ad_softsys.dir\MinSizeRel\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">zckj_ad_softsys</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.exe</TargetExt>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</GenerateManifest>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">E:\Document\Code\c\zckj_ad_softsys\build\RelWithDebInfo\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">E:\Document\Code\c\Seat_Booking_System_c\build\RelWithDebInfo\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">zckj_ad_softsys.dir\RelWithDebInfo\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">zckj_ad_softsys</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.exe</TargetExt>
@@ -86,7 +86,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>E:\Document\Code\c\zckj_ad_softsys\include;E:\Document\Code\c\zckj_ad_softsys\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Document\Code\c\Seat_Booking_System_c\include;E:\Document\Code\c\Seat_Booking_System_c\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -103,10 +103,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\Document\Code\c\zckj_ad_softsys\include;E:\Document\Code\c\zckj_ad_softsys\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Document\Code\c\Seat_Booking_System_c\include;E:\Document\Code\c\Seat_Booking_System_c\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>E:\Document\Code\c\zckj_ad_softsys\include;E:\Document\Code\c\zckj_ad_softsys\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Document\Code\c\Seat_Booking_System_c\include;E:\Document\Code\c\Seat_Booking_System_c\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -116,7 +116,7 @@
     <PostBuildEvent>
       <Message></Message>
       <Command>setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -E copy_directory E:/Document/Code/c/zckj_ad_softsys/assets E:/Document/Code/c/zckj_ad_softsys/build/Debug/assets
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_directory E:/Document/Code/c/Seat_Booking_System_c/assets E:/Document/Code/c/Seat_Booking_System_c/build/Debug/assets
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -131,8 +131,8 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>E:/Document/Code/c/zckj_ad_softsys/build/Debug/zckj_ad_softsys.lib</ImportLibrary>
-      <ProgramDataBaseFile>E:/Document/Code/c/zckj_ad_softsys/build/Debug/zckj_ad_softsys.pdb</ProgramDataBaseFile>
+      <ImportLibrary>E:/Document/Code/c/Seat_Booking_System_c/build/Debug/zckj_ad_softsys.lib</ImportLibrary>
+      <ProgramDataBaseFile>E:/Document/Code/c/Seat_Booking_System_c/build/Debug/zckj_ad_softsys.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
@@ -141,7 +141,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>E:\Document\Code\c\zckj_ad_softsys\include;E:\Document\Code\c\zckj_ad_softsys\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Document\Code\c\Seat_Booking_System_c\include;E:\Document\Code\c\Seat_Booking_System_c\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ExceptionHandling>
       </ExceptionHandling>
@@ -158,10 +158,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\Document\Code\c\zckj_ad_softsys\include;E:\Document\Code\c\zckj_ad_softsys\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Document\Code\c\Seat_Booking_System_c\include;E:\Document\Code\c\Seat_Booking_System_c\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>E:\Document\Code\c\zckj_ad_softsys\include;E:\Document\Code\c\zckj_ad_softsys\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Document\Code\c\Seat_Booking_System_c\include;E:\Document\Code\c\Seat_Booking_System_c\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -171,7 +171,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <PostBuildEvent>
       <Message></Message>
       <Command>setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -E copy_directory E:/Document/Code/c/zckj_ad_softsys/assets E:/Document/Code/c/zckj_ad_softsys/build/Release/assets
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_directory E:/Document/Code/c/Seat_Booking_System_c/assets E:/Document/Code/c/Seat_Booking_System_c/build/Release/assets
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -186,8 +186,8 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>E:/Document/Code/c/zckj_ad_softsys/build/Release/zckj_ad_softsys.lib</ImportLibrary>
-      <ProgramDataBaseFile>E:/Document/Code/c/zckj_ad_softsys/build/Release/zckj_ad_softsys.pdb</ProgramDataBaseFile>
+      <ImportLibrary>E:/Document/Code/c/Seat_Booking_System_c/build/Release/zckj_ad_softsys.lib</ImportLibrary>
+      <ProgramDataBaseFile>E:/Document/Code/c/Seat_Booking_System_c/build/Release/zckj_ad_softsys.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
@@ -196,7 +196,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>E:\Document\Code\c\zckj_ad_softsys\include;E:\Document\Code\c\zckj_ad_softsys\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Document\Code\c\Seat_Booking_System_c\include;E:\Document\Code\c\Seat_Booking_System_c\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ExceptionHandling>
       </ExceptionHandling>
@@ -213,10 +213,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"MinSizeRel\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\Document\Code\c\zckj_ad_softsys\include;E:\Document\Code\c\zckj_ad_softsys\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Document\Code\c\Seat_Booking_System_c\include;E:\Document\Code\c\Seat_Booking_System_c\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>E:\Document\Code\c\zckj_ad_softsys\include;E:\Document\Code\c\zckj_ad_softsys\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Document\Code\c\Seat_Booking_System_c\include;E:\Document\Code\c\Seat_Booking_System_c\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -226,7 +226,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <PostBuildEvent>
       <Message></Message>
       <Command>setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -E copy_directory E:/Document/Code/c/zckj_ad_softsys/assets E:/Document/Code/c/zckj_ad_softsys/build/MinSizeRel/assets
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_directory E:/Document/Code/c/Seat_Booking_System_c/assets E:/Document/Code/c/Seat_Booking_System_c/build/MinSizeRel/assets
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -241,8 +241,8 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>E:/Document/Code/c/zckj_ad_softsys/build/MinSizeRel/zckj_ad_softsys.lib</ImportLibrary>
-      <ProgramDataBaseFile>E:/Document/Code/c/zckj_ad_softsys/build/MinSizeRel/zckj_ad_softsys.pdb</ProgramDataBaseFile>
+      <ImportLibrary>E:/Document/Code/c/Seat_Booking_System_c/build/MinSizeRel/zckj_ad_softsys.lib</ImportLibrary>
+      <ProgramDataBaseFile>E:/Document/Code/c/Seat_Booking_System_c/build/MinSizeRel/zckj_ad_softsys.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
@@ -251,7 +251,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>E:\Document\Code\c\zckj_ad_softsys\include;E:\Document\Code\c\zckj_ad_softsys\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Document\Code\c\Seat_Booking_System_c\include;E:\Document\Code\c\Seat_Booking_System_c\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ExceptionHandling>
@@ -267,10 +267,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"RelWithDebInfo\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\Document\Code\c\zckj_ad_softsys\include;E:\Document\Code\c\zckj_ad_softsys\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Document\Code\c\Seat_Booking_System_c\include;E:\Document\Code\c\Seat_Booking_System_c\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>E:\Document\Code\c\zckj_ad_softsys\include;E:\Document\Code\c\zckj_ad_softsys\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Document\Code\c\Seat_Booking_System_c\include;E:\Document\Code\c\Seat_Booking_System_c\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -280,7 +280,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <PostBuildEvent>
       <Message></Message>
       <Command>setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -E copy_directory E:/Document/Code/c/zckj_ad_softsys/assets E:/Document/Code/c/zckj_ad_softsys/build/RelWithDebInfo/assets
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_directory E:/Document/Code/c/Seat_Booking_System_c/assets E:/Document/Code/c/Seat_Booking_System_c/build/RelWithDebInfo/assets
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -295,8 +295,8 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>E:/Document/Code/c/zckj_ad_softsys/build/RelWithDebInfo/zckj_ad_softsys.lib</ImportLibrary>
-      <ProgramDataBaseFile>E:/Document/Code/c/zckj_ad_softsys/build/RelWithDebInfo/zckj_ad_softsys.pdb</ProgramDataBaseFile>
+      <ImportLibrary>E:/Document/Code/c/Seat_Booking_System_c/build/RelWithDebInfo/zckj_ad_softsys.lib</ImportLibrary>
+      <ProgramDataBaseFile>E:/Document/Code/c/Seat_Booking_System_c/build/RelWithDebInfo/zckj_ad_softsys.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
@@ -304,12 +304,12 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CustomBuild Include="E:\Document\Code\c\zckj_ad_softsys\CmakeLists.txt">
+    <CustomBuild Include="E:\Document\Code\c\Seat_Booking_System_c\CmakeLists.txt">
       <UseUtf8Encoding>Always</UseUtf8Encoding>
       <BuildInParallel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</BuildInParallel>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule E:/Document/Code/c/zckj_ad_softsys/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule E:/Document/Code/c/Seat_Booking_System_c/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -SE:/Document/Code/c/zckj_ad_softsys -BE:/Document/Code/c/zckj_ad_softsys/build --check-stamp-file E:/Document/Code/c/zckj_ad_softsys/build/CMakeFiles/generate.stamp
+"C:\Program Files\CMake\bin\cmake.exe" -SE:/Document/Code/c/Seat_Booking_System_c -BE:/Document/Code/c/Seat_Booking_System_c/build --check-stamp-file E:/Document/Code/c/Seat_Booking_System_c/build/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -317,13 +317,13 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\WindowsPaths.cmake;E:\Document\Code\c\zckj_ad_softsys\build\CMakeFiles\3.26.0-rc1\CMakeCCompiler.cmake;E:\Document\Code\c\zckj_ad_softsys\build\CMakeFiles\3.26.0-rc1\CMakeCXXCompiler.cmake;E:\Document\Code\c\zckj_ad_softsys\build\CMakeFiles\3.26.0-rc1\CMakeRCCompiler.cmake;E:\Document\Code\c\zckj_ad_softsys\build\CMakeFiles\3.26.0-rc1\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:\Document\Code\c\zckj_ad_softsys\build\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\WindowsPaths.cmake;E:\Document\Code\c\Seat_Booking_System_c\build\CMakeFiles\3.26.0-rc1\CMakeCCompiler.cmake;E:\Document\Code\c\Seat_Booking_System_c\build\CMakeFiles\3.26.0-rc1\CMakeCXXCompiler.cmake;E:\Document\Code\c\Seat_Booking_System_c\build\CMakeFiles\3.26.0-rc1\CMakeRCCompiler.cmake;E:\Document\Code\c\Seat_Booking_System_c\build\CMakeFiles\3.26.0-rc1\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:\Document\Code\c\Seat_Booking_System_c\build\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
       <BuildInParallel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</BuildInParallel>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule E:/Document/Code/c/zckj_ad_softsys/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule E:/Document/Code/c/Seat_Booking_System_c/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -SE:/Document/Code/c/zckj_ad_softsys -BE:/Document/Code/c/zckj_ad_softsys/build --check-stamp-file E:/Document/Code/c/zckj_ad_softsys/build/CMakeFiles/generate.stamp
+"C:\Program Files\CMake\bin\cmake.exe" -SE:/Document/Code/c/Seat_Booking_System_c -BE:/Document/Code/c/Seat_Booking_System_c/build --check-stamp-file E:/Document/Code/c/Seat_Booking_System_c/build/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -331,13 +331,13 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\WindowsPaths.cmake;E:\Document\Code\c\zckj_ad_softsys\build\CMakeFiles\3.26.0-rc1\CMakeCCompiler.cmake;E:\Document\Code\c\zckj_ad_softsys\build\CMakeFiles\3.26.0-rc1\CMakeCXXCompiler.cmake;E:\Document\Code\c\zckj_ad_softsys\build\CMakeFiles\3.26.0-rc1\CMakeRCCompiler.cmake;E:\Document\Code\c\zckj_ad_softsys\build\CMakeFiles\3.26.0-rc1\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\Document\Code\c\zckj_ad_softsys\build\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\WindowsPaths.cmake;E:\Document\Code\c\Seat_Booking_System_c\build\CMakeFiles\3.26.0-rc1\CMakeCCompiler.cmake;E:\Document\Code\c\Seat_Booking_System_c\build\CMakeFiles\3.26.0-rc1\CMakeCXXCompiler.cmake;E:\Document\Code\c\Seat_Booking_System_c\build\CMakeFiles\3.26.0-rc1\CMakeRCCompiler.cmake;E:\Document\Code\c\Seat_Booking_System_c\build\CMakeFiles\3.26.0-rc1\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\Document\Code\c\Seat_Booking_System_c\build\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
       <BuildInParallel Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</BuildInParallel>
-      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule E:/Document/Code/c/zckj_ad_softsys/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule E:/Document/Code/c/Seat_Booking_System_c/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -SE:/Document/Code/c/zckj_ad_softsys -BE:/Document/Code/c/zckj_ad_softsys/build --check-stamp-file E:/Document/Code/c/zckj_ad_softsys/build/CMakeFiles/generate.stamp
+"C:\Program Files\CMake\bin\cmake.exe" -SE:/Document/Code/c/Seat_Booking_System_c -BE:/Document/Code/c/Seat_Booking_System_c/build --check-stamp-file E:/Document/Code/c/Seat_Booking_System_c/build/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -345,13 +345,13 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\WindowsPaths.cmake;E:\Document\Code\c\zckj_ad_softsys\build\CMakeFiles\3.26.0-rc1\CMakeCCompiler.cmake;E:\Document\Code\c\zckj_ad_softsys\build\CMakeFiles\3.26.0-rc1\CMakeCXXCompiler.cmake;E:\Document\Code\c\zckj_ad_softsys\build\CMakeFiles\3.26.0-rc1\CMakeRCCompiler.cmake;E:\Document\Code\c\zckj_ad_softsys\build\CMakeFiles\3.26.0-rc1\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">E:\Document\Code\c\zckj_ad_softsys\build\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\WindowsPaths.cmake;E:\Document\Code\c\Seat_Booking_System_c\build\CMakeFiles\3.26.0-rc1\CMakeCCompiler.cmake;E:\Document\Code\c\Seat_Booking_System_c\build\CMakeFiles\3.26.0-rc1\CMakeCXXCompiler.cmake;E:\Document\Code\c\Seat_Booking_System_c\build\CMakeFiles\3.26.0-rc1\CMakeRCCompiler.cmake;E:\Document\Code\c\Seat_Booking_System_c\build\CMakeFiles\3.26.0-rc1\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">E:\Document\Code\c\Seat_Booking_System_c\build\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
       <BuildInParallel Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</BuildInParallel>
-      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule E:/Document/Code/c/zckj_ad_softsys/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule E:/Document/Code/c/Seat_Booking_System_c/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -SE:/Document/Code/c/zckj_ad_softsys -BE:/Document/Code/c/zckj_ad_softsys/build --check-stamp-file E:/Document/Code/c/zckj_ad_softsys/build/CMakeFiles/generate.stamp
+"C:\Program Files\CMake\bin\cmake.exe" -SE:/Document/Code/c/Seat_Booking_System_c -BE:/Document/Code/c/Seat_Booking_System_c/build --check-stamp-file E:/Document/Code/c/Seat_Booking_System_c/build/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -359,26 +359,26 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\WindowsPaths.cmake;E:\Document\Code\c\zckj_ad_softsys\build\CMakeFiles\3.26.0-rc1\CMakeCCompiler.cmake;E:\Document\Code\c\zckj_ad_softsys\build\CMakeFiles\3.26.0-rc1\CMakeCXXCompiler.cmake;E:\Document\Code\c\zckj_ad_softsys\build\CMakeFiles\3.26.0-rc1\CMakeRCCompiler.cmake;E:\Document\Code\c\zckj_ad_softsys\build\CMakeFiles\3.26.0-rc1\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">E:\Document\Code\c\zckj_ad_softsys\build\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.26\Modules\Platform\WindowsPaths.cmake;E:\Document\Code\c\Seat_Booking_System_c\build\CMakeFiles\3.26.0-rc1\CMakeCCompiler.cmake;E:\Document\Code\c\Seat_Booking_System_c\build\CMakeFiles\3.26.0-rc1\CMakeCXXCompiler.cmake;E:\Document\Code\c\Seat_Booking_System_c\build\CMakeFiles\3.26.0-rc1\CMakeRCCompiler.cmake;E:\Document\Code\c\Seat_Booking_System_c\build\CMakeFiles\3.26.0-rc1\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">E:\Document\Code\c\Seat_Booking_System_c\build\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="E:\Document\Code\c\zckj_ad_softsys\include\File_Manage.h" />
-    <ClInclude Include="E:\Document\Code\c\zckj_ad_softsys\include\Login_User.h" />
-    <ClInclude Include="E:\Document\Code\c\zckj_ad_softsys\include\Seat_Info.h" />
-    <ClInclude Include="E:\Document\Code\c\zckj_ad_softsys\include\cJSON.h" />
-    <ClInclude Include="E:\Document\Code\c\zckj_ad_softsys\include\main.h" />
-    <ClCompile Include="E:\Document\Code\c\zckj_ad_softsys\src\File_Manage.c" />
-    <ClCompile Include="E:\Document\Code\c\zckj_ad_softsys\src\Login_User.c" />
-    <ClCompile Include="E:\Document\Code\c\zckj_ad_softsys\src\Seat_Info.c" />
-    <ClCompile Include="E:\Document\Code\c\zckj_ad_softsys\src\cJSON.c" />
-    <ClCompile Include="E:\Document\Code\c\zckj_ad_softsys\src\main.c" />
+    <ClInclude Include="E:\Document\Code\c\Seat_Booking_System_c\include\File_Manage.h" />
+    <ClInclude Include="E:\Document\Code\c\Seat_Booking_System_c\include\Login_User.h" />
+    <ClInclude Include="E:\Document\Code\c\Seat_Booking_System_c\include\Seat_Info.h" />
+    <ClInclude Include="E:\Document\Code\c\Seat_Booking_System_c\include\cJSON.h" />
+    <ClInclude Include="E:\Document\Code\c\Seat_Booking_System_c\include\main.h" />
+    <ClCompile Include="E:\Document\Code\c\Seat_Booking_System_c\src\File_Manage.c" />
+    <ClCompile Include="E:\Document\Code\c\Seat_Booking_System_c\src\Login_User.c" />
+    <ClCompile Include="E:\Document\Code\c\Seat_Booking_System_c\src\Seat_Info.c" />
+    <ClCompile Include="E:\Document\Code\c\Seat_Booking_System_c\src\cJSON.c" />
+    <ClCompile Include="E:\Document\Code\c\Seat_Booking_System_c\src\main.c" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="E:\Document\Code\c\zckj_ad_softsys\build\ZERO_CHECK.vcxproj">
-      <Project>{57D0AD44-FFE4-3ACC-9F82-5086254C02B4}</Project>
+    <ProjectReference Include="E:\Document\Code\c\Seat_Booking_System_c\build\ZERO_CHECK.vcxproj">
+      <Project>{BBB21FF0-6E52-307F-B9FB-D25DE23DB296}</Project>
       <Name>ZERO_CHECK</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
