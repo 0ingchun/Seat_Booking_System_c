@@ -181,6 +181,7 @@ char* deleteUser(const char* jsonStr, const char* username) {
 }
 
 
+// ¿âÊ¾Àý
 // int main() {
 //     // ¸üÐÂ JSON ×Ö·û´®£¬°üº¬ balance ×Ö¶Î
 //     const char* jsonStr = "{\"users\":[{\"username\":\"user1\",\"passwd\":\"pass1\",\"auth\":1,\"balance\":1000},{\"username\":\"user2\",\"passwd\":\"pass2\",\"auth\":0,\"balance\":500}]}";

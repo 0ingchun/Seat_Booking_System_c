@@ -2,10 +2,10 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "Release/zckj_ad_softsys.exe"
+			"path" : "RelWithDebInfo/zckj_ad_softsys.exe"
 		},
 		{
-			"path" : "Release/zckj_ad_softsys.pdb"
+			"path" : "RelWithDebInfo/zckj_ad_softsys.pdb"
 		}
 	],
 	"backtrace" : 1,
@@ -51,7 +51,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "/DWIN32 /D_WINDOWS /W3 /MD /O2 /Ob2 /DNDEBUG"
+					"fragment" : "/DWIN32 /D_WINDOWS /W3 /MD /Zi /O2 /Ob1 /DNDEBUG"
 				}
 			],
 			"includes" : 
@@ -68,10 +68,11 @@
 			"language" : "C",
 			"sourceIndexes" : 
 			[
-				4,
 				5,
 				6,
-				7
+				7,
+				8,
+				9
 			]
 		}
 	],
@@ -87,11 +88,11 @@
 		"commandFragments" : 
 		[
 			{
-				"fragment" : "/DWIN32 /D_WINDOWS /W3 /MD /O2 /Ob2 /DNDEBUG",
+				"fragment" : "/DWIN32 /D_WINDOWS /W3 /MD /Zi /O2 /Ob1 /DNDEBUG",
 				"role" : "flags"
 			},
 			{
-				"fragment" : "/machine:x64 /INCREMENTAL:NO /subsystem:console",
+				"fragment" : "/machine:x64 /debug /INCREMENTAL /subsystem:console",
 				"role" : "flags"
 			},
 			{
@@ -117,22 +118,29 @@
 				0,
 				1,
 				2,
-				3
+				3,
+				4
 			]
 		},
 		{
 			"name" : "Source Files",
 			"sourceIndexes" : 
 			[
-				4,
 				5,
 				6,
-				7
+				7,
+				8,
+				9
 			]
 		}
 	],
 	"sources" : 
 	[
+		{
+			"backtrace" : 1,
+			"path" : "include/File_Manage.h",
+			"sourceGroupIndex" : 0
+		},
 		{
 			"backtrace" : 1,
 			"path" : "include/Login_User.h",
@@ -152,6 +160,12 @@
 			"backtrace" : 1,
 			"path" : "include/main.h",
 			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/File_Manage.c",
+			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 1,

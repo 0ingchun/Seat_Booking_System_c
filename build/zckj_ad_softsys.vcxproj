@@ -365,10 +365,12 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="E:\Document\Code\c\zckj_ad_softsys\include\File_Manage.h" />
     <ClInclude Include="E:\Document\Code\c\zckj_ad_softsys\include\Login_User.h" />
     <ClInclude Include="E:\Document\Code\c\zckj_ad_softsys\include\Seat_Info.h" />
     <ClInclude Include="E:\Document\Code\c\zckj_ad_softsys\include\cJSON.h" />
     <ClInclude Include="E:\Document\Code\c\zckj_ad_softsys\include\main.h" />
+    <ClCompile Include="E:\Document\Code\c\zckj_ad_softsys\src\File_Manage.c" />
     <ClCompile Include="E:\Document\Code\c\zckj_ad_softsys\src\Login_User.c" />
     <ClCompile Include="E:\Document\Code\c\zckj_ad_softsys\src\Seat_Info.c" />
     <ClCompile Include="E:\Document\Code\c\zckj_ad_softsys\src\cJSON.c" />

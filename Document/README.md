@@ -1,2 +1,4 @@
 # Seat_Booking_System_c
 可能是全网第一个被迫用c来应付的座位预订系统小组作业，使用winAPI生成gui，json格式进行数据库管理
+
+Document

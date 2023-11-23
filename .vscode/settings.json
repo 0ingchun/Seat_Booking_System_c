@@ -80,6 +80,7 @@
     "cjson.h": "c",
     "login_user.h": "c",
     "stdio.h": "c",
-    "windows.h": "c"
+    "windows.h": "c",
+    "string.h": "c"
   }
 }

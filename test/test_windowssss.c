@@ -27,8 +27,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     HWND hwnd;         // 主窗口句柄
     MSG Msg;           // 消息结构
 
-        
-    hInst = hInstance; // 设置全局变量 hInst
+        hInst = hInstance; // 设置全局变量 hInst
 
     // 注册第二个窗口类
     WNDCLASS wcSecond = {0};
@@ -258,7 +257,7 @@ LRESULT CALLBACK SecondWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
 
 int main() {
     printf("Hello World!\n");
-    // Login_Show();
+    Login_Show();
 
     return WinMain(GetModuleHandle(NULL), NULL, GetCommandLine(), SW_SHOWNORMAL);
 }
