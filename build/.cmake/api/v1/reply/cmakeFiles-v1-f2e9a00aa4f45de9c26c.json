@@ -59,12 +59,12 @@
 		{
 			"isCMake" : true,
 			"isExternal" : true,
-			"path" : "C:/Program Files/CMake/share/cmake-3.26/Modules/Compiler/MSVC-C.cmake"
+			"path" : "C:/Program Files/CMake/share/cmake-3.26/Modules/Compiler/GNU-C.cmake"
 		},
 		{
 			"isCMake" : true,
 			"isExternal" : true,
-			"path" : "C:/Program Files/CMake/share/cmake-3.26/Modules/Compiler/MSVC.cmake"
+			"path" : "C:/Program Files/CMake/share/cmake-3.26/Modules/Compiler/GNU.cmake"
 		},
 		{
 			"isCMake" : true,
@@ -74,12 +74,12 @@
 		{
 			"isCMake" : true,
 			"isExternal" : true,
-			"path" : "C:/Program Files/CMake/share/cmake-3.26/Modules/Platform/Windows-MSVC-C.cmake"
+			"path" : "C:/Program Files/CMake/share/cmake-3.26/Modules/Platform/Windows-GNU-C.cmake"
 		},
 		{
 			"isCMake" : true,
 			"isExternal" : true,
-			"path" : "C:/Program Files/CMake/share/cmake-3.26/Modules/Platform/Windows-MSVC.cmake"
+			"path" : "C:/Program Files/CMake/share/cmake-3.26/Modules/Platform/Windows-GNU.cmake"
 		},
 		{
 			"isGenerated" : true,
@@ -89,6 +89,16 @@
 			"isCMake" : true,
 			"isExternal" : true,
 			"path" : "C:/Program Files/CMake/share/cmake-3.26/Modules/CMakeRCInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Program Files/CMake/share/cmake-3.26/Modules/Platform/Windows-windres.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Program Files/CMake/share/cmake-3.26/Modules/Platform/Windows-GNU-C-ABI.cmake"
 		},
 		{
 			"isCMake" : true,
@@ -108,27 +118,27 @@
 		{
 			"isCMake" : true,
 			"isExternal" : true,
-			"path" : "C:/Program Files/CMake/share/cmake-3.26/Modules/Compiler/MSVC-CXX.cmake"
+			"path" : "C:/Program Files/CMake/share/cmake-3.26/Modules/Compiler/GNU-CXX.cmake"
 		},
 		{
 			"isCMake" : true,
 			"isExternal" : true,
-			"path" : "C:/Program Files/CMake/share/cmake-3.26/Modules/Compiler/MSVC.cmake"
+			"path" : "C:/Program Files/CMake/share/cmake-3.26/Modules/Compiler/GNU.cmake"
 		},
 		{
 			"isCMake" : true,
 			"isExternal" : true,
-			"path" : "C:/Program Files/CMake/share/cmake-3.26/Modules/Compiler/CMakeCommonCompilerMacros.cmake"
+			"path" : "C:/Program Files/CMake/share/cmake-3.26/Modules/Platform/Windows-GNU-CXX.cmake"
 		},
 		{
 			"isCMake" : true,
 			"isExternal" : true,
-			"path" : "C:/Program Files/CMake/share/cmake-3.26/Modules/Platform/Windows-MSVC-CXX.cmake"
+			"path" : "C:/Program Files/CMake/share/cmake-3.26/Modules/Platform/Windows-GNU.cmake"
 		},
 		{
 			"isCMake" : true,
 			"isExternal" : true,
-			"path" : "C:/Program Files/CMake/share/cmake-3.26/Modules/Platform/Windows-MSVC.cmake"
+			"path" : "C:/Program Files/CMake/share/cmake-3.26/Modules/Platform/Windows-GNU-CXX-ABI.cmake"
 		},
 		{
 			"isCMake" : true,

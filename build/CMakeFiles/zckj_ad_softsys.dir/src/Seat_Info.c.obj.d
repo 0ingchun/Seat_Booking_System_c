@@ -1,5 +1,5 @@
 CMakeFiles/zckj_ad_softsys.dir/src/Seat_Info.c.obj: \
- E:/Document/Code/dustbin/zckj_ad_softsys/src/Seat_Info.c \
+ E:/Document/Code/c/Seat_Booking_System_c/src/Seat_Info.c \
  d:/mingw64/x86_64-w64-mingw32/include/stdio.h \
  d:/mingw64/x86_64-w64-mingw32/include/crtdefs.h \
  d:/mingw64/x86_64-w64-mingw32/include/_mingw.h \
@@ -230,6 +230,6 @@ CMakeFiles/zckj_ad_softsys.dir/src/Seat_Info.c.obj: \
  d:/mingw64/x86_64-w64-mingw32/include/winsvc.h \
  d:/mingw64/x86_64-w64-mingw32/include/mcx.h \
  d:/mingw64/x86_64-w64-mingw32/include/imm.h \
- E:/Document/Code/dustbin/zckj_ad_softsys/include/cJSON.h \
+ E:/Document/Code/c/Seat_Booking_System_c/include/cJSON.h \
  d:/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/stddef.h \
  d:/mingw64/x86_64-w64-mingw32/include/stddef.h

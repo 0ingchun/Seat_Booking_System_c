@@ -1,6 +1,6 @@
 CMakeFiles/zckj_ad_softsys.dir/src/File_Manage.c.obj: \
- E:/Document/Code/dustbin/zckj_ad_softsys/src/File_Manage.c \
- E:/Document/Code/dustbin/zckj_ad_softsys/include/File_Manage.h \
+ E:/Document/Code/c/Seat_Booking_System_c/src/File_Manage.c \
+ E:/Document/Code/c/Seat_Booking_System_c/include/File_Manage.h \
  d:/mingw64/x86_64-w64-mingw32/include/stdio.h \
  d:/mingw64/x86_64-w64-mingw32/include/crtdefs.h \
  d:/mingw64/x86_64-w64-mingw32/include/_mingw.h \

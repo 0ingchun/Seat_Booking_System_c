@@ -1,5 +1,5 @@
 CMakeFiles/zckj_ad_softsys.dir/src/main.c.obj: \
- E:/Document/Code/dustbin/zckj_ad_softsys/src/main.c \
+ E:/Document/Code/c/Seat_Booking_System_c/src/main.c \
  d:/mingw64/x86_64-w64-mingw32/include/windows.h \
  d:/mingw64/x86_64-w64-mingw32/include/_mingw.h \
  d:/mingw64/x86_64-w64-mingw32/include/_mingw_mac.h \
@@ -233,10 +233,10 @@ CMakeFiles/zckj_ad_softsys.dir/src/main.c.obj: \
  d:/mingw64/x86_64-w64-mingw32/include/swprintf.inl \
  d:/mingw64/x86_64-w64-mingw32/include/sec_api/stdio_s.h \
  d:/mingw64/x86_64-w64-mingw32/include/_mingw_print_pop.h \
- E:/Document/Code/dustbin/zckj_ad_softsys/include/File_Manage.h \
- E:/Document/Code/dustbin/zckj_ad_softsys/include/Login_User.h \
- E:/Document/Code/dustbin/zckj_ad_softsys/include/Seat_Info.h \
- E:/Document/Code/dustbin/zckj_ad_softsys/include/cJSON.h \
+ E:/Document/Code/c/Seat_Booking_System_c/include/File_Manage.h \
+ E:/Document/Code/c/Seat_Booking_System_c/include/Login_User.h \
+ E:/Document/Code/c/Seat_Booking_System_c/include/Seat_Info.h \
+ E:/Document/Code/c/Seat_Booking_System_c/include/cJSON.h \
  d:/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/stddef.h \
  d:/mingw64/x86_64-w64-mingw32/include/stddef.h \
- E:/Document/Code/dustbin/zckj_ad_softsys/include/main.h
+ E:/Document/Code/c/Seat_Booking_System_c/include/main.h
