@@ -28,7 +28,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "C:/Program Files/CMake/share/cmake-3.26/Modules/Platform/Windows-windres.cmake"
   "C:/Program Files/CMake/share/cmake-3.26/Modules/Platform/Windows.cmake"
   "C:/Program Files/CMake/share/cmake-3.26/Modules/Platform/WindowsPaths.cmake"
-  "E:/Document/Code/c/Seat_Booking_System_c/CMakeLists.txt"
+  "E:/Document/Code/dustbin/Seat_Booking_System_c/CMakeLists.txt"
   "CMakeFiles/3.26.0-rc1/CMakeCCompiler.cmake"
   "CMakeFiles/3.26.0-rc1/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.26.0-rc1/CMakeRCCompiler.cmake"

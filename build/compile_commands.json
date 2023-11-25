@@ -1,32 +1,32 @@
 [
 {
-  "directory": "E:/Document/Code/c/Seat_Booking_System_c/build",
-  "command": "D:/mingw64/bin/gcc.exe  @CMakeFiles/zckj_ad_softsys.dir/includes_C.rsp -g -o CMakeFiles/zckj_ad_softsys.dir/src/File_Manage.c.obj -c E:/Document/Code/c/Seat_Booking_System_c/src/File_Manage.c",
-  "file": "E:/Document/Code/c/Seat_Booking_System_c/src/File_Manage.c",
+  "directory": "E:/Document/Code/dustbin/Seat_Booking_System_c/build",
+  "command": "D:/mingw64/bin/gcc.exe  @CMakeFiles/zckj_ad_softsys.dir/includes_C.rsp -g -o CMakeFiles/zckj_ad_softsys.dir/src/File_Manage.c.obj -c E:/Document/Code/dustbin/Seat_Booking_System_c/src/File_Manage.c",
+  "file": "E:/Document/Code/dustbin/Seat_Booking_System_c/src/File_Manage.c",
   "output": "CMakeFiles/zckj_ad_softsys.dir/src/File_Manage.c.obj"
 },
 {
-  "directory": "E:/Document/Code/c/Seat_Booking_System_c/build",
-  "command": "D:/mingw64/bin/gcc.exe  @CMakeFiles/zckj_ad_softsys.dir/includes_C.rsp -g -o CMakeFiles/zckj_ad_softsys.dir/src/Login_User.c.obj -c E:/Document/Code/c/Seat_Booking_System_c/src/Login_User.c",
-  "file": "E:/Document/Code/c/Seat_Booking_System_c/src/Login_User.c",
+  "directory": "E:/Document/Code/dustbin/Seat_Booking_System_c/build",
+  "command": "D:/mingw64/bin/gcc.exe  @CMakeFiles/zckj_ad_softsys.dir/includes_C.rsp -g -o CMakeFiles/zckj_ad_softsys.dir/src/Login_User.c.obj -c E:/Document/Code/dustbin/Seat_Booking_System_c/src/Login_User.c",
+  "file": "E:/Document/Code/dustbin/Seat_Booking_System_c/src/Login_User.c",
   "output": "CMakeFiles/zckj_ad_softsys.dir/src/Login_User.c.obj"
 },
 {
-  "directory": "E:/Document/Code/c/Seat_Booking_System_c/build",
-  "command": "D:/mingw64/bin/gcc.exe  @CMakeFiles/zckj_ad_softsys.dir/includes_C.rsp -g -o CMakeFiles/zckj_ad_softsys.dir/src/Seat_Info.c.obj -c E:/Document/Code/c/Seat_Booking_System_c/src/Seat_Info.c",
-  "file": "E:/Document/Code/c/Seat_Booking_System_c/src/Seat_Info.c",
+  "directory": "E:/Document/Code/dustbin/Seat_Booking_System_c/build",
+  "command": "D:/mingw64/bin/gcc.exe  @CMakeFiles/zckj_ad_softsys.dir/includes_C.rsp -g -o CMakeFiles/zckj_ad_softsys.dir/src/Seat_Info.c.obj -c E:/Document/Code/dustbin/Seat_Booking_System_c/src/Seat_Info.c",
+  "file": "E:/Document/Code/dustbin/Seat_Booking_System_c/src/Seat_Info.c",
   "output": "CMakeFiles/zckj_ad_softsys.dir/src/Seat_Info.c.obj"
 },
 {
-  "directory": "E:/Document/Code/c/Seat_Booking_System_c/build",
-  "command": "D:/mingw64/bin/gcc.exe  @CMakeFiles/zckj_ad_softsys.dir/includes_C.rsp -g -o CMakeFiles/zckj_ad_softsys.dir/src/cJSON.c.obj -c E:/Document/Code/c/Seat_Booking_System_c/src/cJSON.c",
-  "file": "E:/Document/Code/c/Seat_Booking_System_c/src/cJSON.c",
+  "directory": "E:/Document/Code/dustbin/Seat_Booking_System_c/build",
+  "command": "D:/mingw64/bin/gcc.exe  @CMakeFiles/zckj_ad_softsys.dir/includes_C.rsp -g -o CMakeFiles/zckj_ad_softsys.dir/src/cJSON.c.obj -c E:/Document/Code/dustbin/Seat_Booking_System_c/src/cJSON.c",
+  "file": "E:/Document/Code/dustbin/Seat_Booking_System_c/src/cJSON.c",
   "output": "CMakeFiles/zckj_ad_softsys.dir/src/cJSON.c.obj"
 },
 {
-  "directory": "E:/Document/Code/c/Seat_Booking_System_c/build",
-  "command": "D:/mingw64/bin/gcc.exe  @CMakeFiles/zckj_ad_softsys.dir/includes_C.rsp -g -o CMakeFiles/zckj_ad_softsys.dir/src/main.c.obj -c E:/Document/Code/c/Seat_Booking_System_c/src/main.c",
-  "file": "E:/Document/Code/c/Seat_Booking_System_c/src/main.c",
+  "directory": "E:/Document/Code/dustbin/Seat_Booking_System_c/build",
+  "command": "D:/mingw64/bin/gcc.exe  @CMakeFiles/zckj_ad_softsys.dir/includes_C.rsp -g -o CMakeFiles/zckj_ad_softsys.dir/src/main.c.obj -c E:/Document/Code/dustbin/Seat_Booking_System_c/src/main.c",
+  "file": "E:/Document/Code/dustbin/Seat_Booking_System_c/src/main.c",
   "output": "CMakeFiles/zckj_ad_softsys.dir/src/main.c.obj"
 }
 ]

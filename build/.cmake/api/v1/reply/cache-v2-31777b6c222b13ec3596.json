@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "e:/Document/Code/c/Seat_Booking_System_c/build"
+			"value" : "e:/Document/Code/dustbin/Seat_Booking_System_c/build"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -587,7 +587,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "E:/Document/Code/c/Seat_Booking_System_c/build/CMakeFiles/pkgRedirects"
+			"value" : "E:/Document/Code/dustbin/Seat_Booking_System_c/build/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -659,7 +659,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "E:/Document/Code/c/Seat_Booking_System_c"
+			"value" : "E:/Document/Code/dustbin/Seat_Booking_System_c"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -1291,7 +1291,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "E:/Document/Code/c/Seat_Booking_System_c/build"
+			"value" : "E:/Document/Code/dustbin/Seat_Booking_System_c/build"
 		},
 		{
 			"name" : "zckj_ad_softsys_IS_TOP_LEVEL",
@@ -1315,7 +1315,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "E:/Document/Code/c/Seat_Booking_System_c"
+			"value" : "E:/Document/Code/dustbin/Seat_Booking_System_c"
 		}
 	],
 	"kind" : "cache",

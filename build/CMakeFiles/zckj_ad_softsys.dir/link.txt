@@ -1,0 +1,3 @@
+"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\zckj_ad_softsys.dir/objects.a
+C:\mingw64\bin\ar.exe qc CMakeFiles\zckj_ad_softsys.dir/objects.a @CMakeFiles\zckj_ad_softsys.dir\objects1.rsp
+C:\mingw64\bin\gcc.exe -g -Wl,--whole-archive CMakeFiles\zckj_ad_softsys.dir/objects.a -Wl,--no-whole-archive -o zckj_ad_softsys.exe -Wl,--out-implib,libzckj_ad_softsys.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\zckj_ad_softsys.dir\linkLibs.rsp

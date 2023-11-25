@@ -49,6 +49,33 @@
 // 针对JSON优化的函数
 
 // 读取文件内容到字符串
+// char* readFileToString(const char* filename) {
+//     FILE* file = fopen(filename, "r");
+//     if (file == NULL) {
+//         perror("Error opening file");
+//         return NULL;
+//     }
+
+//     fseek(file, 0, SEEK_END);
+//     long length = ftell(file);
+//     fseek(file, 0, SEEK_SET);
+
+//     char* buffer = (char*)malloc(length + 1);
+//     if (buffer) {
+//         size_t readLength = fread(buffer, 1, length, file);
+//         if (readLength != length) {
+//             perror("Error reading file");
+//             free(buffer);
+//             fclose(file);
+//             return NULL;
+//         }
+//         buffer[length] = '\0';
+//     }
+
+//     fclose(file);
+//     return buffer;
+// }
+
 char* readFileToString(const char* filename) {
     FILE* file = fopen(filename, "r");
     if (file == NULL) {
@@ -62,19 +89,16 @@ char* readFileToString(const char* filename) {
 
     char* buffer = (char*)malloc(length + 1);
     if (buffer) {
-        size_t readLength = fread(buffer, 1, length, file);
-        if (readLength != length) {
-            perror("Error reading file");
-            free(buffer);
-            fclose(file);
-            return NULL;
-        }
-        buffer[length] = '\0';
+        fread(buffer, 1, length, file);
+        buffer[length] = '\0';  // 确保字符串以 null 结尾
+    } else {
+        perror("Error allocating memory");
     }
 
     fclose(file);
     return buffer;
 }
+
 
 // 将字符串写入文件
 void writeStringToFile(const char* filename, const char* jsonStr) {
