@@ -1,11 +1,8 @@
 # ninja log v5
 42	589	7227653017260990	CMakeFiles/zckj_ad_softsys.dir/src/cJSON.c.obj	61d782ddf78ab2bb
 8	1364	7227653025012556	CMakeFiles/zckj_ad_softsys.dir/src/File_Manage.c.obj	e7bd984bc1272ea9
-20	1417	7227653025547673	CMakeFiles/zckj_ad_softsys.dir/src/Login_User.c.obj	d6b4de99c3dd45e6
-6	887	7227916987283445	CMakeFiles/zckj_ad_softsys.dir/src/main.c.obj	44dda06d440ba445
-32	1463	7227653026016112	CMakeFiles/zckj_ad_softsys.dir/src/Seat_Info.c.obj	47327189eb5c7039
-888	1121	7227916989587733	zckj_ad_softsys.exe	4d465c1dc3a7a848
-5	2218	7230437539850714	CMakeFiles/zckj_ad_softsys.dir/src/main.c.obj	44dda06d440ba445
-2219	2935	7230437546999310	zckj_ad_softsys.exe	4d465c1dc3a7a848
-6	880	7230438791388240	CMakeFiles/zckj_ad_softsys.dir/src/main.c.obj	44dda06d440ba445
-881	1129	7230438793829975	zckj_ad_softsys.exe	4d465c1dc3a7a848
+5	1021	7230454504127474	CMakeFiles/zckj_ad_softsys.dir/src/Login_User.c.obj	d6b4de99c3dd45e6
+15	908	7230473397777144	CMakeFiles/zckj_ad_softsys.dir/src/main.c.obj	44dda06d440ba445
+5	875	7230473397457157	CMakeFiles/zckj_ad_softsys.dir/src/Seat_Info.c.obj	47327189eb5c7039
+908	1180	7230473400463686	zckj_ad_softsys.exe	3904e9c2235bd72d
+17	193	7230454495849141	CMakeFiles/zckj_ad_softsys.dir/src/Reserve_Record.c.obj	e3c31155334c028c

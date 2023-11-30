@@ -19,6 +19,13 @@
     ],
     "files.encoding": "gbk",
     "files.associations": {
-        "*.rh": "c"
+        "*.rh": "c",
+        "windows.h": "c",
+        "string.h": "c",
+        "stdlib.h": "c",
+        "stdio.h": "c",
+        "seat_info.h": "c",
+        "cjson.h": "c",
+        "main.h": "c"
     }
 }

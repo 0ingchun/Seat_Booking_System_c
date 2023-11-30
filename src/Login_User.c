@@ -3,6 +3,7 @@
 #include <string.h>
 #include <windows.h>
 #include "cJSON.h"
+#include "Login_User.h"
 
 
 // 读取并查看用户信息
@@ -81,7 +82,7 @@ int findUser(const char* jsonStr, const char* username, char* outPasswd, short* 
 
 
 // 写入并修改用户信息
-char* modifyUser(const char* jsonStr, const char* newUsername, const char* newPasswd, short newAuth) {
+char* modifyUser(const char* jsonStr, const char* newUsername, const char* newPasswd, short newAuth, unsigned int newBalance) {
     cJSON* jsonObj = cJSON_Parse(jsonStr);
     if (jsonObj == NULL) {
         printf("Failed to parse JSON string\n");
@@ -100,7 +101,8 @@ char* modifyUser(const char* jsonStr, const char* newUsername, const char* newPa
         if (cJSON_IsString(usernameObj) && strcmp(usernameObj->valuestring, newUsername) == 0) {
             cJSON_ReplaceItemInObject(userObj, "passwd", cJSON_CreateString(newPasswd));
             cJSON_ReplaceItemInObject(userObj, "auth", cJSON_CreateNumber(newAuth));
-            // 不修改 balance
+            cJSON_ReplaceItemInObject(userObj, "balance", cJSON_CreateNumber(newBalance));
+
             char* modifiedJsonStr = cJSON_Print(jsonObj);
             cJSON_Delete(jsonObj);
             return modifiedJsonStr;
@@ -208,7 +210,7 @@ char* deleteUser(const char* jsonStr, const char* username) {
 //     printf("\n");
 
 //     // 修改用户信息
-//     char* modifiedJsonStr = modifyUser(jsonStr, "user1", "newpass", 2);
+//     char* modifiedJsonStr = modifyUser(jsonStr, "user1", "newpass", 2, 1451419810);
 //     if (modifiedJsonStr != NULL) {
 //         printf("修改用户信息后：\n");
 //         viewUser(modifiedJsonStr);

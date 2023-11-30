@@ -63,6 +63,13 @@ build CMakeFiles/zckj_ad_softsys.dir/src/Login_User.c.obj: C_COMPILER__zckj_ad_s
   OBJECT_DIR = CMakeFiles\zckj_ad_softsys.dir
   OBJECT_FILE_DIR = CMakeFiles\zckj_ad_softsys.dir\src
 
+build CMakeFiles/zckj_ad_softsys.dir/src/Reserve_Record.c.obj: C_COMPILER__zckj_ad_softsys_unscanned_Debug E$:/Document/Code/c/Seat_Booking_System_c/src/Reserve_Record.c || cmake_object_order_depends_target_zckj_ad_softsys
+  DEP_FILE = CMakeFiles\zckj_ad_softsys.dir\src\Reserve_Record.c.obj.d
+  FLAGS = -g
+  INCLUDES = -IE:/Document/Code/c/Seat_Booking_System_c/include -IE:/Document/Code/c/Seat_Booking_System_c/src
+  OBJECT_DIR = CMakeFiles\zckj_ad_softsys.dir
+  OBJECT_FILE_DIR = CMakeFiles\zckj_ad_softsys.dir\src
+
 build CMakeFiles/zckj_ad_softsys.dir/src/Seat_Info.c.obj: C_COMPILER__zckj_ad_softsys_unscanned_Debug E$:/Document/Code/c/Seat_Booking_System_c/src/Seat_Info.c || cmake_object_order_depends_target_zckj_ad_softsys
   DEP_FILE = CMakeFiles\zckj_ad_softsys.dir\src\Seat_Info.c.obj.d
   FLAGS = -g
@@ -92,7 +99,7 @@ build CMakeFiles/zckj_ad_softsys.dir/src/main.c.obj: C_COMPILER__zckj_ad_softsys
 #############################################
 # Link the executable zckj_ad_softsys.exe
 
-build zckj_ad_softsys.exe: C_EXECUTABLE_LINKER__zckj_ad_softsys_Debug CMakeFiles/zckj_ad_softsys.dir/src/File_Manage.c.obj CMakeFiles/zckj_ad_softsys.dir/src/Login_User.c.obj CMakeFiles/zckj_ad_softsys.dir/src/Seat_Info.c.obj CMakeFiles/zckj_ad_softsys.dir/src/cJSON.c.obj CMakeFiles/zckj_ad_softsys.dir/src/main.c.obj
+build zckj_ad_softsys.exe: C_EXECUTABLE_LINKER__zckj_ad_softsys_Debug CMakeFiles/zckj_ad_softsys.dir/src/File_Manage.c.obj CMakeFiles/zckj_ad_softsys.dir/src/Login_User.c.obj CMakeFiles/zckj_ad_softsys.dir/src/Reserve_Record.c.obj CMakeFiles/zckj_ad_softsys.dir/src/Seat_Info.c.obj CMakeFiles/zckj_ad_softsys.dir/src/cJSON.c.obj CMakeFiles/zckj_ad_softsys.dir/src/main.c.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\zckj_ad_softsys.dir

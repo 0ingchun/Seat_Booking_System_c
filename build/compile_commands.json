@@ -13,6 +13,12 @@
 },
 {
   "directory": "E:/Document/Code/c/Seat_Booking_System_c/build",
+  "command": "C:\\msys64\\mingw64\\bin\\cc.exe -IE:/Document/Code/c/Seat_Booking_System_c/include -IE:/Document/Code/c/Seat_Booking_System_c/src -g -o CMakeFiles\\zckj_ad_softsys.dir\\src\\Reserve_Record.c.obj -c E:\\Document\\Code\\c\\Seat_Booking_System_c\\src\\Reserve_Record.c",
+  "file": "E:\\Document\\Code\\c\\Seat_Booking_System_c\\src\\Reserve_Record.c",
+  "output": "CMakeFiles\\zckj_ad_softsys.dir\\src\\Reserve_Record.c.obj"
+},
+{
+  "directory": "E:/Document/Code/c/Seat_Booking_System_c/build",
   "command": "C:\\msys64\\mingw64\\bin\\cc.exe -IE:/Document/Code/c/Seat_Booking_System_c/include -IE:/Document/Code/c/Seat_Booking_System_c/src -g -o CMakeFiles\\zckj_ad_softsys.dir\\src\\Seat_Info.c.obj -c E:\\Document\\Code\\c\\Seat_Booking_System_c\\src\\Seat_Info.c",
   "file": "E:\\Document\\Code\\c\\Seat_Booking_System_c\\src\\Seat_Info.c",
   "output": "CMakeFiles\\zckj_ad_softsys.dir\\src\\Seat_Info.c.obj"

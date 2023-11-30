@@ -13,7 +13,7 @@ void viewUser(const char* jsonStr);
 
 int findUser(const char* jsonStr, const char* username, char* outPasswd, short* outAuth, unsigned int* outBalance);
 
-char* modifyUser(const char* jsonStr, const char* newUsername, const char* newPasswd, short newAuth);
+char* modifyUser(const char* jsonStr, const char* newUsername, const char* newPasswd, short newAuth, unsigned int newBalance);
 
 char* addUser(const char* jsonStr, const char* username, const char* passwd, short auth);
 

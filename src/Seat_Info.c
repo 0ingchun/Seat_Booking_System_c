@@ -3,6 +3,7 @@
 #include <string.h>
 #include <windows.h>
 #include "cJSON.h"
+#include "Seat_Info.h"
 
 
 // 查看座位
@@ -22,17 +23,13 @@ void viewSeat(const char* jsonStr) {
 
     cJSON* seatObj;
     cJSON_ArrayForEach(seatObj, seatsArray) {
-        cJSON* nameObj = cJSON_GetObjectItem(seatObj, "name");
         cJSON* idObj = cJSON_GetObjectItem(seatObj, "id");
+        cJSON* nameObj = cJSON_GetObjectItem(seatObj, "name");
         cJSON* amountObj = cJSON_GetObjectItem(seatObj, "amount");
-        cJSON* subscriberObj = cJSON_GetObjectItem(seatObj, "subscriber");
-        cJSON* datetimeObj = cJSON_GetObjectItem(seatObj, "datetime");
-
-        printf("Name: %s\n", cJSON_IsString(nameObj) ? nameObj->valuestring : "null");
+        
         printf("ID: %u\n", cJSON_IsNumber(idObj) ? idObj->valueint : 0);
+        printf("Name: %s\n", cJSON_IsString(nameObj) ? nameObj->valuestring : "null");
         printf("Amount: %u\n", cJSON_IsNumber(amountObj) ? amountObj->valueint : 0);
-        printf("Subscriber: %s\n", cJSON_IsString(subscriberObj) ? subscriberObj->valuestring : "null");
-        printf("Datetime: %s\n", cJSON_IsString(datetimeObj) ? datetimeObj->valuestring : "null");
     }
 
     cJSON_Delete(jsonObj);
@@ -40,7 +37,7 @@ void viewSeat(const char* jsonStr) {
 
 
 // 更新座位
-char* updateSeat(const char* jsonStr, const char* name, unsigned int id, unsigned int amount, const char* subscriber, const char* datetime) {
+char* updateSeat(const char* jsonStr, const char* name, unsigned int id, unsigned int amount) {
     cJSON* jsonObj = cJSON_Parse(jsonStr);
     if (jsonObj == NULL) {
         printf("Failed to parse JSON string\n");
@@ -60,8 +57,6 @@ char* updateSeat(const char* jsonStr, const char* name, unsigned int id, unsigne
             // 更新座位信息
             cJSON_ReplaceItemInObject(seatObj, "name", cJSON_CreateString(name));
             cJSON_ReplaceItemInObject(seatObj, "amount", cJSON_CreateNumber(amount));
-            cJSON_ReplaceItemInObject(seatObj, "subscriber", cJSON_CreateString(subscriber));
-            cJSON_ReplaceItemInObject(seatObj, "datetime", cJSON_CreateString(datetime));
             break;
         }
     }
@@ -73,47 +68,47 @@ char* updateSeat(const char* jsonStr, const char* name, unsigned int id, unsigne
 
 
 
-// 查找订阅者的座位
-void findSeatsBySubscriber(const char* jsonStr, const char* subscriber) {
-    cJSON* jsonObj = cJSON_Parse(jsonStr);
-    if (jsonObj == NULL) {
-        printf("Failed to parse JSON string\n");
-        return;
-    }
+// // 查找订阅者的座位
+// void findSeatsBySubscriber(const char* jsonStr, const char* subscriber) {
+//     cJSON* jsonObj = cJSON_Parse(jsonStr);
+//     if (jsonObj == NULL) {
+//         printf("Failed to parse JSON string\n");
+//         return;
+//     }
 
-    cJSON* seatsArray = cJSON_GetObjectItem(jsonObj, "seats");
-    if (!cJSON_IsArray(seatsArray)) {
-        printf("Seats field is not an array\n");
-        cJSON_Delete(jsonObj);
-        return;
-    }
+//     cJSON* seatsArray = cJSON_GetObjectItem(jsonObj, "seats");
+//     if (!cJSON_IsArray(seatsArray)) {
+//         printf("Seats field is not an array\n");
+//         cJSON_Delete(jsonObj);
+//         return;
+//     }
 
-    int seatCount = 0;
-    printf("Seats booked by %s:\n", subscriber);
+//     int seatCount = 0;
+//     printf("Seats booked by %s:\n", subscriber);
 
-    cJSON* seatObj;
-    cJSON_ArrayForEach(seatObj, seatsArray) {
-        cJSON* subscriberObj = cJSON_GetObjectItem(seatObj, "subscriber");
-        if (cJSON_IsString(subscriberObj) && strcmp(subscriberObj->valuestring, subscriber) == 0) {
-            cJSON* nameObj = cJSON_GetObjectItem(seatObj, "name");
-            cJSON* idObj = cJSON_GetObjectItem(seatObj, "id");
-            cJSON* amountObj = cJSON_GetObjectItem(seatObj, "amount");
-            cJSON* datetimeObj = cJSON_GetObjectItem(seatObj, "datetime");
+//     cJSON* seatObj;
+//     cJSON_ArrayForEach(seatObj, seatsArray) {
+//         cJSON* subscriberObj = cJSON_GetObjectItem(seatObj, "subscriber");
+//         if (cJSON_IsString(subscriberObj) && strcmp(subscriberObj->valuestring, subscriber) == 0) {
+//             cJSON* nameObj = cJSON_GetObjectItem(seatObj, "name");
+//             cJSON* idObj = cJSON_GetObjectItem(seatObj, "id");
+//             cJSON* amountObj = cJSON_GetObjectItem(seatObj, "amount");
+//             cJSON* datetimeObj = cJSON_GetObjectItem(seatObj, "datetime");
 
-            printf("  Name: %s\n", cJSON_IsString(nameObj) ? nameObj->valuestring : "null");
-            printf("  ID: %u\n", cJSON_IsNumber(idObj) ? idObj->valueint : 0);
-            printf("  Amount: %u\n", cJSON_IsNumber(amountObj) ? amountObj->valueint : 0);
-            printf("  Datetime: %s\n", cJSON_IsString(datetimeObj) ? datetimeObj->valuestring : "null");
-            printf("\n");
+//             printf("  Name: %s\n", cJSON_IsString(nameObj) ? nameObj->valuestring : "null");
+//             printf("  ID: %u\n", cJSON_IsNumber(idObj) ? idObj->valueint : 0);
+//             printf("  Amount: %u\n", cJSON_IsNumber(amountObj) ? amountObj->valueint : 0);
+//             printf("  Datetime: %s\n", cJSON_IsString(datetimeObj) ? datetimeObj->valuestring : "null");
+//             printf("\n");
 
-            seatCount++;
-        }
-    }
+//             seatCount++;
+//         }
+//     }
 
-    printf("Total seats booked by %s: %d\n", subscriber, seatCount);
+//     printf("Total seats booked by %s: %d\n", subscriber, seatCount);
 
-    cJSON_Delete(jsonObj);
-}
+//     cJSON_Delete(jsonObj);
+// }
 
 
 
@@ -133,32 +128,30 @@ void countSeatsByName(const char* jsonStr, const char* name) {
     }
 
     int totalSeats = 0;
-    int bookedSeats = 0;
-    int availableSeats = 0;
+    // int bookedSeats = 0;
+    // int availableSeats = 0;
 
     cJSON* seatObj;
     cJSON_ArrayForEach(seatObj, seatsArray) {
         cJSON* nameObj = cJSON_GetObjectItem(seatObj, "name");
-        cJSON* subscriberObj = cJSON_GetObjectItem(seatObj, "subscriber");
-        cJSON* datetimeObj = cJSON_GetObjectItem(seatObj, "datetime");
 
         if (cJSON_IsString(nameObj) && strcmp(nameObj->valuestring, name) == 0) {
             printf("  Name: %s\n", cJSON_IsString(nameObj) ? nameObj->valuestring : "null");
-            printf("  Datetime: %s\n", cJSON_IsString(datetimeObj) ? datetimeObj->valuestring : "null");
+            // printf("  Datetime: %s\n", cJSON_IsString(datetimeObj) ? datetimeObj->valuestring : "null");
             printf("\n");
 
             totalSeats++;
-            if (cJSON_IsString(subscriberObj) && strlen(subscriberObj->valuestring) > 0) {
-                bookedSeats++;
-            } else {
-                availableSeats++;
-            }
+            // if (cJSON_IsString(subscriberObj) && strlen(subscriberObj->valuestring) > 0) {
+            //     bookedSeats++;
+            // } else {
+            //     availableSeats++;
+            // }
         }
     }
 
     printf("Total seats of type '%s': %d\n", name, totalSeats);
-    printf("Booked seats of type '%s': %d\n", name, bookedSeats);
-    printf("Available seats of type '%s': %d\n", name, availableSeats);
+    // printf("Booked seats of type '%s': %d\n", name, bookedSeats);
+    // printf("Available seats of type '%s': %d\n", name, availableSeats);
 
     cJSON_Delete(jsonObj);
 }
@@ -166,7 +159,7 @@ void countSeatsByName(const char* jsonStr, const char* name) {
 
 
 // 添加座位
-char* addSeat(const char* jsonStr, const char* name, unsigned int id, unsigned int amount, const char* subscriber, const char* datetime) {
+char* addSeat(const char* jsonStr, const char* name, unsigned int id, unsigned int amount) {
     cJSON* jsonObj = cJSON_Parse(jsonStr);
     if (jsonObj == NULL) {
         printf("Failed to parse JSON string\n");
@@ -180,11 +173,10 @@ char* addSeat(const char* jsonStr, const char* name, unsigned int id, unsigned i
     }
 
     cJSON* newSeatObj = cJSON_CreateObject();
-    cJSON_AddItemToObject(newSeatObj, "name", cJSON_CreateString(name));
     cJSON_AddItemToObject(newSeatObj, "id", cJSON_CreateNumber(id));
+    cJSON_AddItemToObject(newSeatObj, "name", cJSON_CreateString(name));
     cJSON_AddItemToObject(newSeatObj, "amount", cJSON_CreateNumber(amount));
-    cJSON_AddItemToObject(newSeatObj, "subscriber", cJSON_CreateString(subscriber));
-    cJSON_AddItemToObject(newSeatObj, "datetime", cJSON_CreateString(datetime));
+
     cJSON_AddItemToArray(seatsArray, newSeatObj);
 
     char* updatedJsonStr = cJSON_Print(jsonObj);
@@ -232,7 +224,7 @@ char* deleteSeat(const char* jsonStr, unsigned int id) {
 //     viewSeat(jsonStr);
 //     printf("\n");
 
-//     char* updatedJsonStr = updateSeat(jsonStr, "VIP", 101, 1500, "Bob", "2023-04-02 09:00:00");
+//     char* updatedJsonStr = updateSeat(jsonStr, "VIP", 101, 1500);
 //     if (updatedJsonStr != NULL) {
 //         printf("更新后的座位信息：\n");
 //         viewSeat(updatedJsonStr);
@@ -241,14 +233,14 @@ char* deleteSeat(const char* jsonStr, unsigned int id) {
 //         printf("座位更新失败。\n");
 //     }
 
-//     findSeatsBySubscriber(jsonStr, "Alice");
-//     printf("\n");
+//     // findSeatsBySubscriber(jsonStr, "Alice");
+//     // printf("\n");
 
 //     countSeatsByName(jsonStr, "VIP");
 //     printf("\n");
 
 //     // 添加新座位
-//     char* updatedJsonStr = addSeat(jsonStr, "Regular", 104, 500, "Bob", "2023-04-02 12:00:00");
+//     char* updatedJsonStr = addSeat(jsonStr, "Regular", 104, 500);
 //     if (updatedJsonStr != NULL) {
 //         printf("添加新座位后：\n");
 //         viewSeat(updatedJsonStr);

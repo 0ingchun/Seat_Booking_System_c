@@ -141,8 +141,43 @@ LogEntry* get_booked_time_slots(const char* filename, const char* seat_type, con
 }
 
 
-// 
+// 辅助函数：判断时间是否已过期
+int is_time_expired(const char* time_str) {
+    struct tm time_info = {0};
+    strptime(time_str, "%Y/%m/%d %H:%M:%S", &time_info);
+    time_t time_val = mktime(&time_info);
+    time_t now;
+    time(&now);
 
+    return now > time_val; // 如果当前时间晚于时间参数，则过期
+}
+
+// 获取特定日期和座位类型的未预订时间段
+LogEntry* get_unbooked_time_slots(const char* filename, const char* seat_type, const char* date, int* count) {
+    int total = 0;
+    int log_count = 0;
+    LogEntry* entries = read_logs(filename, &log_count);
+    LogEntry* unbookedEntries = NULL;
+
+    // 此处省略了分析时间段的复杂逻辑
+    // 假设我们有一种方法来确定哪些时间段是未被预订的
+    /*????????????????????????????????????????????????????*/
+
+    for (int i = 0; i < log_count; i++) {
+        if (strcmp(entries[i].seat_type, seat_type) == 0 && strncmp(entries[i].period_date, date, 10) == 0) {
+            // 检查是否过期
+            if (!is_time_expired(entries[i].period_time_end)) {
+                unbookedEntries = realloc(unbookedEntries, sizeof(LogEntry) * (total + 1));
+                unbookedEntries[total] = entries[i];
+                total++;
+            }
+        }
+    }
+
+    free(entries);
+    *count = total;
+    return unbookedEntries;
+}
 
 
 // 根据预订者统计预订席位-所有
@@ -309,89 +344,109 @@ LogEntry* get_log_by_order_id(const char* filename, const char* order_id, int* c
 }
 
 
-
-int main() {
-
-
-    int countBooked, countCancelled;
-    LogEntry* bookedSeats;
-    LogEntry* cancelledSeats;
-
-    // 获取所有 "张三" 预订的席位
-    bookedSeats = get_booked_seats("log.csv", "张三", &countBooked);
-    if (bookedSeats != NULL) {
-        printf("张三已预订的席位数量: %d\n", countBooked);
-        for (int i = 0; i < countBooked; i++) {
-            printf("席位ID: %u, 预订日期: %s\n", bookedSeats[i].id, bookedSeats[i].period_date);
-        }
-        free(bookedSeats); // 释放内存
-    } else {
-        printf("没有找到已预订的席位或读取日志文件失败。\n");
-    }
-
-    // 获取所有 "张三" 取消预订的席位
-    cancelledSeats = get_cancelled_seats("log.csv", "张三", &countCancelled);
-    if (cancelledSeats != NULL) {
-        printf("张三已取消预订的席位数量: %d\n", countCancelled);
-        for (int i = 0; i < countCancelled; i++) {
-            printf("席位ID: %u, 取消日期: %s\n", cancelledSeats[i].id, cancelledSeats[i].period_date);
-        }
-        free(cancelledSeats); // 释放内存
-    } else {
-        printf("没有找到已取消预订的席位或读取日志文件失败。\n");
-    }
+// 库示例
+// int main() {
 
 
-    int countValidBooked, countValidCancelled;
-    LogEntry* validBookedSeats;
-    LogEntry* validCancelledSeats;
+//     int countBooked, countCancelled;
+//     LogEntry* bookedSeats;
+//     LogEntry* cancelledSeats;
 
-    // 获取所有 "张三" 未过期的已预订的席位
-    validBookedSeats = get_valid_booked_seats("log.csv", "张三", &countValidBooked);
-    if (validBookedSeats != NULL) {
-        printf("张三未过期的已预订席位数量: %d\n", countValidBooked);
-        for (int i = 0; i < countValidBooked; i++) {
-            printf("席位ID: %u, 预订日期: %s, 预订结束时间: %s\n", validBookedSeats[i].id, validBookedSeats[i].period_date, validBookedSeats[i].period_time_end);
-        }
-        free(validBookedSeats); // 释放内存
-    } else {
-        printf("没有找到未过期的已预订席位或读取日志文件失败。\n");
-    }
+//     // 获取所有 "张三" 预订的席位
+//     bookedSeats = get_booked_seats("log.csv", "张三", &countBooked);
+//     if (bookedSeats != NULL) {
+//         printf("张三已预订的席位数量: %d\n", countBooked);
+//         for (int i = 0; i < countBooked; i++) {
+//             printf("席位ID: %u, 预订日期: %s\n", bookedSeats[i].id, bookedSeats[i].period_date);
+//         }
+//         free(bookedSeats); // 释放内存
+//     } else {
+//         printf("没有找到已预订的席位或读取日志文件失败。\n");
+//     }
 
-    // 获取所有 "张三" 未过期的已取消预订的席位
-    validCancelledSeats = get_valid_cancelled_seats("log.csv", "张三", &countValidCancelled);
-    if (validCancelledSeats != NULL) {
-        printf("张三未过期的已取消预订席位数量: %d\n", countValidCancelled);
-        for (int i = 0; i < countValidCancelled; i++) {
-            printf("席位ID: %u, 取消日期: %s, 预订结束时间: %s\n", validCancelledSeats[i].id, validCancelledSeats[i].period_date, validCancelledSeats[i].period_time_end);
-        }
-        free(validCancelledSeats); // 释放内存
-    } else {
-        printf("没有找到未过期的已取消预订席位或读取日志文件失败。\n");
-    }
-
-
+//     // 获取所有 "张三" 取消预订的席位
+//     cancelledSeats = get_cancelled_seats("log.csv", "张三", &countCancelled);
+//     if (cancelledSeats != NULL) {
+//         printf("张三已取消预订的席位数量: %d\n", countCancelled);
+//         for (int i = 0; i < countCancelled; i++) {
+//             printf("席位ID: %u, 取消日期: %s\n", cancelledSeats[i].id, cancelledSeats[i].period_date);
+//         }
+//         free(cancelledSeats); // 释放内存
+//     } else {
+//         printf("没有找到已取消预订的席位或读取日志文件失败。\n");
+//     }
 
 
+//     int countValidBooked, countValidCancelled;
+//     LogEntry* validBookedSeats;
+//     LogEntry* validCancelledSeats;
 
-    int totalBookings;
-    unsigned int totalRevenue;
+//     // 获取所有 "张三" 未过期的已预订的席位
+//     validBookedSeats = get_valid_booked_seats("log.csv", "张三", &countValidBooked);
+//     if (validBookedSeats != NULL) {
+//         printf("张三未过期的已预订席位数量: %d\n", countValidBooked);
+//         for (int i = 0; i < countValidBooked; i++) {
+//             printf("席位ID: %u, 预订日期: %s, 预订结束时间: %s\n", validBookedSeats[i].id, validBookedSeats[i].period_date, validBookedSeats[i].period_time_end);
+//         }
+//         free(validBookedSeats); // 释放内存
+//     } else {
+//         printf("没有找到未过期的已预订席位或读取日志文件失败。\n");
+//     }
 
-    count_bookings_and_revenue("log.csv", "2023/11/30", &totalBookings, &totalRevenue);
-    printf("2023年11月30日的预订席位总数: %d, 总收入: %u\n", totalBookings, totalRevenue);
+//     // 获取所有 "张三" 未过期的已取消预订的席位
+//     validCancelledSeats = get_valid_cancelled_seats("log.csv", "张三", &countValidCancelled);
+//     if (validCancelledSeats != NULL) {
+//         printf("张三未过期的已取消预订席位数量: %d\n", countValidCancelled);
+//         for (int i = 0; i < countValidCancelled; i++) {
+//             printf("席位ID: %u, 取消日期: %s, 预订结束时间: %s\n", validCancelledSeats[i].id, validCancelledSeats[i].period_date, validCancelledSeats[i].period_time_end);
+//         }
+//         free(validCancelledSeats); // 释放内存
+//     } else {
+//         printf("没有找到未过期的已取消预订席位或读取日志文件失败。\n");
+//     }
 
 
-    int count;
-    LogEntry* logEntry = get_log_by_order_id("log.csv", "订单编号", &count);
+//     int count1;
+//     LogEntry* bookedSlots = get_booked_time_slots("log.csv", "普通座", "2023/11/30", &count1);
 
-    if (logEntry != NULL && count > 0) {
-        printf("订单编号: %s, 预订者: %s, 预订金额: %u\n", logEntry->order_id, logEntry->subscriber, logEntry->amount);
-        free(logEntry);
-    } else {
-        printf("没有找到对应订单编号的日志记录。\n");
-    }
+//     // ... 输出或处理 bookedSlots 中的数据
+//     if (bookedSlots) {
+//         for (int i = 0; i < count1; i++) {
+//             printf("已预订时间段：%s - %s\n", bookedSlots[i].period_time_start, bookedSlots[i].period_time_end);
+//         }
+//     free(bookedSlots); // 释放内存
+
+//     int count2;
+//     LogEntry* unbookedSlots = get_unbooked_time_slots("log.csv", "普通座", "2023/11/30", &count2);
+
+//     if (unbookedSlots) {
+//         for (int i = 0; i < count2; i++) {
+//             printf("未预订时间段：%s - %s\n", unbookedSlots[i].period_time_start, unbookedSlots[i].period_time_end);
+//         }
+//         free(unbookedSlots);
+//     } else {
+//         printf("没有找到未预订的时间段。\n");
+//     }
 
 
-    system("pause");
-    return 0;
-}
+//     int totalBookings;
+//     unsigned int totalRevenue;
+
+//     count_bookings_and_revenue("log.csv", "2023/11/30", &totalBookings, &totalRevenue);
+//     printf("2023年11月30日的预订席位总数: %d, 总收入: %u\n", totalBookings, totalRevenue);
+
+
+//     int count;
+//     LogEntry* logEntry = get_log_by_order_id("log.csv", "订单编号", &count);
+
+//     if (logEntry != NULL && count > 0) {
+//         printf("订单编号: %s, 预订者: %s, 预订金额: %u\n", logEntry->order_id, logEntry->subscriber, logEntry->amount);
+//         free(logEntry);
+//     } else {
+//         printf("没有找到对应订单编号的日志记录。\n");
+//     }
+
+
+//     system("pause");
+//     return 0;
+// }
