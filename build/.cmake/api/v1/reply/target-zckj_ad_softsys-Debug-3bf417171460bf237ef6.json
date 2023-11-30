@@ -58,11 +58,11 @@
 			[
 				{
 					"backtrace" : 2,
-					"path" : "E:/Document/Code/dustbin/Seat_Booking_System_c/include"
+					"path" : "E:/Document/Code/c/Seat_Booking_System_c/include"
 				},
 				{
 					"backtrace" : 3,
-					"path" : "E:/Document/Code/dustbin/Seat_Booking_System_c/src"
+					"path" : "E:/Document/Code/c/Seat_Booking_System_c/src"
 				}
 			],
 			"language" : "C",

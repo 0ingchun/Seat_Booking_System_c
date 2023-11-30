@@ -39,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "zckj_ad_softsys::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-zckj_ad_softsys-Debug-c75ab3da09186138b569.json",
+					"jsonFile" : "target-zckj_ad_softsys-Debug-3bf417171460bf237ef6.json",
 					"name" : "zckj_ad_softsys",
 					"projectIndex" : 0
 				}
@@ -49,12 +49,12 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "E:/Document/Code/dustbin/Seat_Booking_System_c/build",
-		"source" : "E:/Document/Code/dustbin/Seat_Booking_System_c"
+		"build" : "E:/Document/Code/c/Seat_Booking_System_c/build",
+		"source" : "E:/Document/Code/c/Seat_Booking_System_c"
 	},
 	"version" : 
 	{
 		"major" : 2,
-		"minor" : 5
+		"minor" : 6
 	}
 }

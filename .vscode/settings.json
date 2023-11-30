@@ -17,5 +17,8 @@
             "priority": 4
         }
     ],
-    "files.encoding": "gbk"
+    "files.encoding": "gbk",
+    "files.associations": {
+        "*.rh": "c"
+    }
 }

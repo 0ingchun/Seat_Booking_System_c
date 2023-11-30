@@ -72,6 +72,9 @@ HINSTANCE hInst;      // 应用程序实例句柄
 
 HWND hwndEdit, hwndEdit2, hwndButton, hwndLabel, hwndLabel2, hwndOpenNewWindowButton;  // 分别为编辑框、按钮和标签的窗口句柄
 
+// 声明主窗口过程函数
+LRESULT CALLBACK Main_WndProc(HWND, UINT, WPARAM, LPARAM);
+
 // 声明第二个窗口的窗口过程函数
 LRESULT CALLBACK SecondWndProc(HWND, UINT, WPARAM, LPARAM);
 
@@ -81,16 +84,16 @@ LRESULT CALLBACK Login_WndProc(HWND, UINT, WPARAM, LPARAM);
 // 声明注册窗口的窗口过程函数
 LRESULT CALLBACK Signup_WndProc(HWND, UINT, WPARAM, LPARAM);
 
+// 声明用户信息窗口的窗口过程函数
+LRESULT CALLBACK User_WndProc(HWND, UINT, WPARAM, LPARAM);
+
 // 声明服务窗口的窗口过程函数
 LRESULT CALLBACK Service_WndProc(HWND, UINT, WPARAM, LPARAM);
 
 // 声明管理窗口的窗口过程函数
 LRESULT CALLBACK Admin_WndProc(HWND, UINT, WPARAM, LPARAM);
 
-// 声明主窗口过程函数
-LRESULT CALLBACK Main_WndProc(HWND, UINT, WPARAM, LPARAM);
-
-HWND hwnd_Main_Window, hwnd_Login_Window, hwnd_Signup_Window, hwnd_Service_Window, hwnd_Admin_Window;         // 主窗口句柄
+HWND hwnd_Main_Window, hwnd_Login_Window, hwnd_Signup_Window, hwnd_User_Window, hwnd_Service_Window, hwnd_Admin_Window;         // 主窗口句柄
 
 // WinMain：应用程序入口函数
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {    
@@ -127,6 +130,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     wc_Signup.lpszClassName = _T("SignupWindowClass");
     if (!RegisterClass(&wc_Signup)) {
         MessageBox(NULL, _T("用户注册窗口类注册失败！"), _T("错误"), MB_ICONEXCLAMATION | MB_OK);
+        return 0;
+    }
+
+    // 注册用户信息窗口类
+    WNDCLASS wc_User = {0};
+    wc_User.lpfnWndProc = User_WndProc;
+    wc_User.hInstance = hInstance;
+    wc_User.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
+    wc_User.lpszClassName = _T("UserWindowClass");
+    if (!RegisterClass(&wc_User)) {
+        MessageBox(NULL, _T("用户信息窗口类注册失败！"), _T("错误"), MB_ICONEXCLAMATION | MB_OK);
         return 0;
     }
 
@@ -177,7 +191,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         _T("v1 Makerspace Seat Booking System"),                // 窗口标题
         WS_OVERLAPPEDWINDOW,               // 窗口样式
         CW_USEDEFAULT, CW_USEDEFAULT,      // 窗口位置
-        240, 240,                          // 窗口大小
+        200, 160,                          // 窗口大小
         NULL, NULL, hInstance, NULL);      // 其他参数
 
     ShowWindow(hwnd_Main_Window, nCmdShow);           // 显示窗口
@@ -243,7 +257,7 @@ LRESULT CALLBACK Main_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 _T("USER"),                    // 默认文本为空
                 WS_CHILD | WS_VISIBLE,     // 样式：子窗口、可见
                 10, 40, 100, 20,           // 位置和大小
-                hwnd, (HMENU)3, hInst, NULL); // 父窗口和其他参数
+                hwnd, (HMENU)4, hInst, NULL); // 父窗口和其他参数
 
             // 创建按钮
             hwndButton_Login_Window = CreateWindow(
@@ -257,14 +271,14 @@ LRESULT CALLBACK Main_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 _T("BUTTON"),              // 控件类型：按钮
                 _T("SERVICE"),                // 按钮文本
                 WS_CHILD | WS_VISIBLE,     // 样式：子窗口、可见
-                80, 10, 50, 20,           // 位置和大小
+                80, 10, 75, 20,           // 位置和大小
                 hwnd, (HMENU)2, hInst, NULL); // 父窗口和其他参数
 
             hwndButton_Admin_Window = CreateWindow(
                 _T("BUTTON"),              // 控件类型：按钮
                 _T("ADMIN"),                // 按钮文本
                 WS_CHILD | WS_VISIBLE,     // 样式：子窗口、可见
-                80, 40, 50, 20,           // 位置和大小
+                80, 40, 75, 20,           // 位置和大小
                 hwnd, (HMENU)3, hInst, NULL); // 父窗口和其他参数
 
             break;
@@ -311,14 +325,27 @@ LRESULT CALLBACK Main_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                         _T("LoginWindowClass"),
                         _T("Login System"),
                         WS_OVERLAPPEDWINDOW,
-                        CW_USEDEFAULT, CW_USEDEFAULT, 300, 200,
+                        CW_USEDEFAULT, CW_USEDEFAULT, 210, 170,
                         NULL, NULL, hInst, NULL);
                     ShowWindow(hwnd_Login_Window, SW_SHOW);
                     UpdateWindow(hwnd_Login_Window);
                 }
-                else if (Login_Flag == 1) {
+                else if (Login_Flag == 1) { // 如果用户已登录
                     // 打开用户信息与余额充值
-                    MessageBox(NULL, "Already Login", "Error", MB_ICONINFORMATION | MB_OK);
+                    ShowWindow(hwnd_Main_Window, SW_HIDE);  // 隐藏主窗口
+
+                    // 创建并显示第二个窗口
+                    hwnd_User_Window = CreateWindow(
+                        _T("UserWindowClass"),
+                        _T("User Info"),
+                        WS_OVERLAPPEDWINDOW,
+                        CW_USEDEFAULT, CW_USEDEFAULT, 210, 170,
+                        NULL, NULL, hInst, NULL);
+                    ShowWindow(hwnd_User_Window, SW_SHOW);
+                    UpdateWindow(hwnd_User_Window);
+
+
+                    // MessageBox(NULL, "Already Login", "Error", MB_ICONINFORMATION | MB_OK);
                 }
             }
 
@@ -327,7 +354,7 @@ LRESULT CALLBACK Main_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 if (Login_Flag == 1) {
                     ShowWindow(hwnd_Main_Window, SW_HIDE);  // 隐藏主窗口
 
-                    // 创建并显示第二个窗口
+                    // 创建并显示服务窗口
                     hwnd_Service_Window = CreateWindow(
                         _T("ServiceWindowClass"),
                         _T("Service System"),
@@ -347,7 +374,7 @@ LRESULT CALLBACK Main_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 if (Auth_Flag == 1) {
                     ShowWindow(hwnd_Main_Window, SW_HIDE);  // 隐藏主窗口
 
-                    // 创建并显示第二个窗口
+                    // 创建并显示管理窗口
                     hwnd_Admin_Window = CreateWindow(
                         _T("AdminWindowClass"),
                         _T("Admin System"),
@@ -617,7 +644,7 @@ LRESULT CALLBACK Login_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
                 hwnd_Signup_Window = CreateWindow(
                     _T("SignupWindowClass"), _T("Sign Up"),
                     WS_OVERLAPPEDWINDOW,
-                    CW_USEDEFAULT, CW_USEDEFAULT, 300, 200,
+                    CW_USEDEFAULT, CW_USEDEFAULT, 210, 170,
                     NULL, NULL, hInst, NULL);
                 ShowWindow(hwnd_Signup_Window, SW_SHOW);
                 UpdateWindow(hwnd_Signup_Window);
@@ -761,6 +788,121 @@ LRESULT CALLBACK Signup_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
     return 0;
 }
 
+// 用户信息窗口过程函数
+LRESULT CALLBACK User_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+
+    switch (msg) {
+
+                case WM_CREATE: // 窗口创建消息
+                    printf("Login Window WM_CREATE\n");
+                
+                // 创建静态文本
+                HWND hwndLabel_Signup_Username = CreateWindow(
+                    _T("STATIC"),              // 控件类型：静态文本
+                    _T("USERNAME"),                    // 默认文本为空
+                    WS_CHILD | WS_VISIBLE,     // 样式：子窗口、可见
+                    10, 10, 100, 20,           // 位置和大小
+                    hwnd, (HMENU)1, hInst, NULL); // 父窗口和其他参数
+
+                // 创建静态文本
+                HWND hwndLabel_Signup_Password = CreateWindow(
+                    _T("STATIC"),              // 控件类型：静态文本
+                    _T("PASSWORD"),                    // 默认文本为空
+                    WS_CHILD | WS_VISIBLE,     // 样式：子窗口、可见
+                    10, 70, 100, 20,           // 位置和大小
+                    hwnd, (HMENU)2, hInst, NULL); // 父窗口和其他参数
+
+                // 创建编辑框
+                HWND hwndEdit_Signup_Username = CreateWindow(
+                    _T("EDIT"),                // 控件类型：编辑框
+                    _T(""),                    // 默认文本为空
+                    WS_CHILD | WS_VISIBLE | WS_BORDER, // 样式：子窗口、可见、带边框
+                    10, 40, 100, 20,           // 位置和大小
+                    hwnd, (HMENU)3, hInst, NULL); // 父窗口和其他参数
+
+                // 创建编辑框
+                HWND hwndEdit_Signup_Password = CreateWindow(
+                    _T("EDIT"),                // 控件类型：编辑框
+                    _T(""),                    // 默认文本为空
+                    WS_CHILD | WS_VISIBLE | WS_BORDER, // 样式：子窗口、可见、带边框
+                    10, 100, 100, 20,           // 位置和大小
+                    hwnd, (HMENU)4, hInst, NULL); // 父窗口和其他参数
+
+                // 创建按钮
+                HWND hwndButton_Signup = CreateWindow(
+                    _T("BUTTON"),              // 控件类型：按钮
+                    _T("SIGN UP"),                // 按钮文本
+                    WS_CHILD | WS_VISIBLE,     // 样式：子窗口、可见
+                    120, 20, 60, 30,           // 位置和大小
+                    hwnd, (HMENU)5, hInst, NULL); // 父窗口和其他参数
+
+            break;
+
+        case WM_COMMAND: // 命令消息
+                if (LOWORD(wParam) == 5) {    // 检查是哪个控件发出的消息
+
+                // 注册
+                TCHAR szText_username[100];  // 文本缓冲区
+                TCHAR szText_passwd[100];    // 文本缓冲区
+                GetWindowText(hwndEdit_Signup_Username, szText_username, 100); // 获取用户名
+                GetWindowText(hwndEdit_Signup_Password, szText_passwd, 100);   // 获取密码
+
+                char username[100];
+                char password[100];
+                ConvertTCharToChar(szText_username, username, 100); // 转换用户名
+                ConvertTCharToChar(szText_passwd, password, 100);   // 转换密码
+
+                if (username[0] != 0 && password[0] != 0) {
+
+                    char* UserInfoFilename = "UserInfo.json";
+                    char* jsonStr = readFileToString(UserInfoFilename); // 读取文件内容到字符串
+                    if (jsonStr != NULL) {
+                        printf("File content:\n%s\n", jsonStr);
+                    }
+                    else printf("Error reading user info file.\n");
+
+                    // 添加新用户
+                    char* updatedJsonStr = addUser(jsonStr, username, password, 0);
+                    if (updatedJsonStr != NULL) {
+                        printf("添加新用户后：\n");
+                        viewUser(updatedJsonStr);
+                        writeStringToFile(USER_INFO_DATABASE, updatedJsonStr);
+
+                        free(jsonStr);         // 释放内存
+                        free(updatedJsonStr);   // 释放内存
+
+                        // 返回登录窗口
+                        MessageBox(NULL, "OK to Sign Up \n ", "OK", MB_ICONINFORMATION | MB_OK);
+                        RefreshWindow(hwnd_Login_Window);
+                        ShowWindow(hwnd_Login_Window, SW_SHOW);  // 隐藏窗口
+                        DestroyWindow(hwnd);
+                    }
+                    else {  // 如果用户名重复
+                        printf("添加新用户失败。\n");
+                        MessageBox(NULL, "Error to Sign Up\nPlease try again\nUsernames May be Duplicated", "Error", MB_ICONINFORMATION | MB_OK);
+                    }
+                }
+                else { // 如果用户有一项未输入
+                    MessageBox(NULL, "Please enter username and password", "Error", MB_ICONINFORMATION | MB_OK);
+                }
+
+            }
+
+            break;
+
+        case WM_CLOSE:
+            RefreshWindow(hwnd_Login_Window);
+            ShowWindow(hwnd_Login_Window, SW_SHOW);  // 隐藏窗口
+            DestroyWindow(hwnd);
+            break;
+        case WM_DESTROY:
+            return 0;
+        default:
+            return DefWindowProc(hwnd, msg, wParam, lParam);
+    }
+    return 0;
+}
+
 
 // 服务窗口过程函数
 LRESULT CALLBACK Service_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
@@ -769,22 +911,6 @@ LRESULT CALLBACK Service_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
 
                 case WM_CREATE: // 窗口创建消息
                 printf("Service Window WM_CREATE\n");
-                
-                // 创建静态文本
-                hwndLabel_Login_Username = CreateWindow(
-                    _T("STATIC"),              // 控件类型：静态文本
-                    _T("USERNAME"),                    // 默认文本为空
-                    WS_CHILD | WS_VISIBLE,     // 样式：子窗口、可见
-                    10, 10, 100, 20,           // 位置和大小
-                    hwnd, (HMENU)ID_LABEL_LOGIN_USERNAME, hInst, NULL); // 父窗口和其他参数
-
-                // 创建静态文本
-                hwndLabel_Login_Password = CreateWindow(
-                    _T("STATIC"),              // 控件类型：静态文本
-                    _T("PASSWORD"),                    // 默认文本为空
-                    WS_CHILD | WS_VISIBLE,     // 样式：子窗口、可见
-                    10, 70, 100, 20,           // 位置和大小
-                    hwnd, (HMENU)ID_LABEL_LOGIN_PASSWORD, hInst, NULL); // 父窗口和其他参数
 
                 // 创建编辑框
                 hwndEdit_Login_Username = CreateWindow(

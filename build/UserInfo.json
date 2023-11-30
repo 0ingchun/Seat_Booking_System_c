@@ -49,5 +49,15 @@
 			"passwd":	"kong",
 			"auth":	0,
 			"balance":	0
+		}, {
+			"username":	"aaa",
+			"passwd":	"bbb",
+			"auth":	0,
+			"balance":	0
+		}, {
+			"username":	"ba",
+			"passwd":	"ba",
+			"auth":	0,
+			"balance":	0
 		}]
 }
