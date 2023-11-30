@@ -1,5 +1,5 @@
 typedef struct {
-    char logtime[64];    // 日志记录操作时间 年/月/日/时/分/秒/毫秒
+    char logtime[64];    // 日志记录操作时间 年/月/日/ 时:分:秒:毫秒
     char operate[64];    // 操作者
     char action[64];    // 操作类型：appoint / cancel
 

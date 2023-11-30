@@ -21,6 +21,28 @@ typedef struct {
 } LogEntry;
 
 
+
+// 平替strptime函数
+int my_strptime(const char *s, const char *format, struct tm *tm) {
+    // 目前仅支持 "%Y/%m/%d %H:%M:%S" 这种格式
+    if (strcmp(format, "%Y/%m/%d %H:%M:%S") == 0) {
+        return sscanf(s, "%d/%d/%d %d:%d:%d", 
+                        &tm->tm_year, &tm->tm_mon, &tm->tm_mday, 
+                        &tm->tm_hour, &tm->tm_min, &tm->tm_sec) == 6;
+    } else {
+        // 如果需要，可以添加对其他格式的支持
+        return 0; // 返回0表示格式不支持或解析失败
+    }
+}
+/*
+此自定义函数my_strptime仅支持一种日期时间格式"%Y/%m/%d %H:%M:%S"。
+使用sscanf从字符串中解析年、月、日、小时、分钟和秒，然后填充到struct tm结构中。
+您可以根据需要扩展此函数以支持其他格式。
+在使用此函数之后，确保调整年份和月份的值，因为struct tm的tm_year字段从1900年开始计算，tm_mon字段从0开始计算。
+通过替换项目中所有strptime的调用为my_strptime，您可以在Windows平台上实现类似的功能。
+*/
+
+
 // 写入日志
 void write_log(const char* filename, const LogEntry* entry) {
     FILE *file = fopen(filename, "a");
@@ -144,7 +166,8 @@ LogEntry* get_booked_time_slots(const char* filename, const char* seat_type, con
 // 辅助函数：判断时间是否已过期
 int is_time_expired(const char* time_str) {
     struct tm time_info = {0};
-    strptime(time_str, "%Y/%m/%d %H:%M:%S", &time_info);
+    // strptime(time_str, "%Y/%m/%d %H:%M:%S", &time_info);
+    my_strptime(time_str, "%Y/%m/%d %H:%M:%S", &time_info);
     time_t time_val = mktime(&time_info);
     time_t now;
     time(&now);
@@ -248,7 +271,8 @@ LogEntry* get_valid_booked_seats(const char* filename, const char* subscriber, i
 
     for (int i = 0; i < *count; i++) {
         struct tm end_time = {0};
-        strptime(entries[i].period_time_end, "%Y/%m/%d %H:%M:%S", &end_time);
+        // strptime(entries[i].period_time_end, "%Y/%m/%d %H:%M:%S", &end_time);
+        my_strptime(entries[i].period_time_end, "%Y/%m/%d %H:%M:%S", &end_time);
 
         time_t end_time_t = mktime(&end_time);
         if (strcmp(entries[i].subscriber, subscriber) == 0 && strcmp(entries[i].action, "appoint") == 0 && difftime(end_time_t, now) > 0) {
@@ -280,7 +304,8 @@ LogEntry* get_valid_cancelled_seats(const char* filename, const char* subscriber
 
     for (int i = 0; i < *count; i++) {
         struct tm end_time = {0};
-        strptime(entries[i].period_time_end, "%Y/%m/%d %H:%M:%S", &end_time);
+        // strptime(entries[i].period_time_end, "%Y/%m/%d %H:%M:%S", &end_time);
+        my_strptime(entries[i].period_time_end, "%Y/%m/%d %H:%M:%S", &end_time);
 
         time_t end_time_t = mktime(&end_time);
         if (strcmp(entries[i].subscriber, subscriber) == 0 && strcmp(entries[i].action, "cancel") == 0 && difftime(end_time_t, now) > 0) {
@@ -346,6 +371,20 @@ LogEntry* get_log_by_order_id(const char* filename, const char* order_id, int* c
 
 // 库示例
 // int main() {
+
+
+//     const char *datetime_str = "2023/03/15 12:30:45";
+//     struct tm time_info = {0};
+
+//     if (my_strptime(datetime_str, "%Y/%m/%d %H:%M:%S", &time_info)) {
+//         time_info.tm_year -= 1900; // 年份从1900年开始
+//         time_info.tm_mon -= 1;     // 月份从0开始
+
+//         time_t time_val = mktime(&time_info); // 转换为time_t
+//         // 使用 time_val ...
+//     } else {
+//         printf("日期时间解析失败。\n");
+//     }
 
 
 //     int countBooked, countCancelled;
