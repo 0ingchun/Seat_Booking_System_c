@@ -26,6 +26,7 @@
         "stdio.h": "c",
         "seat_info.h": "c",
         "cjson.h": "c",
-        "main.h": "c"
+        "main.h": "c",
+        "time.h": "c"
     }
 }

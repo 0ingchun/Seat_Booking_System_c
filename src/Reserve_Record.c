@@ -4,7 +4,7 @@
 #include <time.h>
 #include <windows.h>
 
-#include "main.h"
+#include "Reserve_Record.h"
 
 typedef struct {
     char logtime[64];
@@ -66,6 +66,39 @@ void write_log(const char* filename, const LogEntry* entry) {
     fclose(file);
 }
 
+// 写入日志-实时时间
+void write_log_realtime(const char* filename, const LogEntry* entry) {
+    FILE *file = fopen(filename, "a");
+    if (file == NULL) {
+        perror("Error opening file");
+        return;
+    }
+
+    // 获取当前时间并格式化
+    time_t now;
+    time(&now);
+    struct tm *tm_now = localtime(&now);
+    char formatted_time[64];
+    strftime(formatted_time, sizeof(formatted_time), "%Y/%m/%d %H:%M:%S", tm_now);
+
+    // 写入CSV格式，使用自动填写的当前时间
+    fprintf(file, "%s,%s,%s,%u,%s,%s,%s,%s,%s,%u,%s\n",
+        formatted_time,
+        entry->operate,
+        entry->action,
+        entry->id,
+        entry->seat_type,
+        entry->subscriber,
+        entry->period_date,
+        entry->period_time_start,
+        entry->period_time_end,
+        entry->amount,
+        entry->order_id);
+
+    fclose(file);
+}
+
+
 // 读取日志
 LogEntry* read_logs(const char* filename, int* count) {
     FILE *file = fopen(filename, "r");
@@ -101,11 +134,12 @@ LogEntry* read_logs(const char* filename, int* count) {
     return entries;
 }
 
-// 删除日志
-void delete_log(const char* filename, unsigned int id) {
+// 删除日志-按预订日期
+void delete_entries_by_date(const char* filename, const char* target_date) {
     int count = 0;
     LogEntry* entries = read_logs(filename, &count);
     if (entries == NULL) {
+        printf("读取失败或文件为空\n");
         return; // 读取失败或文件为空
     }
 
@@ -113,11 +147,13 @@ void delete_log(const char* filename, unsigned int id) {
     if (file == NULL) {
         perror("Error opening file");
         free(entries);
+        printf("Error opening file\n");
         return;
     }
 
     for (int i = 0; i < count; i++) {
-        if (entries[i].id != id) {
+        if (strncmp(entries[i].period_date, target_date, strlen(target_date)) != 0) {
+            // 将非目标日期的记录写回文件
             fprintf(file, "%s,%s,%s,%u,%s,%s,%s,%s,%s,%u,%s\n",
                 entries[i].logtime,
                 entries[i].operate,
@@ -135,6 +171,8 @@ void delete_log(const char* filename, unsigned int id) {
 
     fclose(file);
     free(entries);
+    printf("OK to Delete\n");
+    return;
 }
 
 
@@ -369,11 +407,56 @@ LogEntry* get_log_by_order_id(const char* filename, const char* order_id, int* c
 }
 
 
-// 库示例
+// // 库示例
 // int main() {
 
+//     LogEntry entry;
+//     // 填充日志条目数据
+//     strcpy(entry.logtime, "2023/12/01 10:00:00");
+//     strcpy(entry.operate, "系统");
+//     strcpy(entry.action, "appoint");
+//     entry.id = 1;
+//     strcpy(entry.seat_type, "普通座");
+//     strcpy(entry.subscriber, "张三");
+//     strcpy(entry.period_date, "2023/12/04");
+//     strcpy(entry.period_time_start, "2023/12/01 10:00:00");
+//     strcpy(entry.period_time_end, "2023/12/01 12:00:00");
+//     entry.amount = 100;
+//     strcpy(entry.order_id, "order127");
+//     // 写入日志
+//     write_log_realtime("log.csv", &entry);
 
-//     const char *datetime_str = "2023/03/15 12:30:45";
+
+//     // 读取所有日志
+//     int count0;
+//     LogEntry* entries = read_logs("log.csv", &count0);
+//     if (entries != NULL) {
+//         for (int i = 0; i < count0; i++) {
+//             printf("Log Entry %d: %s, %s, %s, %u, %s, %s, %s, %s, %s, %u, %s\n",
+//                     i + 1,
+//                     entries[i].logtime,
+//                     entries[i].operate,
+//                     entries[i].action,
+//                     entries[i].id,
+//                     entries[i].seat_type,
+//                     entries[i].subscriber,
+//                     entries[i].period_date,
+//                     entries[i].period_time_start,
+//                     entries[i].period_time_end,
+//                     entries[i].amount,
+//                     entries[i].order_id);
+//         }
+//         free(entries); // 释放内存
+//     } else {
+//         printf("无法读取日志或日志文件为空。\n");
+//     }
+
+
+//     // 删除指定日期的所有日志条目
+//     delete_entries_by_date("log.csv", "2023/12/04");
+
+
+//     const char *datetime_str = "2023/12/1 12:30:45";
 //     struct tm time_info = {0};
 
 //     if (my_strptime(datetime_str, "%Y/%m/%d %H:%M:%S", &time_info)) {
@@ -392,7 +475,7 @@ LogEntry* get_log_by_order_id(const char* filename, const char* order_id, int* c
 //     LogEntry* cancelledSeats;
 
 //     // 获取所有 "张三" 预订的席位
-//     bookedSeats = get_booked_seats("log.csv", "张三", &countBooked);
+//     bookedSeats = get_booked_seats("log.csv", "ZhangSan", &countBooked);
 //     if (bookedSeats != NULL) {
 //         printf("张三已预订的席位数量: %d\n", countBooked);
 //         for (int i = 0; i < countBooked; i++) {
@@ -404,7 +487,7 @@ LogEntry* get_log_by_order_id(const char* filename, const char* order_id, int* c
 //     }
 
 //     // 获取所有 "张三" 取消预订的席位
-//     cancelledSeats = get_cancelled_seats("log.csv", "张三", &countCancelled);
+//     cancelledSeats = get_cancelled_seats("log.csv", "ZhangSan", &countCancelled);
 //     if (cancelledSeats != NULL) {
 //         printf("张三已取消预订的席位数量: %d\n", countCancelled);
 //         for (int i = 0; i < countCancelled; i++) {
@@ -421,7 +504,7 @@ LogEntry* get_log_by_order_id(const char* filename, const char* order_id, int* c
 //     LogEntry* validCancelledSeats;
 
 //     // 获取所有 "张三" 未过期的已预订的席位
-//     validBookedSeats = get_valid_booked_seats("log.csv", "张三", &countValidBooked);
+//     validBookedSeats = get_valid_booked_seats("log.csv", "ZhangSan", &countValidBooked);
 //     if (validBookedSeats != NULL) {
 //         printf("张三未过期的已预订席位数量: %d\n", countValidBooked);
 //         for (int i = 0; i < countValidBooked; i++) {
@@ -433,7 +516,7 @@ LogEntry* get_log_by_order_id(const char* filename, const char* order_id, int* c
 //     }
 
 //     // 获取所有 "张三" 未过期的已取消预订的席位
-//     validCancelledSeats = get_valid_cancelled_seats("log.csv", "张三", &countValidCancelled);
+//     validCancelledSeats = get_valid_cancelled_seats("log.csv", "ZhangSan", &countValidCancelled);
 //     if (validCancelledSeats != NULL) {
 //         printf("张三未过期的已取消预订席位数量: %d\n", countValidCancelled);
 //         for (int i = 0; i < countValidCancelled; i++) {
@@ -446,17 +529,18 @@ LogEntry* get_log_by_order_id(const char* filename, const char* order_id, int* c
 
 
 //     int count1;
-//     LogEntry* bookedSlots = get_booked_time_slots("log.csv", "普通座", "2023/11/30", &count1);
+//     LogEntry* bookedSlots = get_booked_time_slots("log.csv", "Normal", "2023/12/1", &count1);
 
 //     // ... 输出或处理 bookedSlots 中的数据
 //     if (bookedSlots) {
 //         for (int i = 0; i < count1; i++) {
 //             printf("已预订时间段：%s - %s\n", bookedSlots[i].period_time_start, bookedSlots[i].period_time_end);
 //         }
+//     }
 //     free(bookedSlots); // 释放内存
 
 //     int count2;
-//     LogEntry* unbookedSlots = get_unbooked_time_slots("log.csv", "普通座", "2023/11/30", &count2);
+//     LogEntry* unbookedSlots = get_unbooked_time_slots("log.csv", "Normal", "2023/12/1", &count2);
 
 //     if (unbookedSlots) {
 //         for (int i = 0; i < count2; i++) {
@@ -471,12 +555,12 @@ LogEntry* get_log_by_order_id(const char* filename, const char* order_id, int* c
 //     int totalBookings;
 //     unsigned int totalRevenue;
 
-//     count_bookings_and_revenue("log.csv", "2023/11/30", &totalBookings, &totalRevenue);
-//     printf("2023年11月30日的预订席位总数: %d, 总收入: %u\n", totalBookings, totalRevenue);
+//     count_bookings_and_revenue("log.csv", "2023/12/1", &totalBookings, &totalRevenue);
+//     printf("2023年12月1日的预订席位总数: %d, 总收入: %u\n", totalBookings, totalRevenue);
 
 
 //     int count;
-//     LogEntry* logEntry = get_log_by_order_id("log.csv", "订单编号", &count);
+//     LogEntry* logEntry = get_log_by_order_id("log.csv", "order123", &count);
 
 //     if (logEntry != NULL && count > 0) {
 //         printf("订单编号: %s, 预订者: %s, 预订金额: %u\n", logEntry->order_id, logEntry->subscriber, logEntry->amount);
