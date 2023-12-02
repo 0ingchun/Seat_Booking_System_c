@@ -6,19 +6,19 @@
 
 #include "Reserve_Record.h"
 
-typedef struct {
-    char logtime[64];
-    char operate[64];
-    char action[64];
-    unsigned int id;
-    char seat_type[64];
-    char subscriber[64];
-    char period_date[64];
-    char period_time_start[64];
-    char period_time_end[64];
-    unsigned int amount;
-    char order_id[64];
-} LogEntry;
+// typedef struct {
+//     char logtime[64];
+//     char operate[64];
+//     char action[64];
+//     unsigned int id;
+//     char seat_type[64];
+//     char subscriber[64];
+//     char period_date[64];
+//     char period_time_start[64];
+//     char period_time_end[64];
+//     unsigned int amount;
+//     char order_id[64];
+// } LogEntry;
 
 
 
@@ -96,6 +96,71 @@ void write_log_realtime(const char* filename, const LogEntry* entry) {
         entry->order_id);
 
     fclose(file);
+}
+
+
+// 检查时间冲突辅助函数
+int is_time_conflict(const LogEntry* entries, int count, const LogEntry* new_entry) {
+    for (int i = 0; i < count; i++) {
+        if (entries[i].id == new_entry->id && strcmp(entries[i].action, "cancel") != 0) {
+            // 检查时间冲突
+            if (strcmp(entries[i].period_date, new_entry->period_date) == 0 &&
+                strcmp(entries[i].period_time_end, new_entry->period_time_start) > 0 &&
+                strcmp(entries[i].period_time_start, new_entry->period_time_end) < 0) {
+                return 1; // 发现时间冲突
+            }
+        }
+    }
+    return 0; // 没有冲突
+}
+
+
+// 写入日志-实时时间-检查冲突
+void write_log_realtime_conflict(const char* filename, const LogEntry* entry) {
+    // 首先检查是否有时间冲突
+    int count = 0;
+    LogEntry* entries = read_logs(filename, &count);
+    if (entries == NULL) {
+        printf("读取日志文件失败或文件为空。\n");
+        return;
+    }
+
+    if (is_time_conflict(entries, count, entry)) {
+        printf("时间冲突，无法预订。\n");
+        free(entries);
+        return;
+    }
+
+    // 没有冲突时，写入日志
+    FILE *file = fopen(filename, "a");
+    if (file == NULL) {
+        perror("Error opening file");
+        free(entries);
+        return;
+    }
+
+    // 获取当前时间并格式化
+    time_t now;
+    time(&now);
+    struct tm *tm_now = localtime(&now);
+    char formatted_time[64];
+    strftime(formatted_time, sizeof(formatted_time), "%Y/%m/%d %H:%M:%S", tm_now);
+
+    fprintf(file, "%s,%s,%s,%u,%s,%s,%s,%s,%s,%u,%s\n",
+            formatted_time,
+            entry->operate,
+            entry->action,
+            entry->id,
+            entry->seat_type,
+            entry->subscriber,
+            entry->period_date,
+            entry->period_time_start,
+            entry->period_time_end,
+            entry->amount,
+            entry->order_id);
+
+    fclose(file);
+    free(entries);
 }
 
 

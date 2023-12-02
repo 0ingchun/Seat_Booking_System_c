@@ -1,3 +1,6 @@
+#ifndef LOGIN_USER__H
+#define LOGIN_USER__H
+
 typedef struct {
     char username[100];
     char passwd[100];
@@ -19,3 +22,4 @@ char* addUser(const char* jsonStr, const char* username, const char* passwd, sho
 
 char* deleteUser(const char* jsonStr, const char* username);
 
+#endif

@@ -1,3 +1,6 @@
+#ifndef FILE_MANAGE__H
+#define FILE_MANAGE__H
+
 // #include <windows.h>
 
 char* readFileToString(const char* filename);
@@ -22,3 +25,4 @@ int moveFile(const char* originalFilename, const char* newDirectory);
 
 // HANDLE openFileAndGetHandle(const char* filename);
 
+#endif

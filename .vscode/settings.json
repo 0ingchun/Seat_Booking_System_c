@@ -27,6 +27,7 @@
         "seat_info.h": "c",
         "cjson.h": "c",
         "main.h": "c",
-        "time.h": "c"
+        "time.h": "c",
+        "reserve_record.h": "c"
     }
 }

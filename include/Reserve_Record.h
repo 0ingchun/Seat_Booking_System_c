@@ -1,3 +1,6 @@
+#ifndef RESERVE_RECORD_H
+#define RESERVE_RECORD_H
+
 typedef struct {
     char logtime[64];    // 日志记录操作时间 年/月/日/ 时:分:秒:毫秒
     char operate[64];    // 操作者
@@ -15,6 +18,58 @@ typedef struct {
 
 } Reserve_Record_t;
 
+
+// LogEntry 结构体定义
+typedef struct {
+    char logtime[64];
+    char operate[64];
+    char action[64];
+
+    unsigned int id;
+    char seat_type[64];
+    char subscriber[64];
+    char period_date[64];
+    char period_time_start[64];
+    char period_time_end[64];
+
+    unsigned int amount;
+    char order_id[64];
+} LogEntry;
+
+// 函数原型声明
+int my_strptime(const char *s, const char *format, struct tm *tm);
+
+void write_log(const char* filename, const LogEntry* entry);
+
+void write_log_realtime(const char* filename, const LogEntry* entry);
+
+int is_time_conflict(const LogEntry* entries, int count, const LogEntry* new_entry);
+
+void write_log_realtime_conflict(const char* filename, const LogEntry* entry);
+
+LogEntry* read_logs(const char* filename, int* count);
+
+void delete_entries_by_date(const char* filename, const char* target_date);
+
+LogEntry* get_booked_time_slots(const char* filename, const char* seat_type, const char* date, int* count);
+
+int is_time_expired(const char* time_str);
+
+LogEntry* get_unbooked_time_slots(const char* filename, const char* seat_type, const char* date, int* count);
+
+LogEntry* get_booked_seats(const char* filename, const char* subscriber, int* count);
+
+LogEntry* get_cancelled_seats(const char* filename, const char* subscriber, int* count);
+
+LogEntry* get_valid_booked_seats(const char* filename, const char* subscriber, int* count);
+
+LogEntry* get_valid_cancelled_seats(const char* filename, const char* subscriber, int* count);
+
+void count_bookings_and_revenue(const char* filename, const char* date, int* totalBookings, unsigned int* totalRevenue);
+
+LogEntry* get_log_by_order_id(const char* filename, const char* order_id, int* count);
+
+#endif
 
 // 我的座位预订系统日志记录功能需要记录以下这些元素
 //     char logtime[64];    // 日志记录操作时间 年/月/日/时/分/秒/毫秒

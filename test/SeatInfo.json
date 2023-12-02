@@ -1,1 +1,1 @@
-{"seats":[{"name":"VIP","id":101,"amount":1000,"subscriber":"Alice","datetime":"2023-04-01 09:00:00"},{"name":"VIP","id":102,"amount":500,"subscriber":"","datetime":"2023-04-01 10:00:00"},{"name":"Economy","id":103,"amount":300,"subscriber":"Alice","datetime":"2023-04-01 11:00:00"}]}
+{"seats":[{"type":"VIP","id":101,"amount":1000},{"type":"VIP","id":102,"amount":500},{"type":"Economy","id":103,"amount":300}]}
