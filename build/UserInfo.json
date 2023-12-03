@@ -59,5 +59,10 @@
 			"passwd":	"ba",
 			"auth":	0,
 			"balance":	0
+		}, {
+			"username":	"ykj",
+			"passwd":	"son",
+			"auth":	0,
+			"balance":	0
 		}]
 }

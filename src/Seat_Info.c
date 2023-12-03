@@ -112,48 +112,93 @@ char* updateSeat(const char* jsonStr, const char* type, unsigned int id, unsigne
 
 
 
-// 查看座位数量-根据类型
-void countSeatsByType(const char* jsonStr, const char* type) {
+// 查看座位数量-根据类型，并返回座位ID数组
+int countSeatsByType(const char* jsonStr, const char* type, int** seatIds) {
     cJSON* jsonObj = cJSON_Parse(jsonStr);
     if (jsonObj == NULL) {
         printf("Failed to parse JSON string\n");
-        return;
+        return 0;
     }
 
     cJSON* seatsArray = cJSON_GetObjectItem(jsonObj, "seats");
     if (!cJSON_IsArray(seatsArray)) {
         printf("Seats field is not an array\n");
         cJSON_Delete(jsonObj);
-        return;
+        return 0;
     }
 
     int totalSeats = 0;
-    // int bookedSeats = 0;
-    // int availableSeats = 0;
+    *seatIds = NULL; // 初始化为NULL
 
     cJSON* seatObj;
     cJSON_ArrayForEach(seatObj, seatsArray) {
         cJSON* typeObj = cJSON_GetObjectItem(seatObj, "type");
-
         if (cJSON_IsString(typeObj) && strcmp(typeObj->valuestring, type) == 0) {
-            printf("  Type: %s\n", cJSON_IsString(typeObj) ? typeObj->valuestring : "null");
-            // printf("  Datetime: %s\n", cJSON_IsString(datetimeObj) ? datetimeObj->valuestring : "null");
-            printf("\n");
-
             totalSeats++;
-            // if (cJSON_IsString(subscriberObj) && strlen(subscriberObj->valuestring) > 0) {
-            //     bookedSeats++;
-            // } else {
-            //     availableSeats++;
-            // }
         }
     }
 
-    printf("Total seats of type '%s': %d\n", type, totalSeats);
-    // printf("Booked seats of type '%s': %d\n", type, bookedSeats);
-    // printf("Available seats of type '%s': %d\n", type, availableSeats);
+    if (totalSeats > 0) {
+        *seatIds = malloc(totalSeats * sizeof(int)); // 分配内存
+        int index = 0;
+
+        cJSON_ArrayForEach(seatObj, seatsArray) {
+            cJSON* typeObj = cJSON_GetObjectItem(seatObj, "type");
+            cJSON* idObj = cJSON_GetObjectItem(seatObj, "id");
+            if (cJSON_IsString(typeObj) && strcmp(typeObj->valuestring, type) == 0) {
+                (*seatIds)[index++] = cJSON_IsNumber(idObj) ? idObj->valueint : -1;
+            }
+        }
+    }
 
     cJSON_Delete(jsonObj);
+    return totalSeats; // 返回找到的座位数量
+}
+
+
+// 功能：从JSON中提取所有不同的座位类型
+// 参数：jsonStr - JSON字符串，types - 指向字符串数组的指针，用于存储结果
+// 返回：找到的不同座位类型的数量
+int getSeatTypes(const char* jsonStr, char*** types) {
+    cJSON* jsonObj = cJSON_Parse(jsonStr);
+    if (jsonObj == NULL) {
+        printf("Failed to parse JSON string\n");
+        return 0;
+    }
+
+    cJSON* seatsArray = cJSON_GetObjectItem(jsonObj, "seats");
+    if (!cJSON_IsArray(seatsArray)) {
+        printf("Seats field is not an array\n");
+        cJSON_Delete(jsonObj);
+        return 0;
+    }
+
+    int typesCount = 0;
+    *types = NULL; // 初始化为NULL
+    cJSON* seatObj;
+    cJSON_ArrayForEach(seatObj, seatsArray) {
+        cJSON* typeObj = cJSON_GetObjectItem(seatObj, "type");
+        if (cJSON_IsString(typeObj)) {
+            // 检查此类型是否已存在于数组中
+            int exists = 0;
+            for (int i = 0; i < typesCount; i++) {
+                if (strcmp((*types)[i], typeObj->valuestring) == 0) {
+                    exists = 1;
+                    break;
+                }
+            }
+
+            // 如果此类型不存在于数组中，则添加它
+            if (!exists) {
+                *types = realloc(*types, (typesCount + 1) * sizeof(char*));
+                (*types)[typesCount] = strdup(typeObj->valuestring);
+                typesCount++;
+            }
+        }
+    }
+
+    cJSON_Delete(jsonObj);
+    return typesCount; // 返回找到的不同类型的数量
 }
 
 
@@ -216,7 +261,7 @@ char* deleteSeat(const char* jsonStr, unsigned int id) {
 }
 
 
-// 库示例
+// // // 库示例
 // int main() {
 //     const char* jsonStr = "{\"seats\":[{\"type\":\"VIP\",\"id\":101,\"amount\":1000,\"subscriber\":\"Alice\",\"datetime\":\"2023-04-01 09:00:00\"},{\"type\":\"VIP\",\"id\":102,\"amount\":500,\"subscriber\":\"\",\"datetime\":\"2023-04-01 10:00:00\"},{\"type\":\"Economy\",\"id\":103,\"amount\":300,\"subscriber\":\"Alice\",\"datetime\":\"2023-04-01 11:00:00\"}]}";
 
@@ -233,27 +278,48 @@ char* deleteSeat(const char* jsonStr, unsigned int id) {
 //         printf("座位更新失败。\n");
 //     }
 
+
 //     // findSeatsBySubscriber(jsonStr, "Alice");
 //     // printf("\n");
 
-//     countSeatsByType(jsonStr, "VIP");
+//     // 统计类型数量
+//     int* seatIds;
+//     int count = countSeatsByType(jsonStr, "VIP", &seatIds);
+//     printf("Found %d seats of type 'VIP'\n", count);
+//     for (int i = 0; i < count; i++) {
+//         printf("Seat ID: %d\n", seatIds[i]);
+//     }
+//     free(seatIds); // 释放内存
 //     printf("\n");
 
+
+//     // 获取所有座位类型
+//     char** seatTypes;
+//     int count2 = getSeatTypes(jsonStr, &seatTypes);
+//     printf("Found %d different seat types\n", count2);
+//     for (int i = 0; i < count2; i++) {
+//         printf("Seat Type: %s\n", seatTypes[i]);
+//         free(seatTypes[i]); // 释放每个字符串
+//     }
+//     free(seatTypes); // 释放字符串数组
+
+
 //     // 添加新座位
-//     char* updatedJsonStr = addSeat(jsonStr, "Regular", 104, 500);
-//     if (updatedJsonStr != NULL) {
+//     char* updatedJsonStr2 = addSeat(jsonStr, "Regular", 104, 500);
+//     if (updatedJsonStr2 != NULL) {
 //         printf("添加新座位后：\n");
-//         viewSeat(updatedJsonStr);
-//         free(updatedJsonStr);
+//         viewSeat(updatedJsonStr2);
+//         free(updatedJsonStr2);
 //     }
 //     printf("\n");
 
+
 //     // 删除座位
-//     char* deletedJsonStr = deleteSeat(jsonStr, 101);
-//     if (deletedJsonStr != NULL) {
+//     char* deletedJsonStr3 = deleteSeat(jsonStr, 101);
+//     if (deletedJsonStr3 != NULL) {
 //         printf("删除座位后：\n");
-//         viewSeat(deletedJsonStr);
-//         free(deletedJsonStr);
+//         viewSeat(deletedJsonStr3);
+//         free(deletedJsonStr3);
 //     }
 
 //     system("pause");

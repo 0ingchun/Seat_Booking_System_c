@@ -24,6 +24,12 @@ file(
 
 add_executable(${CMAKE_PROJECT_NAME} ${SRC_FILES})
 
+# 添加源文件到可执行文件
+# add_executable(MyProject main.cpp other_source_files.cpp)
+
+# 链接comctl32库
+target_link_libraries(${CMAKE_PROJECT_NAME} comctl32)
+
 # add_executable(zckj_ad_softsys ./src/main.cpp)
 
 # target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE imgui::imgui)

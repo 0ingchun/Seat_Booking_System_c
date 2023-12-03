@@ -16,7 +16,9 @@ char* updateSeat(const char* jsonStr, const char* type, unsigned int id, unsigne
 
 // void findSeatsBySubscriber(const char* jsonStr, const char* subscriber);
 
-void countSeatsByType(const char* jsonStr, const char* type);
+int countSeatsByType(const char* jsonStr, const char* type, int** seatIds);
+
+int getSeatTypes(const char* jsonStr, char*** types);
 
 char* addSeat(const char* jsonStr, const char* type, unsigned int id, unsigned int amount);
 

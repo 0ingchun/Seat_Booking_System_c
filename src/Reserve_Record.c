@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
+// #include <time.h>
 #include <windows.h>
 
 #include "Reserve_Record.h"
@@ -238,6 +238,31 @@ void delete_entries_by_date(const char* filename, const char* target_date) {
     free(entries);
     printf("OK to Delete\n");
     return;
+}
+
+
+// 根据ID和座位类型查找已被预订席位
+LogEntry* get_booked_id_slots(const char* filename, const char* seat_type, unsigned int id, int* count) {
+    int total = 0;
+    LogEntry* entries = read_logs(filename, count);
+    LogEntry* bookedEntries = NULL;
+
+    if (entries == NULL) {
+        *count = 0;
+        return NULL; // 文件读取失败或文件为空
+    }
+
+    for (int i = 0; i < *count; i++) {
+        if (strcmp(entries[i].seat_type, seat_type) == 0 && entries[i].id == id && strcmp(entries[i].action, "appoint") == 0) {
+            bookedEntries = realloc(bookedEntries, sizeof(LogEntry) * (total + 1));
+            bookedEntries[total] = entries[i];
+            total++;
+        }
+    }
+
+    free(entries);
+    *count = total;
+    return bookedEntries;
 }
 
 
@@ -595,7 +620,6 @@ LogEntry* get_log_by_order_id(const char* filename, const char* order_id, int* c
 
 //     int count1;
 //     LogEntry* bookedSlots = get_booked_time_slots("log.csv", "Normal", "2023/12/1", &count1);
-
 //     // ... 输出或处理 bookedSlots 中的数据
 //     if (bookedSlots) {
 //         for (int i = 0; i < count1; i++) {
@@ -603,6 +627,7 @@ LogEntry* get_log_by_order_id(const char* filename, const char* order_id, int* c
 //         }
 //     }
 //     free(bookedSlots); // 释放内存
+
 
 //     int count2;
 //     LogEntry* unbookedSlots = get_unbooked_time_slots("log.csv", "Normal", "2023/12/1", &count2);

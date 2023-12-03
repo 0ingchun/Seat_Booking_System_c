@@ -1,6 +1,8 @@
 #ifndef RESERVE_RECORD_H
 #define RESERVE_RECORD_H
 
+#include <time.h>
+
 typedef struct {
     char logtime[64];    // 日志记录操作时间 年/月/日/ 时:分:秒:毫秒
     char operate[64];    // 操作者
@@ -50,6 +52,8 @@ void write_log_realtime_conflict(const char* filename, const LogEntry* entry);
 LogEntry* read_logs(const char* filename, int* count);
 
 void delete_entries_by_date(const char* filename, const char* target_date);
+
+LogEntry* get_booked_id_slots(const char* filename, const char* seat_type, unsigned int id, int* count);
 
 LogEntry* get_booked_time_slots(const char* filename, const char* seat_type, const char* date, int* count);
 

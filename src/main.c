@@ -1,15 +1,22 @@
 #include <windows.h>  // 引入 Windows API 的头文件
 #include <tchar.h>    // 引入 Unicode 和 ANSI 兼容的函数宏
 #include <stdio.h>
+#include <commctrl.h>
+#pragma comment(lib, "comctl32.lib")
 
+#include "User_Lib.h"
 #include "File_Manage.h"
 #include "Login_User.h"
 #include "Seat_Info.h"
+#include "Reserve_Record.h"
+
 #include "cJSON.h"
 #include "main.h"
 
+
 #define USER_INFO_DATABASE "UserInfo.json"
 #define SEAT_INFO_DATABASE "SeatInfo.json"
+#define RESERVE_RECORD_LOG "ReserveLog.csv"
 
 Login_User_t Login_User;
 
@@ -359,7 +366,7 @@ LRESULT CALLBACK Main_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                         _T("ServiceWindowClass"),
                         _T("Service System"),
                         WS_OVERLAPPEDWINDOW,
-                        CW_USEDEFAULT, CW_USEDEFAULT, 300, 200,
+                        CW_USEDEFAULT, CW_USEDEFAULT, 650, 600,
                         NULL, NULL, hInst, NULL);
                     ShowWindow(hwnd_Service_Window, SW_SHOW);
                     UpdateWindow(hwnd_Service_Window);
@@ -818,43 +825,285 @@ LRESULT CALLBACK User_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 }
 
 
+// 添加行，到列表视图,服务窗口辅助函数
+void AddItemsToListView(HWND hwndListView, LogEntry* logEntry_p) {
+    LVITEM lvItem;
+    lvItem.mask = LVIF_TEXT;
+    ListView_DeleteAllItems(hwndListView);   // 清空旧列表显示
+    lvItem.iSubItem = 0;    // 这句千万别放循环里
+
+    if (logEntry_p) {
+        for (int i = 0; i < sizeof(*logEntry_p) / sizeof(LogEntry); i++) {
+            lvItem.iItem = i;
+            char pszTextStr[25];
+            sprintf(pszTextStr, "[%d] ", i);
+            strcat(pszTextStr, logEntry_p->period_date);
+            lvItem.pszText = pszTextStr;
+            ListView_InsertItem(hwndListView, &lvItem);
+            ListView_SetItemText(hwndListView, i, 1, logEntry_p->period_date);
+            ListView_SetItemText(hwndListView, i, 2, logEntry_p->period_time_end);
+
+            printf("%d", i);
+        }
+    }
+    else lvItem.pszText = "[NULL]";
+
+}
+
+
+// 添加列，到列表视图，服务窗口辅助函数
+void AddColumnsToListView(HWND hWndListView) {
+    LVCOLUMN lvColumn;
+    lvColumn.mask = LVCF_TEXT | LVCF_WIDTH | LVCF_SUBITEM;
+
+    // 第一列
+    lvColumn.pszText = "DATE";
+    lvColumn.cx = 150;
+    ListView_InsertColumn(hWndListView, 0, &lvColumn);
+
+    // 第二列
+    lvColumn.pszText = "START";
+    lvColumn.cx = 150;
+    ListView_InsertColumn(hWndListView, 1, &lvColumn);
+
+    // 第三列
+    lvColumn.pszText = "END";
+    lvColumn.cx = 150;
+    ListView_InsertColumn(hWndListView, 2, &lvColumn);
+}
+
+
+#define ID_DATEPICKER 4
+#define ID_TIMEPICKER_START 5
+#define ID_TIMEPICKER_END 6
+#define ID_BTN_GETDATETIME 8
+#define ID_STATIC_TEXT 101
+#define IDC_LISTVIEW 4  // 列表视图的标识符
+
+HWND hwndComboBox_Service_Type, hwndComboBox_Service_Id, hwndEditText_Service_Output, hWndListView_Service_Output;
+
 // 服务窗口过程函数
 LRESULT CALLBACK Service_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+    SYSTEMTIME st;
+    char buffer[128];
 
     switch (msg) {
+        case WM_CREATE: // 窗口创建消息
+            printf("Service Window WM_CREATE\n");
 
-                case WM_CREATE: // 窗口创建消息
-                printf("Service Window WM_CREATE\n");
+            // 创建第一个下拉框
+            hwndComboBox_Service_Type = CreateWindow(WC_COMBOBOX, "TYPE", 
+                            CBS_DROPDOWN | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
+                            10, 10, 120, 150,  // 位置和大小
+                            hwnd, (HMENU)1,
+                            ((LPCREATESTRUCT)lParam)->hInstance, NULL);
 
-                // CreateWindowW(L"combobox", NULL, WS_VISIBLE | WS_CHILD | CBS_DROPDOWN, 
-                //             100, 50, 150, 150, hWnd, (HMENU)1, NULL, NULL);
+            // 创建第二个下拉框
+            hwndComboBox_Service_Id = CreateWindow(WC_COMBOBOX, "ID", 
+                            CBS_DROPDOWN | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
+                            10, 60, 120, 150,  // 位置和大小
+                            hwnd, (HMENU)2,
+                            ((LPCREATESTRUCT)lParam)->hInstance, NULL);
 
+            // 向第二个下拉框添加项目
+            SendMessage(hwndComboBox_Service_Id, CB_ADDSTRING, 0, (LPARAM)"选项 A");
+            SendMessage(hwndComboBox_Service_Id, CB_ADDSTRING, 0, (LPARAM)"选项 B");
+            SendMessage(hwndComboBox_Service_Id, CB_ADDSTRING, 0, (LPARAM)"选项 C");
+
+
+            // 创建日期选择
+            CreateWindowEx(0, DATETIMEPICK_CLASS, NULL,
+                            DTS_UPDOWN | WS_BORDER | WS_CHILD | WS_VISIBLE,
+                            10, 160, 140, 25,
+                            hwnd, (HMENU)ID_DATEPICKER,
+                            ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+
+            // 创建时间选择
+            CreateWindowEx(0, DATETIMEPICK_CLASS, NULL,
+                            DTS_UPDOWN | DTS_TIMEFORMAT | WS_BORDER | WS_CHILD | WS_VISIBLE,
+                            10, 210, 140, 25,
+                            hwnd, (HMENU)ID_TIMEPICKER_START,
+                            ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+
+            // 创建时间选择
+            CreateWindowEx(0, DATETIMEPICK_CLASS, NULL,
+                            DTS_UPDOWN | DTS_TIMEFORMAT | WS_BORDER | WS_CHILD | WS_VISIBLE,
+                            10, 260, 140, 25,
+                            hwnd, (HMENU)ID_TIMEPICKER_END,
+                            ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+
+            // 创建按钮
+            CreateWindowEx(0, "BUTTON", "Check Reservation",
+                            WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+                            10, 110, 140, 30,
+                            hwnd, (HMENU)3,
+                            ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+
+            // 创建按钮
+            CreateWindowEx(0, "BUTTON", "Get DateTime",
+                            WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+                            10, 310, 100, 30,
+                            hwnd, (HMENU)ID_BTN_GETDATETIME,
+                            ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+
+            // hwndEditText_Service_Output = CreateWindowEx(0, "EDIT", "",
+            //                 WS_CHILD | WS_VISIBLE | WS_VSCROLL | ES_MULTILINE | ES_AUTOVSCROLL | ES_READONLY,
+            //                 300, 50, 200, 100, // 位置和大小
+            //                 hwnd, (HMENU)ID_STATIC_TEXT,
+            //                 ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+
+            // 设置编辑控件内容
+            // SetWindowText(hwndEditText_Service_Output, "这里是长文本内容...\n可以包含多行\n以展示滚动效果。\n这里是更多的文本内容\n这里是长文本内容...\n可以包含多行\n以展示滚动效果。\n这里是长文本内容...\n可以包含多行\n以展示滚动效果。\n");
+
+            // 创建列表视图
+            hWndListView_Service_Output = CreateWindow(WC_LISTVIEW, "",
+                            WS_CHILD | WS_VISIBLE | LVS_REPORT | WS_VSCROLL,
+                            180, 10, 450, 700,  // 位置和大小
+                            hwnd, (HMENU)IDC_LISTVIEW,
+                            ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+            AddColumnsToListView(hWndListView_Service_Output);  // 列表视图添加列
 
             break;
 
-        case WM_COMMAND: // 命令消息
-                if (LOWORD(wParam) == ID_BUTTON_LOGIN) {    // 检查是哪个控件发出的消息
+        case WM_COMMAND:
+
+            if (LOWORD(wParam) == 1) {    // type下拉框获取type
+                // 步骤1：获取当前选中的内容
+                TCHAR selectedType[256];
+                int itemIndexType = SendMessage(hwndComboBox_Service_Type, CB_GETCURSEL, 0, 0);
+                SendMessage(hwndComboBox_Service_Type, CB_GETLBTEXT, itemIndexType, (LPARAM)selectedType);
+
+                SendMessage(hwndComboBox_Service_Type, CB_RESETCONTENT, 0, 0);  // 清空下拉框
+                SendMessage(hwndComboBox_Service_Id, CB_RESETCONTENT, 0, 0);
+
+                char* jsonStr = readFileToString(SEAT_INFO_DATABASE); // 读取文件内容到字符串
+                if (jsonStr != NULL) {
+                    printf("File content:\n%s\n", jsonStr);
+                }
+                else printf("Error reading user info file.\n");
+
+                // 获取所有座位类型
+                char** seatTypes;
+                int countType = getSeatTypes(jsonStr, &seatTypes);
+                printf("Found %d different seat types\n", countType);
+                for (int i = 0; i < countType; i++) {
+                    printf("Seat Type: %s\n", seatTypes[i]);
+                    SendMessage(hwndComboBox_Service_Type, CB_ADDSTRING, 0, (LPARAM)seatTypes[i]);
+                    free(seatTypes[i]); // 释放每个字符串
+                }
+                free(seatTypes); // 释放字符串数组
+
+                // 步骤4：恢复先前选中的内容
+                SendMessage(hwndComboBox_Service_Type, CB_SELECTSTRING, -1, (LPARAM)selectedType);
 
             }
 
-            if (LOWORD(wParam) == ID_BUTTON_SGINUP) { // 判断是否点击了打开新窗口的按钮
+            if (LOWORD(wParam) == 2) {    // type下拉框获取type
+                // 读取type
+                TCHAR selectedType[256];
+                int itemIndexType = SendMessage(hwndComboBox_Service_Type, CB_GETCURSEL, 0, 0);
+                SendMessage(hwndComboBox_Service_Type, CB_GETLBTEXT, itemIndexType, (LPARAM)selectedType);
+
+                // 读取已选择的ID
+                TCHAR selectedId[256];
+                int itemIndexId = SendMessage(hwndComboBox_Service_Id, CB_GETCURSEL, 0, 0);
+                SendMessage(hwndComboBox_Service_Id, CB_GETLBTEXT, itemIndexId, (LPARAM)selectedId);
+
+
+                SendMessage(hwndComboBox_Service_Id, CB_RESETCONTENT, 0, 0);    // 清空下拉框
+
+                char* jsonStr = readFileToString(SEAT_INFO_DATABASE); // 读取文件内容到字符串
+                if (jsonStr != NULL) {
+                    printf("File content:\n%s\n", jsonStr);
+                }
+                else printf("Error reading user info file.\n");
+
+                // 统计类型数量
+                int* seatIds;
+                int count = countSeatsByType(jsonStr, selectedType, &seatIds);
+                printf("Found %d seats of type %s\n", count, selectedType);
+                for (int i = 0; i < count; i++) {
+                    char seatIdsStr[10]; // 声明一个足够大的字符数组来存储转换后的字符串
+                    sprintf(seatIdsStr, "%d", seatIds[i]);
+                    SendMessage(hwndComboBox_Service_Id, CB_ADDSTRING, 0, (LPARAM)seatIdsStr);
+                    printf("Seat ID: %d\n", seatIds[i]);
+                }
+                free(seatIds); // 释放内存
+                printf("\n");
+
+                // 步骤4：恢复先前选中的内容
+                SendMessage(hwndComboBox_Service_Id, CB_SELECTSTRING, -1, (LPARAM)selectedId);
 
             }
 
+            if (LOWORD(wParam) == 3) {    // type下拉框获取type
+                // 读取type
+                TCHAR selectedType[256];
+                int itemIndexType = SendMessage(hwndComboBox_Service_Type, CB_GETCURSEL, 0, 0);
+                SendMessage(hwndComboBox_Service_Type, CB_GETLBTEXT, itemIndexType, (LPARAM)selectedType);
+
+                // 读取已选择的ID
+                TCHAR selectedId[256];
+                int itemIndexId = SendMessage(hwndComboBox_Service_Id, CB_GETCURSEL, 0, 0);
+                SendMessage(hwndComboBox_Service_Id, CB_GETLBTEXT, itemIndexId, (LPARAM)selectedId);
+
+                int count1;
+                LogEntry* bookedSlots = get_booked_id_slots(RESERVE_RECORD_LOG, selectedType, atoi(selectedId), &count1);
+                // ... 输出或处理 bookedSlots 中的数据
+                if (bookedSlots) {
+                    for (int i = 0; i < count1; i++) {
+                        printf("已预订时间段：%s - %s\n", bookedSlots[i].period_time_start, bookedSlots[i].period_time_end);
+                    }
+                }
+                else printf("没有找到已预订席位或读取日志文件失败。\n");
+
+                AddItemsToListView(hWndListView_Service_Output, bookedSlots); // 添加行到列表
+
+                free(bookedSlots); // 释放内存
+
+            }
+
+            if (LOWORD(wParam) == ID_BTN_GETDATETIME) {
+                HWND hDatePicker = GetDlgItem(hwnd, ID_DATEPICKER);
+                HWND hTimePicker_Start = GetDlgItem(hwnd, ID_TIMEPICKER_START);
+                HWND hTimePicker_End = GetDlgItem(hwnd, ID_TIMEPICKER_END);
+
+                // 获取日期
+                DateTime_GetSystemtime(hDatePicker, &st);
+                sprintf(buffer, "Date: %04d-%02d-%02d ", st.wYear, st.wMonth, st.wDay);
+                
+                // 获取时间
+                DateTime_GetSystemtime(hTimePicker_Start, &st);
+                sprintf(buffer + strlen(buffer), "Time: %02d:%02d:%02d\n", st.wHour, st.wMinute, st.wSecond);
+
+                // 获取时间
+                DateTime_GetSystemtime(hTimePicker_End, &st);
+                sprintf(buffer + strlen(buffer), "Time: %02d:%02d:%02d\n", st.wHour, st.wMinute, st.wSecond);
+                
+                printf("%s", buffer);
+
+            }
             break;
 
         case WM_CLOSE:
+            // 在这里添加其他关闭窗口前的处理
+
             RefreshWindow(hwnd_Main_Window);
             ShowWindow(hwnd_Main_Window, SW_SHOW);  // 隐藏窗口
             DestroyWindow(hwnd);
             break;
+
         case WM_DESTROY:
+            // PostQuitMessage(0);
             return 0;
+            break;
+
         default:
             return DefWindowProc(hwnd, msg, wParam, lParam);
     }
     return 0;
 }
+
 
 // 管理员窗口过程函数
 LRESULT CALLBACK Admin_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
