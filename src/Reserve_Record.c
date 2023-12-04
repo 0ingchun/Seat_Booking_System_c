@@ -272,6 +272,59 @@ void delete_entries_by_date(const char* filename, const char* target_date) {
 }
 
 
+// 删除日志-按订单号
+int delete_entries_by_orderid(const char* filename, const char* target_orderid) {
+    int count = 0;
+    LogEntry* entries = read_logs(filename, &count);
+    if (entries == NULL) {
+        printf("读取失败或文件为空\n");
+        return -1; // 读取失败或文件为空
+    }
+
+    FILE *file = fopen(filename, "w");
+    if (file == NULL) {
+        perror("Error opening file");
+        free(entries);
+        printf("Error opening file\n");
+        return -2;
+    }
+
+    int match_found = 0; // Flag to check if there is a match for target_orderid
+
+    for (int i = 0; i < count; i++) {
+        if (strncmp(entries[i].order_id, target_orderid, strlen(target_orderid)) != 0) {
+            // 将非目标日期的记录写回文件
+            fprintf(file, "%s,%s,%s,%u,%s,%s,%s,%s,%s,%u,%s\n",
+                entries[i].logtime,
+                entries[i].operate,
+                entries[i].action,
+                entries[i].id,
+                entries[i].seat_type,
+                entries[i].subscriber,
+                entries[i].period_date,
+                entries[i].period_time_start,
+                entries[i].period_time_end,
+                entries[i].amount,
+                entries[i].order_id);
+        } else {
+            match_found = 1;
+        }
+    }
+
+    fclose(file);
+    free(entries);
+
+    if (!match_found) {
+        printf("No match found for target_orderid\n");
+        return -3;
+    }
+    else {
+        printf("OK to Delete\n");
+        return 1;
+    }
+}
+
+
 // 根据ID和座位类型查找已被预订席位
 LogEntry* get_booked_id_slots(const char* filename, const char* seat_type, unsigned int id, int* count) {
     int total = 0;
@@ -310,6 +363,31 @@ LogEntry* get_booked_time_slots(const char* filename, const char* seat_type, con
 
     for (int i = 0; i < *count; i++) {
         if (strcmp(entries[i].seat_type, seat_type) == 0 && strncmp(entries[i].period_date, date, 10) == 0 && strcmp(entries[i].action, "appoint") == 0) {
+            bookedEntries = realloc(bookedEntries, sizeof(LogEntry) * (total + 1));
+            bookedEntries[total] = entries[i];
+            total++;
+        }
+    }
+
+    free(entries);
+    *count = total;
+    return bookedEntries;
+}
+
+
+// 根据日期和预订者查找已被预订席位
+LogEntry* get_subscriber_booked_time_slots(const char* filename, const char* subscriber, const char* date, int* count) {
+    int total = 0;
+    LogEntry* entries = read_logs(filename, count);
+    LogEntry* bookedEntries = NULL;
+
+    if (entries == NULL) {
+        *count = 0;
+        return NULL; // 文件读取失败或文件为空
+    }
+
+    for (int i = 0; i < *count; i++) {
+        if (strcmp(entries[i].subscriber, subscriber) == 0 && strncmp(entries[i].period_date, date, 10) == 0 && strcmp(entries[i].action, "appoint") == 0) {
             bookedEntries = realloc(bookedEntries, sizeof(LogEntry) * (total + 1));
             bookedEntries[total] = entries[i];
             total++;

@@ -55,9 +55,13 @@ LogEntry* read_logs(const char* filename, int* count);
 
 void delete_entries_by_date(const char* filename, const char* target_date);
 
+int delete_entries_by_orderid(const char* filename, const char* target_orderid);
+
 LogEntry* get_booked_id_slots(const char* filename, const char* seat_type, unsigned int id, int* count);
 
 LogEntry* get_booked_time_slots(const char* filename, const char* seat_type, const char* date, int* count);
+
+LogEntry* get_subscriber_booked_time_slots(const char* filename, const char* subscriber, const char* date, int* count);
 
 int is_time_expired(const char* time_str);
 
