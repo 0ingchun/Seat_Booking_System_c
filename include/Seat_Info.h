@@ -20,6 +20,8 @@ int countSeatsByType(const char* jsonStr, const char* type, int** seatIds);
 
 int getSeatTypes(const char* jsonStr, char*** types);
 
+int findAmountById(const char* jsonStr, unsigned int id);
+
 char* addSeat(const char* jsonStr, const char* type, unsigned int id, unsigned int amount);
 
 char* deleteSeat(const char* jsonStr, unsigned int id);

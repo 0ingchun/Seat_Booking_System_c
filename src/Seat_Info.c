@@ -202,6 +202,42 @@ int getSeatTypes(const char* jsonStr, char*** types) {
 }
 
 
+// 输入id查找amount
+int findAmountById(const char* jsonStr, unsigned int id) {
+    // 解析JSON字符串
+    cJSON* jsonObj = cJSON_Parse(jsonStr);
+    if (jsonObj == NULL) {
+        printf("Failed to parse JSON string\n");
+        return -1; // 返回-1表示查找失败
+    }
+
+    // 获取seats数组
+    cJSON* seatsArray = cJSON_GetObjectItem(jsonObj, "seats");
+    if (!cJSON_IsArray(seatsArray)) {
+        printf("Seats field is not an array\n");
+        cJSON_Delete(jsonObj);
+        return -1;
+    }
+
+    // 遍历数组，查找对应ID的amount
+    cJSON* seatObj;
+    cJSON_ArrayForEach(seatObj, seatsArray) {
+        cJSON* idObj = cJSON_GetObjectItem(seatObj, "id");
+        cJSON* amountObj = cJSON_GetObjectItem(seatObj, "amount");
+
+        if (cJSON_IsNumber(idObj) && idObj->valueint == id) {
+            if (cJSON_IsNumber(amountObj)) {
+                int amount = amountObj->valueint;
+                cJSON_Delete(jsonObj);
+                return amount; // 返回找到的amount
+            }
+        }
+    }
+
+    cJSON_Delete(jsonObj);
+    return -1; // 未找到指定ID，返回-1
+}
+
 
 // 添加座位
 char* addSeat(const char* jsonStr, const char* type, unsigned int id, unsigned int amount) {
@@ -302,6 +338,16 @@ char* deleteSeat(const char* jsonStr, unsigned int id) {
 //         free(seatTypes[i]); // 释放每个字符串
 //     }
 //     free(seatTypes); // 释放字符串数组
+
+
+// unsigned int idToFind = 102; // 要查找的座位ID
+//     int amount = findAmountById(jsonStr, idToFind);
+
+//     if (amount != -1) {
+//         printf("Amount for seat ID %u is %d\n", idToFind, amount);
+//     } else {
+//         printf("Seat with ID %u not found.\n", idToFind);
+//     }
 
 
 //     // 添加新座位

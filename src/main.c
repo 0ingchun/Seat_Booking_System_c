@@ -802,8 +802,6 @@ LRESULT CALLBACK User_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
                 case WM_CREATE: // 窗口创建消息
                     printf("Login Window WM_CREATE\n");
-                
-
 
             break;
 
@@ -824,7 +822,6 @@ LRESULT CALLBACK User_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     return 0;
 }
 
-
 // 添加行，到列表视图,服务窗口辅助函数
 void AddItemsToListView(HWND hwndListView, LogEntry* logEntry_p) {
     LVITEM lvItem;
@@ -833,21 +830,43 @@ void AddItemsToListView(HWND hwndListView, LogEntry* logEntry_p) {
     lvItem.iSubItem = 0;    // 这句千万别放循环里
 
     if (logEntry_p) {
-        for (int i = 0; i < sizeof(*logEntry_p) / sizeof(LogEntry); i++) {
+        for (int i = 0; i < (sizeof(*logEntry_p) / sizeof(LogEntry)); i++) {
             lvItem.iItem = i;
             char pszTextStr[25];
             sprintf(pszTextStr, "[%d] ", i);
-            strcat(pszTextStr, logEntry_p->period_date);
+            strcat(pszTextStr, logEntry_p[i].period_date);
             lvItem.pszText = pszTextStr;
             ListView_InsertItem(hwndListView, &lvItem);
-            ListView_SetItemText(hwndListView, i, 1, logEntry_p->period_date);
-            ListView_SetItemText(hwndListView, i, 2, logEntry_p->period_time_end);
+            ListView_SetItemText(hwndListView, i, 1, logEntry_p[i].period_time_start);
+            ListView_SetItemText(hwndListView, i, 2, logEntry_p[i].period_time_end);
 
-            printf("%d", i);
+            printf("i=%d\n", i);
         }
     }
     else lvItem.pszText = "[NULL]";
 
+}
+
+void AddItemsToListView_n(HWND hwndListView, LogEntry* logEntry_p, int logEntryCount) {
+    LVITEM lvItem;
+    lvItem.mask = LVIF_TEXT;
+    ListView_DeleteAllItems(hwndListView); // 清空旧列表显示
+    lvItem.iSubItem = 0;
+
+    if (logEntry_p) {
+        for (int i = 0; i < logEntryCount; i++) {
+            char pszTextStr[256]; // 增加缓冲区大小以避免溢出
+            sprintf(pszTextStr, "<%d> %s", i+1, logEntry_p[i].period_date);
+            lvItem.iItem = i;
+            lvItem.pszText = pszTextStr;
+            ListView_InsertItem(hwndListView, &lvItem);
+            ListView_SetItemText(hwndListView, i, 1, logEntry_p[i].period_time_start);
+            ListView_SetItemText(hwndListView, i, 2, logEntry_p[i].period_time_end);
+
+            printf("i=%d\n", i);
+        }
+    }
+    else lvItem.pszText = "[NULL]";
 }
 
 
@@ -885,7 +904,7 @@ HWND hwndComboBox_Service_Type, hwndComboBox_Service_Id, hwndEditText_Service_Ou
 // 服务窗口过程函数
 LRESULT CALLBACK Service_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     SYSTEMTIME st;
-    char buffer[128];
+    // char buffer[128];
 
     switch (msg) {
         case WM_CREATE: // 窗口创建消息
@@ -905,11 +924,12 @@ LRESULT CALLBACK Service_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
                             hwnd, (HMENU)2,
                             ((LPCREATESTRUCT)lParam)->hInstance, NULL);
 
-            // 向第二个下拉框添加项目
-            SendMessage(hwndComboBox_Service_Id, CB_ADDSTRING, 0, (LPARAM)"选项 A");
-            SendMessage(hwndComboBox_Service_Id, CB_ADDSTRING, 0, (LPARAM)"选项 B");
-            SendMessage(hwndComboBox_Service_Id, CB_ADDSTRING, 0, (LPARAM)"选项 C");
-
+            // 创建检查按钮
+            CreateWindowEx(0, "BUTTON", "Check Reservation",
+                            WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+                            10, 110, 140, 30,
+                            hwnd, (HMENU)3,
+                            ((LPCREATESTRUCT)lParam)->hInstance, NULL);
 
             // 创建日期选择
             CreateWindowEx(0, DATETIMEPICK_CLASS, NULL,
@@ -918,31 +938,24 @@ LRESULT CALLBACK Service_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
                             hwnd, (HMENU)ID_DATEPICKER,
                             ((LPCREATESTRUCT)lParam)->hInstance, NULL);
 
-            // 创建时间选择
+            // 创建开始时间选择
             CreateWindowEx(0, DATETIMEPICK_CLASS, NULL,
                             DTS_UPDOWN | DTS_TIMEFORMAT | WS_BORDER | WS_CHILD | WS_VISIBLE,
                             10, 210, 140, 25,
                             hwnd, (HMENU)ID_TIMEPICKER_START,
                             ((LPCREATESTRUCT)lParam)->hInstance, NULL);
 
-            // 创建时间选择
+            // 创建结束时间选择
             CreateWindowEx(0, DATETIMEPICK_CLASS, NULL,
                             DTS_UPDOWN | DTS_TIMEFORMAT | WS_BORDER | WS_CHILD | WS_VISIBLE,
                             10, 260, 140, 25,
                             hwnd, (HMENU)ID_TIMEPICKER_END,
                             ((LPCREATESTRUCT)lParam)->hInstance, NULL);
 
-            // 创建按钮
-            CreateWindowEx(0, "BUTTON", "Check Reservation",
+            // 创建预约按钮
+            CreateWindowEx(0, "BUTTON", "Make Reservation",
                             WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
-                            10, 110, 140, 30,
-                            hwnd, (HMENU)3,
-                            ((LPCREATESTRUCT)lParam)->hInstance, NULL);
-
-            // 创建按钮
-            CreateWindowEx(0, "BUTTON", "Get DateTime",
-                            WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
-                            10, 310, 100, 30,
+                            10, 310, 140, 30,
                             hwnd, (HMENU)ID_BTN_GETDATETIME,
                             ((LPCREATESTRUCT)lParam)->hInstance, NULL);
 
@@ -1036,7 +1049,7 @@ LRESULT CALLBACK Service_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
 
             }
 
-            if (LOWORD(wParam) == 3) {    // type下拉框获取type
+            if (LOWORD(wParam) == 3) {    // 搜索已预订记录
                 // 读取type
                 TCHAR selectedType[256];
                 int itemIndexType = SendMessage(hwndComboBox_Service_Type, CB_GETCURSEL, 0, 0);
@@ -1057,30 +1070,123 @@ LRESULT CALLBACK Service_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
                 }
                 else printf("没有找到已预订席位或读取日志文件失败。\n");
 
-                AddItemsToListView(hWndListView_Service_Output, bookedSlots); // 添加行到列表
+                AddItemsToListView_n(hWndListView_Service_Output, bookedSlots, count1); // 添加行到列表
 
                 free(bookedSlots); // 释放内存
 
             }
 
             if (LOWORD(wParam) == ID_BTN_GETDATETIME) {
+
+                LogEntry LogEntry_s_temp;
+                char buffer[128];
+                char buffer_temp[25];
+
                 HWND hDatePicker = GetDlgItem(hwnd, ID_DATEPICKER);
                 HWND hTimePicker_Start = GetDlgItem(hwnd, ID_TIMEPICKER_START);
                 HWND hTimePicker_End = GetDlgItem(hwnd, ID_TIMEPICKER_END);
 
-                // 获取日期
-                DateTime_GetSystemtime(hDatePicker, &st);
-                sprintf(buffer, "Date: %04d-%02d-%02d ", st.wYear, st.wMonth, st.wDay);
-                
-                // 获取时间
-                DateTime_GetSystemtime(hTimePicker_Start, &st);
-                sprintf(buffer + strlen(buffer), "Time: %02d:%02d:%02d\n", st.wHour, st.wMinute, st.wSecond);
+                // 读取已选择的type
+                TCHAR selectedType[256];
+                int itemIndexType = SendMessage(hwndComboBox_Service_Type, CB_GETCURSEL, 0, 0);
+                SendMessage(hwndComboBox_Service_Type, CB_GETLBTEXT, itemIndexType, (LPARAM)selectedType);
 
-                // 获取时间
-                DateTime_GetSystemtime(hTimePicker_End, &st);
-                sprintf(buffer + strlen(buffer), "Time: %02d:%02d:%02d\n", st.wHour, st.wMinute, st.wSecond);
-                
-                printf("%s", buffer);
+                // 读取已选择的ID
+                TCHAR selectedId[256];
+                int itemIndexId = SendMessage(hwndComboBox_Service_Id, CB_GETCURSEL, 0, 0);
+                SendMessage(hwndComboBox_Service_Id, CB_GETLBTEXT, itemIndexId, (LPARAM)selectedId);
+
+                char* jsonStr_seat = readFileToString(SEAT_INFO_DATABASE); // 读取文件内容到字符串
+                if (jsonStr_seat != NULL) {
+                    printf("File content:\n%s\n", jsonStr_seat);
+                }
+                else printf("Error reading user info file.\n");
+
+                int amount = findAmountById(jsonStr_seat, atoi(selectedId)); // 获取价格
+
+                free(jsonStr_seat);
+
+                if (Login_User.balance >= amount) {
+                    LogEntry_s_temp.amount = amount;
+                    Login_User.balance -= amount;   // 扣费
+
+                    // 写入余额
+                    char* jsonStr_user = readFileToString(USER_INFO_DATABASE); // 读取文件内容到字符串
+                    if (jsonStr_user != NULL) {
+                        printf("File content:\n%s\n", jsonStr_user);
+                    }
+                    else printf("Error reading user info file.\n");
+                    char* modifiedJsonStr = modifyUser(jsonStr_user, Login_User.username, Login_User.passwd, Login_User.auth, Login_User.balance);
+                    if (modifiedJsonStr != NULL) {
+                        printf("修改用户信息后：\n");
+                        viewUser(modifiedJsonStr);
+                        writeStringToFile(USER_INFO_DATABASE, modifiedJsonStr); // 写入
+                        free(modifiedJsonStr);
+                    }
+                    printf("\n");
+                    free(jsonStr_user);
+
+                    // 生成订单号
+                    char order_id[24];
+                    generate_order_id(order_id);
+                    strcpy(LogEntry_s_temp.order_id, order_id);
+
+                    // 获取日期
+                    DateTime_GetSystemtime(hDatePicker, &st);
+                    sprintf(buffer_temp, "%04d/%02d/%02d", st.wYear, st.wMonth, st.wDay);
+                    strcpy(LogEntry_s_temp.period_date, buffer_temp);
+
+                    sprintf(buffer, "Date: %04d-%02d-%02d\n", st.wYear, st.wMonth, st.wDay);
+                    
+                    // 获取时间
+                    DateTime_GetSystemtime(hTimePicker_Start, &st);
+                    sprintf(buffer_temp, "%02d:%02d:%02d", st.wHour, st.wMinute, st.wSecond);
+                    strcpy(LogEntry_s_temp.period_time_start, buffer_temp);
+
+                    sprintf(buffer + strlen(buffer), "Time: %02d:%02d:%02d\n", st.wHour, st.wMinute, st.wSecond);
+
+                    // 获取时间
+                    DateTime_GetSystemtime(hTimePicker_End, &st);
+                    sprintf(buffer_temp, "%02d:%02d:%02d", st.wHour, st.wMinute, st.wSecond);
+                    strcpy(LogEntry_s_temp.period_time_end, buffer_temp);
+
+                    sprintf(buffer + strlen(buffer), "Time: %02d:%02d:%02d\n", st.wHour, st.wMinute, st.wSecond);
+                    
+                    printf("%s", buffer);   //  打印日期，时间
+
+                    strcpy(LogEntry_s_temp.operate, Login_User.username);
+                    strcpy(LogEntry_s_temp.action, "appoint");
+                    LogEntry_s_temp.id = atoi(selectedId);
+                    strcpy(LogEntry_s_temp.seat_type, selectedType);
+
+                    strcpy(LogEntry_s_temp.subscriber, Login_User.username);
+
+                    // 写入日志
+                    if (write_log_realtime_conflict(RESERVE_RECORD_LOG, &LogEntry_s_temp) == 0)
+                    {
+                        MessageBox(NULL, _T("Success to Reserve"), _T("OK"), MB_ICONEXCLAMATION | MB_OK);
+                    }
+                    else MessageBox(NULL, _T("Fail to Reserve"), _T("Error"), MB_ICONEXCLAMATION | MB_OK);
+                }
+                else {
+                    printf("余额不足\n");
+                    MessageBox(NULL, _T("Not Sufficient Balance"), _T("Error"), MB_ICONEXCLAMATION | MB_OK);
+                }
+
+                // 刷新列表视图
+                int count1;
+                LogEntry* bookedSlots = get_booked_id_slots(RESERVE_RECORD_LOG, selectedType, atoi(selectedId), &count1);
+                // ... 输出或处理 bookedSlots 中的数据
+                if (bookedSlots) {
+                    for (int i = 0; i < count1; i++) {
+                        printf("已预订时间段：%s - %s\n", bookedSlots[i].period_time_start, bookedSlots[i].period_time_end);
+                    }
+                }
+                else printf("没有找到已预订席位或读取日志文件失败。\n");
+
+                AddItemsToListView_n(hWndListView_Service_Output, bookedSlots, count1); // 添加行到列表
+
+                free(bookedSlots); // 释放内存
 
             }
             break;
@@ -1258,7 +1364,7 @@ LRESULT CALLBACK Admin_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
 
 
 int main() {
-    Login_Flag = 1;
+    // Login_Flag = 1;
     // HWND hWnd = GetConsoleWindow();
     // ShowWindow(hWnd, SW_HIDE);
     printf("Hello World!\n");

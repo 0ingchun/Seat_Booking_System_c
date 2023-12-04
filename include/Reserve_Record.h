@@ -41,13 +41,15 @@ typedef struct {
 // 函数原型声明
 int my_strptime(const char *s, const char *format, struct tm *tm);
 
+void generate_order_id(char* order_id);
+
 void write_log(const char* filename, const LogEntry* entry);
 
 void write_log_realtime(const char* filename, const LogEntry* entry);
 
 int is_time_conflict(const LogEntry* entries, int count, const LogEntry* new_entry);
 
-void write_log_realtime_conflict(const char* filename, const LogEntry* entry);
+int write_log_realtime_conflict(const char* filename, const LogEntry* entry);
 
 LogEntry* read_logs(const char* filename, int* count);
 

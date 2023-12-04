@@ -43,6 +43,23 @@ int my_strptime(const char *s, const char *format, struct tm *tm) {
 */
 
 
+// 生成24位订单号
+void generate_order_id(char* order_id) {
+    // 获取当前时间
+    time_t now;
+    time(&now);
+    struct tm *timeinfo = localtime(&now);
+
+    // 随机数种子
+    srand((unsigned)time(NULL));
+
+    // 格式化时间并生成随机数
+    snprintf(order_id, 24, "%04d%02d%02d%02d%02d%02d%04d",
+            timeinfo->tm_year + 1900, timeinfo->tm_mon + 1, timeinfo->tm_mday,
+            timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec, rand() % 10000);
+}
+
+
 // 写入日志
 void write_log(const char* filename, const LogEntry* entry) {
     FILE *file = fopen(filename, "a");
@@ -116,27 +133,37 @@ int is_time_conflict(const LogEntry* entries, int count, const LogEntry* new_ent
 
 
 // 写入日志-实时时间-检查冲突
-void write_log_realtime_conflict(const char* filename, const LogEntry* entry) {
+int write_log_realtime_conflict(const char* filename, const LogEntry* entry) {
     // 首先检查是否有时间冲突
     int count = 0;
     LogEntry* entries = read_logs(filename, &count);
     if (entries == NULL) {
         printf("读取日志文件失败或文件为空。\n");
-        return;
+        return -1;
     }
 
     if (is_time_conflict(entries, count, entry)) {
         printf("时间冲突，无法预订。\n");
         free(entries);
-        return;
+        return -2;
     }
 
     // 没有冲突时，写入日志
+
+    // 是否能开启文件
     FILE *file = fopen(filename, "a");
     if (file == NULL) {
         perror("Error opening file");
+        printf("Error opening file\n");
         free(entries);
-        return;
+        return -3;
+    }
+
+    // 定位到文件末尾，检查最后一个字符是否是换行符
+    fseek(file, -1, SEEK_END);
+    char lastChar = fgetc(file);
+    if (lastChar != '\n') {
+        fprintf(file, "\n"); // 如果不是换行符，先写入一个换行符
     }
 
     // 获取当前时间并格式化
@@ -161,6 +188,10 @@ void write_log_realtime_conflict(const char* filename, const LogEntry* entry) {
 
     fclose(file);
     free(entries);
+
+    printf("写入记录成功\n");
+
+    return 0;
 }
 
 
