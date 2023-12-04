@@ -1,1 +1,23 @@
-{"seats":[{"type":"VIP","id":101,"amount":1000},{"type":"VIP","id":102,"amount":500},{"type":"Economy","id":103,"amount":300},{"type":"Normal","id":104,"amount":200}]}
+{
+	"seats":	[{
+			"type":	"VIP",
+			"id":	101,
+			"amount":	1000
+		}, {
+			"type":	"Economy",
+			"id":	103,
+			"amount":	300
+		}, {
+			"type":	"Normal",
+			"id":	104,
+			"amount":	200
+		}, {
+			"id":	191,
+			"type":	"SIA",
+			"amount":	810
+		}, {
+			"id":	66,
+			"type":	"66d",
+			"amount":	13
+		}]
+}

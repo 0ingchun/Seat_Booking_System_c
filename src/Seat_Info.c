@@ -253,6 +253,16 @@ char* addSeat(const char* jsonStr, const char* type, unsigned int id, unsigned i
         return NULL;
     }
 
+    // 检查给定的id是否已存在
+    cJSON* existingSeat = NULL;
+    cJSON_ArrayForEach(existingSeat, seatsArray) {
+        cJSON* idItem = cJSON_GetObjectItem(existingSeat, "id");
+        if (cJSON_IsNumber(idItem) && (unsigned int)idItem->valuedouble == id) {
+            cJSON_Delete(jsonObj);
+            return ""; // 返回空字符串
+        }
+    }
+
     cJSON* newSeatObj = cJSON_CreateObject();
     cJSON_AddItemToObject(newSeatObj, "id", cJSON_CreateNumber(id));
     cJSON_AddItemToObject(newSeatObj, "type", cJSON_CreateString(type));
@@ -264,6 +274,30 @@ char* addSeat(const char* jsonStr, const char* type, unsigned int id, unsigned i
     cJSON_Delete(jsonObj);
     return updatedJsonStr;
 }
+// char* addSeat(const char* jsonStr, const char* type, unsigned int id, unsigned int amount) {
+//     cJSON* jsonObj = cJSON_Parse(jsonStr);
+//     if (jsonObj == NULL) {
+//         printf("Failed to parse JSON string\n");
+//         return NULL;
+//     }
+
+//     cJSON* seatsArray = cJSON_GetObjectItem(jsonObj, "seats");
+//     if (!cJSON_IsArray(seatsArray)) {
+//         cJSON_Delete(jsonObj);
+//         return NULL;
+//     }
+
+//     cJSON* newSeatObj = cJSON_CreateObject();
+//     cJSON_AddItemToObject(newSeatObj, "id", cJSON_CreateNumber(id));
+//     cJSON_AddItemToObject(newSeatObj, "type", cJSON_CreateString(type));
+//     cJSON_AddItemToObject(newSeatObj, "amount", cJSON_CreateNumber(amount));
+
+//     cJSON_AddItemToArray(seatsArray, newSeatObj);
+
+//     char* updatedJsonStr = cJSON_Print(jsonObj);
+//     cJSON_Delete(jsonObj);
+//     return updatedJsonStr;
+// }
 
 
 // 删除座位
@@ -291,10 +325,45 @@ char* deleteSeat(const char* jsonStr, unsigned int id) {
         index++;
     }
 
-    char* updatedJsonStr = cJSON_Print(jsonObj);
+    char* updatedJsonStr;
+    if (index == cJSON_GetArraySize(seatsArray)) {
+        // ID not found, return empty string
+        updatedJsonStr = strdup("");
+    } else {
+        updatedJsonStr = cJSON_Print(jsonObj);
+    }
+
     cJSON_Delete(jsonObj);
     return updatedJsonStr;
 }
+// char* deleteSeat(const char* jsonStr, unsigned int id) {
+//     cJSON* jsonObj = cJSON_Parse(jsonStr);
+//     if (jsonObj == NULL) {
+//         printf("Failed to parse JSON string\n");
+//         return NULL;
+//     }
+
+//     cJSON* seatsArray = cJSON_GetObjectItem(jsonObj, "seats");
+//     if (!cJSON_IsArray(seatsArray)) {
+//         cJSON_Delete(jsonObj);
+//         return NULL;
+//     }
+
+//     int index = 0;
+//     cJSON* seatObj;
+//     cJSON_ArrayForEach(seatObj, seatsArray) {
+//         cJSON* idObj = cJSON_GetObjectItem(seatObj, "id");
+//         if (cJSON_IsNumber(idObj) && idObj->valueint == id) {
+//             cJSON_DeleteItemFromArray(seatsArray, index);
+//             break;
+//         }
+//         index++;
+//     }
+
+//     char* updatedJsonStr = cJSON_Print(jsonObj);
+//     cJSON_Delete(jsonObj);
+//     return updatedJsonStr;
+// }
 
 
 // // // 库示例

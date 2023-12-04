@@ -1663,9 +1663,7 @@ LRESULT CALLBACK Order_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
                 SendMessage(hwndComboBox_Order_OrderId, CB_SELECTSTRING, -1, (LPARAM)selectedOrderId);
             }
 
-            if (LOWORD(wParam) == ID_BUTTON_ORDER_CANCEL)
-            {
-                // 取消预约
+            if (LOWORD(wParam) == ID_BUTTON_ORDER_CANCEL) { // 取消预约
 
                 // 获取订单号
                 // TCHAR szText_orderid[30];  // 文本缓冲区
@@ -1759,7 +1757,7 @@ LRESULT CALLBACK Admin_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
         case WM_CREATE: // 窗口创建消息
             printf("Admin Window WM_CREATE\n");
 
-            hwndEditText_Admin_DeleteId = CreateWindowEx(0, "EDIT", "",
+            hwndEditText_Admin_DeleteId = CreateWindowEx(0, "EDIT", "id",
                             WS_CHILD | WS_VISIBLE | WS_BORDER,
                             10, 10, 80, 20, // 位置和大小
                             hwnd, (HMENU)1,
@@ -1772,19 +1770,19 @@ LRESULT CALLBACK Admin_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
                             hwnd, (HMENU)2,
                             ((LPCREATESTRUCT)lParam)->hInstance, NULL);
 
-            hwndEditText_Admin_AddType = CreateWindowEx(0, "EDIT", "",
+            hwndEditText_Admin_AddType = CreateWindowEx(0, "EDIT", "type",
                             WS_CHILD | WS_VISIBLE | WS_BORDER,
                             10, 60, 100, 20, // 位置和大小
                             hwnd, (HMENU)3,
                             ((LPCREATESTRUCT)lParam)->hInstance, NULL);
 
-            hwndEditText_Admin_AddId = CreateWindowEx(0, "EDIT", "",
+            hwndEditText_Admin_AddId = CreateWindowEx(0, "EDIT", "id",
                             WS_CHILD | WS_VISIBLE | WS_BORDER,
                             120, 60, 100, 20, // 位置和大小
                             hwnd, (HMENU)4,
                             ((LPCREATESTRUCT)lParam)->hInstance, NULL);
 
-            hwndEditText_Admin_AddAmount = CreateWindowEx(0, "EDIT", "",
+            hwndEditText_Admin_AddAmount = CreateWindowEx(0, "EDIT", "amount",
                             WS_CHILD | WS_VISIBLE | WS_BORDER,
                             230, 60, 100, 20, // 位置和大小
                             hwnd, (HMENU)5,
@@ -1805,11 +1803,18 @@ LRESULT CALLBACK Admin_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
                             10, 110, 500, 20,           // 位置和大小
                             hwnd, (HMENU)7, hInst, NULL); // 父窗口和其他参数
 
-            // 创建统计按钮
-            CreateWindowEx(0, "BUTTON", "Make Reservation",
-                            WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
-                            10, 140, 140, 30,
+            // 创建日期选择
+            CreateWindowEx(0, DATETIMEPICK_CLASS, NULL,
+                            DTS_UPDOWN | WS_BORDER | WS_CHILD | WS_VISIBLE,
+                            10, 140, 140, 25,
                             hwnd, (HMENU)8,
+                            ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+
+            // 创建统计按钮
+            CreateWindowEx(0, "BUTTON", "Make Statistic",
+                            WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+                            160, 140, 140, 30,
+                            hwnd, (HMENU)9,
                             ((LPCREATESTRUCT)lParam)->hInstance, NULL);
 
             // 设置编辑控件内容
@@ -1822,12 +1827,102 @@ LRESULT CALLBACK Admin_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
             if (LOWORD(wParam) == 2) {    // 按id删除座位
                 TCHAR szText_DeleteId[50];        // 文本缓冲区
                 GetWindowText(hwndEditText_Admin_DeleteId, szText_DeleteId, 50); // 获取编辑框文本
-
                 char str_DeleteId[50];
                 ConvertTCharToChar(szText_DeleteId, str_DeleteId, 50); // 转换文本
 
+                char* jsonStr_seat = readFileToString(SEAT_INFO_DATABASE); // 读取文件内容到字符串
+                if (jsonStr_seat != NULL) {
+                    printf("File content:\n%s\n", jsonStr_seat);
+                }
+                else printf("Error reading user info file.\n");
+
+                // 删除座位
+                char* deletedJsonStr = deleteSeat(jsonStr_seat, atoi(str_DeleteId));
+                free(jsonStr_seat); // 释放内存
+
+                if (deletedJsonStr[0] != 0) {
+                    printf("删除座位后：\n");
+                    writeStringToFile(SEAT_INFO_DATABASE, deletedJsonStr);
+                    viewSeat(deletedJsonStr);
+                    free(deletedJsonStr);
+                    MessageBox(NULL, "OK to Delete Seat by ID", "OK", MB_ICONINFORMATION | MB_OK);
+                }
+                else {
+                    printf("删除座位失败。\n");
+                    MessageBox(NULL, "Error to delete\nPlease Check Seat-ID", "Error", MB_ICONINFORMATION | MB_OK);
+                }
             }
+
+            if (LOWORD(wParam) == 6) {  // 添加座位信息
+
+                TCHAR szText_AddType[50];        // 文本缓冲区
+                GetWindowText(hwndEditText_Admin_AddType, szText_AddType, 50); // 获取编辑框文本
+                char str_AddType[50];
+                ConvertTCharToChar(szText_AddType, str_AddType, 50); // 转换文本
+
+                TCHAR szText_AddId[50];        // 文本缓冲区
+                GetWindowText(hwndEditText_Admin_AddId, szText_AddId, 50); // 获取编辑框文本
+                char str_AddId[50];
+                ConvertTCharToChar(szText_AddId, str_AddId, 50); // 转换文本
+
+                TCHAR szText_AddAmount[50];        // 文本缓冲区
+                GetWindowText(hwndEditText_Admin_AddAmount, szText_AddAmount, 50); // 获取编辑框文本
+                char str_AddAmount[50];
+                ConvertTCharToChar(szText_AddAmount, str_AddAmount, 50); // 转换文本
+
+                if (atoi(str_AddId) != 0 && atoi(str_AddAmount) != 0) { // 判断输入是否正确
+
+                    char* jsonStr_seat = readFileToString(SEAT_INFO_DATABASE); // 读取文件内容到字符串
+                    if (jsonStr_seat != NULL) {
+                        printf("File content:\n%s\n", jsonStr_seat);
+                    }
+                    else printf("Error reading user info file.\n");
+
+                    // 添加新座位
+                    char* updatedJsonStr = addSeat(jsonStr_seat, str_AddType, atoi(str_AddId), atoi(str_AddAmount));
+                    free(jsonStr_seat); // 释放内存
+
+                    if (updatedJsonStr[0] != 0) {
+                        printf("添加座位后：\n");
+                        writeStringToFile(SEAT_INFO_DATABASE, updatedJsonStr);
+                        viewSeat(updatedJsonStr);
+                        free(updatedJsonStr);
+                        MessageBox(NULL, "OK to Add Seat Info", "OK", MB_ICONINFORMATION | MB_OK);
+                    }
+                    else {
+                        printf("添加座位失败。\n");
+                        MessageBox(NULL, "There May Already be Duplicate Seat-ID", "Error", MB_ICONINFORMATION | MB_OK);
+                    }
+
+                }
+                else {
+                    printf("添加座位失败。\n");
+                    MessageBox(NULL, "Error to Add\nPlease Check Seat Info Input", "Error", MB_ICONINFORMATION | MB_OK);
+                }
+
+            }
+
+            if (LOWORD(wParam) == 9) {  // 统计当前日期
+
+                char buffer_date[25];
+                HWND hDatePicker = GetDlgItem(hwnd, 8);
+                // 获取日期
+                DateTime_GetSystemtime(hDatePicker, &st);
+                sprintf(buffer_date, "%04d/%02d/%02d", st.wYear, st.wMonth, st.wDay);
                 
+                int totalBookings;
+                unsigned int totalRevenue;
+
+                count_bookings_and_revenue(RESERVE_RECORD_LOG, buffer_date, &totalBookings, &totalRevenue);
+                printf("%s Dayly Statistics: Reservations: %d, Income: %u\n", buffer_date, totalBookings, totalRevenue);
+
+                char Stat_str[100];
+                sprintf(Stat_str, "|   %s Daily Statistics:   |   Reservations: %d   |   Income: %u\n   |", buffer_date, totalBookings, totalRevenue);
+
+                SetWindowText(hwndLable_Admin_Stat, Stat_str); // 获取编辑框文本
+
+            }
+
             break;
 
         case WM_CLOSE:
@@ -1844,12 +1939,16 @@ LRESULT CALLBACK Admin_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
 }
 
 
-
+// 终端控制台函数
 int main() {
-    Login_Flag = 1;
-    Auth_Flag = 1;
-    // HWND hWnd = GetConsoleWindow();
-    // ShowWindow(hWnd, SW_HIDE);
+    // 测试用强制Flag赋值
+    // Login_Flag = 1;
+    // Auth_Flag = 1;
+
+    // 据说可以隐藏控制台？
+    HWND hwnd = GetConsoleWindow();
+    ShowWindow(hwnd, SW_HIDE);
+
     printf("Hello World!\n");
     // Login_Show();
 
