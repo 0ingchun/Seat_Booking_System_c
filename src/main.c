@@ -363,7 +363,7 @@ LRESULT CALLBACK Main_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                         _T("UserWindowClass"),
                         _T("User Info"),
                         WS_OVERLAPPEDWINDOW,
-                        CW_USEDEFAULT, CW_USEDEFAULT, 250, 220,
+                        CW_USEDEFAULT, CW_USEDEFAULT, 280, 240,
                         NULL, NULL, hInst, NULL);
                     ShowWindow(hwnd_User_Window, SW_SHOW);
                     UpdateWindow(hwnd_User_Window);
@@ -873,15 +873,15 @@ LRESULT CALLBACK User_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     _T("STATIC"),              // 控件类型：静态文本
                     _T(balanceStr),                    // 默认文本为空
                     WS_CHILD | WS_VISIBLE,     // 样式：子窗口、可见
-                    10, 65, 100, 20,           // 位置和大小
+                    10, 90, 100, 20,           // 位置和大小
                     hwnd, (HMENU)3, hInst, NULL); // 父窗口和其他参数
 
                 // 创建编辑框
                 hwndEdit_User_Balance = CreateWindow(
                     _T("EDIT"),                // 控件类型：编辑框
-                    _T(""),                    // 默认文本为空
+                    _T("Recharge Amount"),                    // 默认文本为空
                     WS_CHILD | WS_VISIBLE | WS_BORDER, // 样式：子窗口、可见、带边框
-                    10, 100, 100, 30,           // 位置和大小
+                    10, 120, 130, 30,           // 位置和大小
                     hwnd, (HMENU)4, hInst, NULL); // 父窗口和其他参数
 
                 // 创建编辑框
@@ -897,28 +897,28 @@ LRESULT CALLBACK User_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     _T("BUTTON"),              // 控件类型：按钮
                     _T("Modify Password"),                // 按钮文本
                     WS_CHILD | WS_VISIBLE,     // 样式：子窗口、可见
-                    120, 40, 100, 30,           // 位置和大小
+                    120, 40, 140, 30,           // 位置和大小
                     hwnd, (HMENU)6, hInst, NULL); // 父窗口和其他参数
                 
                 CreateWindow(
                     _T("BUTTON"),              // 控件类型：按钮
                     _T("PAY"),                // 按钮文本
                     WS_CHILD | WS_VISIBLE,     // 样式：子窗口、可见
-                    120, 100, 70, 30,           // 位置和大小
+                    150, 120, 70, 30,           // 位置和大小
                     hwnd, (HMENU)7, hInst, NULL); // 父窗口和其他参数
 
                 CreateWindow(
                     _T("BUTTON"),              // 控件类型：按钮
                     _T("LOGOUT"),                // 按钮文本
                     WS_CHILD | WS_VISIBLE,     // 样式：子窗口、可见
-                    10, 140, 90, 30,           // 位置和大小
+                    10, 160, 90, 30,           // 位置和大小
                     hwnd, (HMENU)8, hInst, NULL); // 父窗口和其他参数
 
                 break;
 
         case WM_COMMAND: // 命令消息
 
-                if (LOWORD(wParam) == 6) {    // 检查是哪个控件发出的消息
+                if (LOWORD(wParam) == 6) {    // 修改密码
                 printf("hwndButton_User PULL\n");
 
                 TCHAR szText_password[100] = {'\0'};
@@ -960,7 +960,7 @@ LRESULT CALLBACK User_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 }
             }
 
-            if (LOWORD(wParam) == 8) {
+            if (LOWORD(wParam) == 8) {  // 用户登出
                 Login_Flag = 0;
                 MessageBox(NULL, "Success to Logout", "OK", MB_ICONINFORMATION | MB_OK);
 
@@ -969,42 +969,48 @@ LRESULT CALLBACK User_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 DestroyWindow(hwnd);
             }
 
-            if  (LOWORD(wParam) == 7){
+            if  (LOWORD(wParam) == 7){  // 充值
                 TCHAR szText_add_balance[100] = {'\0'};
                 GetWindowText(hwndEdit_User_Balance, szText_add_balance, 100);
                 printf("add?balance = %s\n", szText_add_balance);
 
                 char add_balance[100] = {'\0'};
-                ConvertTCharToChar(szText_add_balance, add_balance, 100);   // 转换密码
+                ConvertTCharToChar(szText_add_balance, add_balance, 100);   // 转换充值金额
                 printf("balance = %s\n", add_balance);
 
-                Login_User.balance = atoi(add_balance) + Login_User.balance;
-                printf("Login_User.balance = %d\n", Login_User.balance);
+                if (atoi(add_balance) != 0) {   // 判断输入是否正确
+                    Login_User.balance = atoi(add_balance) + Login_User.balance;
+                    printf("Login_User.balance = %d\n", Login_User.balance);
 
-                char balance_str[100] = {'\0'}; // 用于存储转换后的字符串
-                snprintf(balance_str, sizeof(balance_str), "%d", Login_User.balance); // 将整数转换为字符串
-                printf("balance_str = %s\n", balance_str); // 打印转换后的字符串
-                
-                if (balance_str != 0){
-                    char* jsonStr = readFileToString(USER_INFO_DATABASE); // 读取文件内容到字符串
-                    if (jsonStr != NULL) {
-                        printf("File content:\n%s\n", jsonStr);
+                    char balance_str[100] = {'\0'}; // 用于存储充值后的余额
+                    snprintf(balance_str, sizeof(balance_str), "%d", Login_User.balance); // 将整数转换为字符串
+                    printf("balance_str = %s\n", balance_str); // 打印转换后的字符串
+                    
+                    if (balance_str != 0){
+                        char* jsonStr = readFileToString(USER_INFO_DATABASE); // 读取文件内容到字符串
+                        if (jsonStr != NULL) {
+                            printf("File content:\n%s\n", jsonStr);
+                        }
+                        else printf("Error reading user info file.\n");
+                        char* modifiedJsonStr = modifyUser(jsonStr, Login_User.username, Login_User.passwd, Login_User.auth, Login_User.balance);
+                        cJSON* jsonObj = cJSON_Parse(jsonStr);
+                        if (modifiedJsonStr != NULL) {
+                            printf("添加新用户后：\n");
+                            viewUser(modifiedJsonStr);
+                            writeStringToFile(USER_INFO_DATABASE, modifiedJsonStr);
+
+                            free(jsonStr);         // 释放内存
+                            free(modifiedJsonStr);   // 释放内存
+
+                            // 返回登录窗口
+                            MessageBox(NULL, "OK to modify\n ", "OK", MB_ICONINFORMATION | MB_OK);
+                            SetWindowText(hwndLabel_User_Balance, balance_str);     // 设置静态文本显示
+                        }
                     }
-                    else printf("Error reading user info file.\n");
-                    char* modifiedJsonStr = modifyUser(jsonStr, Login_User.username, Login_User.passwd, Login_User.auth, Login_User.balance);
-                    cJSON* jsonObj = cJSON_Parse(jsonStr);
-                    if (modifiedJsonStr != NULL) {
-                        printf("添加新用户后：\n");
-                        viewUser(modifiedJsonStr);
-                        writeStringToFile(USER_INFO_DATABASE, modifiedJsonStr);
-
-                        free(jsonStr);         // 释放内存
-                        free(modifiedJsonStr);   // 释放内存
-
-                        // 返回登录窗口
-                        MessageBox(NULL, "OK to modify\n ", "OK", MB_ICONINFORMATION | MB_OK);
-                        SetWindowText(hwndLabel_User_Balance, balance_str);     // 设置静态文本显示
-                    }
+                }
+                else {
+                    printf("Please Input Recharge Amount\n");
+                    MessageBox(NULL, "Please Input Recharge Amount", "Error", MB_ICONINFORMATION | MB_OK);
                 }
 
             }

@@ -3,7 +3,7 @@
 			"username":	"user1",
 			"passwd":	"pass1",
 			"auth":	1,
-			"balance":	1000
+			"balance":	1666
 		}, {
 			"username":	"user2",
 			"passwd":	"pass2",
@@ -13,7 +13,7 @@
 			"username":	"o",
 			"passwd":	"p",
 			"auth":	1,
-			"balance":	458059070
+			"balance":	458055831
 		}, {
 			"username":	"j",
 			"passwd":	"b",
