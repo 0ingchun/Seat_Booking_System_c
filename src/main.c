@@ -18,7 +18,11 @@
 #define SEAT_INFO_DATABASE "SeatInfo.json"
 #define RESERVE_RECORD_LOG "ReserveLog.csv"
 
+// 主要服务全局变量
 Login_User_t Login_User;
+
+boolean Login_Flag = 0;
+short Auth_Flag = 0;
 
 // 字符串转换
 void ConvertTCharToChar(const TCHAR* tcharStr, char* charStr, int charStrSize) {
@@ -97,10 +101,13 @@ LRESULT CALLBACK User_WndProc(HWND, UINT, WPARAM, LPARAM);
 // 声明服务窗口的窗口过程函数
 LRESULT CALLBACK Service_WndProc(HWND, UINT, WPARAM, LPARAM);
 
+// 声明订单窗口的窗口过程函数
+LRESULT CALLBACK Order_WndProc(HWND, UINT, WPARAM, LPARAM);
+
 // 声明管理窗口的窗口过程函数
 LRESULT CALLBACK Admin_WndProc(HWND, UINT, WPARAM, LPARAM);
 
-HWND hwnd_Main_Window, hwnd_Login_Window, hwnd_Signup_Window, hwnd_User_Window, hwnd_Service_Window, hwnd_Admin_Window;         // 主窗口句柄
+HWND hwnd_Main_Window, hwnd_Login_Window, hwnd_Signup_Window, hwnd_User_Window, hwnd_Service_Window, hwnd_Order_Window, hwnd_Admin_Window;         // 主窗口句柄
 
 // WinMain：应用程序入口函数
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {    
@@ -114,7 +121,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     wcSecond.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
     wcSecond.lpszClassName = _T("SecondWindowClass");
     if (!RegisterClass(&wcSecond)) {
-        MessageBox(NULL, _T("第二个窗口类注册失败！"), _T("错误"), MB_ICONEXCLAMATION | MB_OK);
+        MessageBox(NULL, _T("第二个窗口类注册失败！"), _T("Error"), MB_ICONEXCLAMATION | MB_OK);
         return 0;
     }
 
@@ -125,7 +132,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     wc_Login.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
     wc_Login.lpszClassName = _T("LoginWindowClass");
     if (!RegisterClass(&wc_Login)) {
-        MessageBox(NULL, _T("用户登录窗口类注册失败！"), _T("错误"), MB_ICONEXCLAMATION | MB_OK);
+        MessageBox(NULL, _T("用户登录窗口类注册失败！"), _T("Error"), MB_ICONEXCLAMATION | MB_OK);
         return 0;
     }
 
@@ -136,7 +143,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     wc_Signup.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
     wc_Signup.lpszClassName = _T("SignupWindowClass");
     if (!RegisterClass(&wc_Signup)) {
-        MessageBox(NULL, _T("用户注册窗口类注册失败！"), _T("错误"), MB_ICONEXCLAMATION | MB_OK);
+        MessageBox(NULL, _T("用户注册窗口类注册失败！"), _T("Error"), MB_ICONEXCLAMATION | MB_OK);
         return 0;
     }
 
@@ -147,7 +154,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     wc_User.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
     wc_User.lpszClassName = _T("UserWindowClass");
     if (!RegisterClass(&wc_User)) {
-        MessageBox(NULL, _T("用户信息窗口类注册失败！"), _T("错误"), MB_ICONEXCLAMATION | MB_OK);
+        MessageBox(NULL, _T("用户信息窗口类注册失败！"), _T("Error"), MB_ICONEXCLAMATION | MB_OK);
         return 0;
     }
 
@@ -158,7 +165,18 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     wc_Service.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
     wc_Service.lpszClassName = _T("ServiceWindowClass");
     if (!RegisterClass(&wc_Service)) {
-        MessageBox(NULL, _T("用户服务窗口类注册失败！"), _T("错误"), MB_ICONEXCLAMATION | MB_OK);
+        MessageBox(NULL, _T("用户服务窗口类注册失败！"), _T("Error"), MB_ICONEXCLAMATION | MB_OK);
+        return 0;
+    }
+
+    // 注册用户订单窗口类
+    WNDCLASS wc_Order = {0};
+    wc_Order.lpfnWndProc = Order_WndProc;
+    wc_Order.hInstance = hInstance;
+    wc_Order.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
+    wc_Order.lpszClassName = _T("OrderWindowClass");
+    if (!RegisterClass(&wc_Order)) {
+        MessageBox(NULL, _T("用户订单窗口类注册失败！"), _T("Error"), MB_ICONEXCLAMATION | MB_OK);
         return 0;
     }
 
@@ -169,7 +187,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     wc_Admin.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
     wc_Admin.lpszClassName = _T("AdminWindowClass");
     if (!RegisterClass(&wc_Admin)) {
-        MessageBox(NULL, _T("管理员窗口类注册失败！"), _T("错误"), MB_ICONEXCLAMATION | MB_OK);
+        MessageBox(NULL, _T("管理员窗口类注册失败！"), _T("Error"), MB_ICONEXCLAMATION | MB_OK);
         return 0;
     }
 
@@ -188,17 +206,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     wc.lpszClassName = _T("MainWindowClass"); // 窗口类名称
     // 注册窗口类
     if (!RegisterClass(&wc)) {
-        MessageBox(NULL, _T("窗口类注册失败！"), _T("错误"), MB_ICONEXCLAMATION | MB_OK);
+        MessageBox(NULL, _T("主窗口类注册失败！"), _T("Error"), MB_ICONEXCLAMATION | MB_OK);
         return 0;
     }
 
     // 创建主窗口
     hwnd_Main_Window = CreateWindow(
         _T("MainWindowClass"),               // 窗口类名称
-        _T("v1 Makerspace Seat Booking System"),                // 窗口标题
+        _T("Makerspace Seat Booking System"),                // 窗口标题
         WS_OVERLAPPEDWINDOW,               // 窗口样式
         CW_USEDEFAULT, CW_USEDEFAULT,      // 窗口位置
-        200, 160,                          // 窗口大小
+        210, 120,                          // 窗口大小
         NULL, NULL, hInstance, NULL);      // 其他参数
 
     ShowWindow(hwnd_Main_Window, nCmdShow);           // 显示窗口
@@ -213,11 +231,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 }
 
 
-boolean Login_Flag = 0;
-short Auth_Flag = 0;
-
-HWND hwndButton_Login_Window, hwndButton_Service_Window, hwndButton_Admin_Window;
-
+HWND hwndButton_Login_Window, hwndButton_Service_Window, hwndButton_Order_Window, hwndButton_Admin_Window;
+#define ID_BUTTON_MAIN_LOGIN 1
+#define ID_BUTTON_MAIN_SERVICE 2
+#define ID_BUTTON_MAIN_ORDER 3
+#define ID_BUTTON_MAIN_ADMIN 4
 // 主窗口过程函数
 LRESULT CALLBACK Main_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     switch (msg) {
@@ -258,35 +276,34 @@ LRESULT CALLBACK Main_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
             // }
 
-            // 创建静态文本
-            hwndLabel = CreateWindow(
-                _T("STATIC"),              // 控件类型：静态文本
-                _T("USER"),                    // 默认文本为空
-                WS_CHILD | WS_VISIBLE,     // 样式：子窗口、可见
-                10, 40, 100, 20,           // 位置和大小
-                hwnd, (HMENU)4, hInst, NULL); // 父窗口和其他参数
-
             // 创建按钮
             hwndButton_Login_Window = CreateWindow(
                 _T("BUTTON"),              // 控件类型：按钮
                 _T("LOGIN"),                // 按钮文本
                 WS_CHILD | WS_VISIBLE,     // 样式：子窗口、可见
-                10, 10, 50, 20,           // 位置和大小
-                hwnd, (HMENU)1, hInst, NULL); // 父窗口和其他参数
+                10, 10, 75, 20,           // 位置和大小
+                hwnd, (HMENU)ID_BUTTON_MAIN_LOGIN, hInst, NULL); // 父窗口和其他参数
 
             hwndButton_Service_Window = CreateWindow(
                 _T("BUTTON"),              // 控件类型：按钮
                 _T("SERVICE"),                // 按钮文本
                 WS_CHILD | WS_VISIBLE,     // 样式：子窗口、可见
-                80, 10, 75, 20,           // 位置和大小
-                hwnd, (HMENU)2, hInst, NULL); // 父窗口和其他参数
+                100, 10, 75, 20,           // 位置和大小
+                hwnd, (HMENU)ID_BUTTON_MAIN_SERVICE, hInst, NULL); // 父窗口和其他参数
+
+            hwndButton_Order_Window = CreateWindow(
+                _T("BUTTON"),              // 控件类型：按钮
+                _T("ORDER"),                    // 默认文本为空
+                WS_CHILD | WS_VISIBLE,     // 样式：子窗口、可见
+                10, 40, 75, 20,           // 位置和大小
+                hwnd, (HMENU)ID_BUTTON_MAIN_ORDER, hInst, NULL); // 父窗口和其他参数
 
             hwndButton_Admin_Window = CreateWindow(
                 _T("BUTTON"),              // 控件类型：按钮
                 _T("ADMIN"),                // 按钮文本
                 WS_CHILD | WS_VISIBLE,     // 样式：子窗口、可见
-                80, 40, 75, 20,           // 位置和大小
-                hwnd, (HMENU)3, hInst, NULL); // 父窗口和其他参数
+                100, 40, 75, 20,           // 位置和大小
+                hwnd, (HMENU)ID_BUTTON_MAIN_ADMIN, hInst, NULL); // 父窗口和其他参数
 
             break;
 
@@ -322,7 +339,7 @@ LRESULT CALLBACK Main_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
             
 
-            if (LOWORD(wParam) == 1) { // 判断是否点击了打开登录窗口的按钮
+            if (LOWORD(wParam) == ID_BUTTON_MAIN_LOGIN) { // 判断是否点击了打开登录窗口的按钮
                 printf("Press Login Button: %d\n", Login_Flag);
                 if (Login_Flag == 0) {
                     ShowWindow(hwnd_Main_Window, SW_HIDE);  // 隐藏主窗口
@@ -356,7 +373,7 @@ LRESULT CALLBACK Main_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 }
             }
 
-            if (LOWORD(wParam) == 2) { // 判断是否点击了打开服务窗口的按钮
+            if (LOWORD(wParam) == ID_BUTTON_MAIN_SERVICE) { // 判断是否点击了打开服务窗口的按钮
                 printf("Press Service Button: %d\n", Login_Flag);
                 if (Login_Flag == 1) {
                     ShowWindow(hwnd_Main_Window, SW_HIDE);  // 隐藏主窗口
@@ -372,11 +389,31 @@ LRESULT CALLBACK Main_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     UpdateWindow(hwnd_Service_Window);
                 }
                 else {
-                    MessageBox(NULL, "Please Login First", "Error", MB_ICONINFORMATION | MB_OK);
+                    MessageBox(NULL, "Please Login First", "SERVICE Error", MB_ICONINFORMATION | MB_OK);
                 }
             }
 
-            if (LOWORD(wParam) == 3) { // 判断是否点击了打开管理窗口的按钮
+            if (LOWORD(wParam) == ID_BUTTON_MAIN_ORDER) { // 判断是否点击了打开订单窗口的按钮
+                printf("Press Service Button: %d\n", Login_Flag);
+                if (Login_Flag == 1) {
+                    ShowWindow(hwnd_Main_Window, SW_HIDE);  // 隐藏主窗口
+
+                    // 创建并显示服务窗口
+                    hwnd_Order_Window = CreateWindow(
+                        _T("OrderWindowClass"),
+                        _T("Order System"),
+                        WS_OVERLAPPEDWINDOW,
+                        CW_USEDEFAULT, CW_USEDEFAULT, 650, 600,
+                        NULL, NULL, hInst, NULL);
+                    ShowWindow(hwnd_Order_Window, SW_SHOW);
+                    UpdateWindow(hwnd_Order_Window);
+                }
+                else {
+                    MessageBox(NULL, "Please Login First", "ORDER Error", MB_ICONINFORMATION | MB_OK);
+                }
+            }
+
+            if (LOWORD(wParam) == ID_BUTTON_MAIN_ADMIN) { // 判断是否点击了打开管理窗口的按钮
                 printf("Press Admin Button: %d\n", Login_Flag);
                 if (Auth_Flag == 1) {
                     ShowWindow(hwnd_Main_Window, SW_HIDE);  // 隐藏主窗口
@@ -392,7 +429,7 @@ LRESULT CALLBACK Main_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     UpdateWindow(hwnd_Admin_Window);
                 }
                 else {
-                    MessageBox(NULL, "Not a Admin", "Error", MB_ICONINFORMATION | MB_OK);
+                    MessageBox(NULL, "Not an Admin", "ADMIN Error", MB_ICONINFORMATION | MB_OK);
                 }
             }
 
@@ -502,15 +539,13 @@ LRESULT CALLBACK SecondWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
     return 0;
 }
 
-    HWND hwndLabel_Login_Username, hwndLabel_Login_Password, hwndEdit_Login_Username, hwndEdit_Login_Password, hwndButton_Login, hwndButton_SginUp;
-    #define ID_LABEL_LOGIN_USERNAME 1
-    #define ID_LABEL_LOGIN_PASSWORD 2
-    #define ID_EDIT_LOGIN_USERNAME 3
-    #define ID_EDIT_LOGIN_PASSWORD 4
-    #define ID_BUTTON_LOGIN 5
-    #define ID_BUTTON_SGINUP 6
-    // const int ID_LABEL_LOGIN_USERNAME = 1, ID_LABEL_LOGIN_PASSWORD = 2, ID_EDIT_LOGIN_USERNAME = 3, ID_EDIT_LOGIN_PASSWORD = 4, ID_BUTTON_LOGIN = 5, ID_BUTTON_SGINUP = 6;
-
+HWND hwndLabel_Login_Username, hwndLabel_Login_Password, hwndEdit_Login_Username, hwndEdit_Login_Password, hwndButton_Login, hwndButton_SginUp;
+#define ID_LABEL_LOGIN_USERNAME 1
+#define ID_LABEL_LOGIN_PASSWORD 2
+#define ID_EDIT_LOGIN_USERNAME 3
+#define ID_EDIT_LOGIN_PASSWORD 4
+#define ID_BUTTON_LOGIN 5
+#define ID_BUTTON_SGINUP 6
 // 登录窗口过程函数
 LRESULT CALLBACK Login_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 
@@ -846,7 +881,6 @@ void AddItemsToListView(HWND hwndListView, LogEntry* logEntry_p) {
     else lvItem.pszText = "[NULL]";
 
 }
-
 void AddItemsToListView_n(HWND hwndListView, LogEntry* logEntry_p, int logEntryCount) {
     LVITEM lvItem;
     lvItem.mask = LVIF_TEXT;
@@ -868,7 +902,6 @@ void AddItemsToListView_n(HWND hwndListView, LogEntry* logEntry_p, int logEntryC
     }
     else lvItem.pszText = "[NULL]";
 }
-
 
 // 添加列，到列表视图，服务窗口辅助函数
 void AddColumnsToListView(HWND hWndListView) {
@@ -892,15 +925,16 @@ void AddColumnsToListView(HWND hWndListView) {
 }
 
 
-#define ID_DATEPICKER 4
-#define ID_TIMEPICKER_START 5
-#define ID_TIMEPICKER_END 6
-#define ID_BTN_GETDATETIME 8
-#define ID_STATIC_TEXT 101
-#define IDC_LISTVIEW 4  // 列表视图的标识符
-
-HWND hwndComboBox_Service_Type, hwndComboBox_Service_Id, hwndEditText_Service_Output, hWndListView_Service_Output;
-
+HWND hwndComboBox_Service_Type, hwndComboBox_Service_Id, hWndListView_Service_Output, hwndEditText_Service_Output;
+#define ID_COMBOBOX_SERVICE_TYPE 1
+#define ID_COMBOBOX_SERVICE_ID 2
+#define ID_BUTTON_SERVICE_CHECK 3
+#define ID_DATEPICKER_SERVICE_DATE 4
+#define ID_TIMEPICKER_SERVICE_START 5
+#define ID_TIMEPICKER_SERVICE_END 6
+#define ID_BUTTON_SERVICE_RESERVE 7
+#define ID_LISTVIEW_SERVICE_OUTPUT 8
+// #define ID_EDITTEXT_SERVICE_OUTPUT 9
 // 服务窗口过程函数
 LRESULT CALLBACK Service_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     SYSTEMTIME st;
@@ -911,76 +945,82 @@ LRESULT CALLBACK Service_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
             printf("Service Window WM_CREATE\n");
 
             // 创建第一个下拉框
-            hwndComboBox_Service_Type = CreateWindow(WC_COMBOBOX, "TYPE", 
+            hwndComboBox_Service_Type = CreateWindow(WC_COMBOBOX, "", 
                             CBS_DROPDOWN | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
                             10, 10, 120, 150,  // 位置和大小
-                            hwnd, (HMENU)1,
+                            hwnd, (HMENU)ID_COMBOBOX_SERVICE_TYPE,
                             ((LPCREATESTRUCT)lParam)->hInstance, NULL);
 
+            SendMessage(hwndComboBox_Service_Type, CB_SELECTSTRING, -1, (LPARAM)"TYPE");
+
             // 创建第二个下拉框
-            hwndComboBox_Service_Id = CreateWindow(WC_COMBOBOX, "ID", 
+            hwndComboBox_Service_Id = CreateWindow(WC_COMBOBOX, "", 
                             CBS_DROPDOWN | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
                             10, 60, 120, 150,  // 位置和大小
-                            hwnd, (HMENU)2,
+                            hwnd, (HMENU)ID_COMBOBOX_SERVICE_ID,
                             ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+
+            SendMessage(hwndComboBox_Service_Id, CB_SELECTSTRING, -1, (LPARAM)"ID");
 
             // 创建检查按钮
             CreateWindowEx(0, "BUTTON", "Check Reservation",
                             WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
                             10, 110, 140, 30,
-                            hwnd, (HMENU)3,
+                            hwnd, (HMENU)ID_BUTTON_SERVICE_CHECK,
                             ((LPCREATESTRUCT)lParam)->hInstance, NULL);
 
             // 创建日期选择
             CreateWindowEx(0, DATETIMEPICK_CLASS, NULL,
                             DTS_UPDOWN | WS_BORDER | WS_CHILD | WS_VISIBLE,
                             10, 160, 140, 25,
-                            hwnd, (HMENU)ID_DATEPICKER,
+                            hwnd, (HMENU)ID_DATEPICKER_SERVICE_DATE,
                             ((LPCREATESTRUCT)lParam)->hInstance, NULL);
 
             // 创建开始时间选择
             CreateWindowEx(0, DATETIMEPICK_CLASS, NULL,
                             DTS_UPDOWN | DTS_TIMEFORMAT | WS_BORDER | WS_CHILD | WS_VISIBLE,
                             10, 210, 140, 25,
-                            hwnd, (HMENU)ID_TIMEPICKER_START,
+                            hwnd, (HMENU)ID_TIMEPICKER_SERVICE_START,
                             ((LPCREATESTRUCT)lParam)->hInstance, NULL);
 
             // 创建结束时间选择
             CreateWindowEx(0, DATETIMEPICK_CLASS, NULL,
                             DTS_UPDOWN | DTS_TIMEFORMAT | WS_BORDER | WS_CHILD | WS_VISIBLE,
                             10, 260, 140, 25,
-                            hwnd, (HMENU)ID_TIMEPICKER_END,
+                            hwnd, (HMENU)ID_TIMEPICKER_SERVICE_END,
                             ((LPCREATESTRUCT)lParam)->hInstance, NULL);
 
             // 创建预约按钮
             CreateWindowEx(0, "BUTTON", "Make Reservation",
                             WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
                             10, 310, 140, 30,
-                            hwnd, (HMENU)ID_BTN_GETDATETIME,
+                            hwnd, (HMENU)ID_BUTTON_SERVICE_RESERVE,
                             ((LPCREATESTRUCT)lParam)->hInstance, NULL);
-
-            // hwndEditText_Service_Output = CreateWindowEx(0, "EDIT", "",
-            //                 WS_CHILD | WS_VISIBLE | WS_VSCROLL | ES_MULTILINE | ES_AUTOVSCROLL | ES_READONLY,
-            //                 300, 50, 200, 100, // 位置和大小
-            //                 hwnd, (HMENU)ID_STATIC_TEXT,
-            //                 ((LPCREATESTRUCT)lParam)->hInstance, NULL);
-
-            // 设置编辑控件内容
-            // SetWindowText(hwndEditText_Service_Output, "这里是长文本内容...\n可以包含多行\n以展示滚动效果。\n这里是更多的文本内容\n这里是长文本内容...\n可以包含多行\n以展示滚动效果。\n这里是长文本内容...\n可以包含多行\n以展示滚动效果。\n");
 
             // 创建列表视图
             hWndListView_Service_Output = CreateWindow(WC_LISTVIEW, "",
                             WS_CHILD | WS_VISIBLE | LVS_REPORT | WS_VSCROLL,
                             180, 10, 450, 700,  // 位置和大小
-                            hwnd, (HMENU)IDC_LISTVIEW,
+                            hwnd, (HMENU)ID_LISTVIEW_SERVICE_OUTPUT,
                             ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+
             AddColumnsToListView(hWndListView_Service_Output);  // 列表视图添加列
+
+
+            // hwndEditText_Service_Output = CreateWindowEx(0, "EDIT", "",
+            //                 WS_CHILD | WS_VISIBLE | WS_VSCROLL | ES_MULTILINE | ES_AUTOVSCROLL | ES_READONLY,
+            //                 300, 50, 200, 100, // 位置和大小
+            //                 hwnd, (HMENU)ID_EDITTEXT_SERVICE_OUTPUT,
+            //                 ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+
+            // 设置编辑控件内容
+            // SetWindowText(hwndEditText_Service_Output, "这里是长文本内容...\n可以包含多行\n以展示滚动效果。\n这里是更多的文本内容\n这里是长文本内容...\n可以包含多行\n以展示滚动效果。\n这里是长文本内容...\n可以包含多行\n以展示滚动效果。\n");
 
             break;
 
         case WM_COMMAND:
 
-            if (LOWORD(wParam) == 1) {    // type下拉框获取type
+            if (LOWORD(wParam) == ID_COMBOBOX_SERVICE_TYPE) {    // type下拉框获取type
                 // 步骤1：获取当前选中的内容
                 TCHAR selectedType[256];
                 int itemIndexType = SendMessage(hwndComboBox_Service_Type, CB_GETCURSEL, 0, 0);
@@ -1011,7 +1051,7 @@ LRESULT CALLBACK Service_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
 
             }
 
-            if (LOWORD(wParam) == 2) {    // type下拉框获取type
+            if (LOWORD(wParam) == ID_COMBOBOX_SERVICE_ID) {    // type下拉框获取type
                 // 读取type
                 TCHAR selectedType[256];
                 int itemIndexType = SendMessage(hwndComboBox_Service_Type, CB_GETCURSEL, 0, 0);
@@ -1049,7 +1089,7 @@ LRESULT CALLBACK Service_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
 
             }
 
-            if (LOWORD(wParam) == 3) {    // 搜索已预订记录
+            if (LOWORD(wParam) == ID_BUTTON_SERVICE_CHECK) {    // 搜索已预订记录
                 // 读取type
                 TCHAR selectedType[256];
                 int itemIndexType = SendMessage(hwndComboBox_Service_Type, CB_GETCURSEL, 0, 0);
@@ -1076,15 +1116,15 @@ LRESULT CALLBACK Service_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
 
             }
 
-            if (LOWORD(wParam) == ID_BTN_GETDATETIME) {
+            if (LOWORD(wParam) == ID_BUTTON_SERVICE_RESERVE) {
 
                 LogEntry LogEntry_s_temp;
                 char buffer[128];
                 char buffer_temp[25];
 
-                HWND hDatePicker = GetDlgItem(hwnd, ID_DATEPICKER);
-                HWND hTimePicker_Start = GetDlgItem(hwnd, ID_TIMEPICKER_START);
-                HWND hTimePicker_End = GetDlgItem(hwnd, ID_TIMEPICKER_END);
+                HWND hDatePicker = GetDlgItem(hwnd, ID_DATEPICKER_SERVICE_DATE);
+                HWND hTimePicker_Start = GetDlgItem(hwnd, ID_TIMEPICKER_SERVICE_START);
+                HWND hTimePicker_End = GetDlgItem(hwnd, ID_TIMEPICKER_SERVICE_END);
 
                 // 读取已选择的type
                 TCHAR selectedType[256];
@@ -1210,6 +1250,110 @@ LRESULT CALLBACK Service_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
     return 0;
 }
 
+// 订单窗口过程函数
+LRESULT CALLBACK Order_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+
+    switch (msg) {
+        case WM_CREATE: // 窗口创建消息
+            printf("Order Window WM_CREATE\n");
+
+            // 创建第一个下拉框
+            hwndComboBox_Service_Type = CreateWindow(WC_COMBOBOX, "", 
+                            CBS_DROPDOWN | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
+                            10, 10, 120, 150,  // 位置和大小
+                            hwnd, (HMENU)ID_COMBOBOX_SERVICE_TYPE,
+                            ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+
+            SendMessage(hwndComboBox_Service_Type, CB_SELECTSTRING, -1, (LPARAM)"TYPE");
+
+            // 创建第二个下拉框
+            hwndComboBox_Service_Id = CreateWindow(WC_COMBOBOX, "", 
+                            CBS_DROPDOWN | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
+                            10, 60, 120, 150,  // 位置和大小
+                            hwnd, (HMENU)ID_COMBOBOX_SERVICE_ID,
+                            ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+
+            SendMessage(hwndComboBox_Service_Id, CB_SELECTSTRING, -1, (LPARAM)"ID");
+
+            // 创建检查按钮
+            CreateWindowEx(0, "BUTTON", "Check Reservation",
+                            WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+                            10, 110, 140, 30,
+                            hwnd, (HMENU)ID_BUTTON_SERVICE_CHECK,
+                            ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+
+            // 创建日期选择
+            CreateWindowEx(0, DATETIMEPICK_CLASS, NULL,
+                            DTS_UPDOWN | WS_BORDER | WS_CHILD | WS_VISIBLE,
+                            10, 160, 140, 25,
+                            hwnd, (HMENU)ID_DATEPICKER_SERVICE_DATE,
+                            ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+
+            // 创建开始时间选择
+            CreateWindowEx(0, DATETIMEPICK_CLASS, NULL,
+                            DTS_UPDOWN | DTS_TIMEFORMAT | WS_BORDER | WS_CHILD | WS_VISIBLE,
+                            10, 210, 140, 25,
+                            hwnd, (HMENU)ID_TIMEPICKER_SERVICE_START,
+                            ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+
+            // 创建结束时间选择
+            CreateWindowEx(0, DATETIMEPICK_CLASS, NULL,
+                            DTS_UPDOWN | DTS_TIMEFORMAT | WS_BORDER | WS_CHILD | WS_VISIBLE,
+                            10, 260, 140, 25,
+                            hwnd, (HMENU)ID_TIMEPICKER_SERVICE_END,
+                            ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+
+            // 创建预约按钮
+            CreateWindowEx(0, "BUTTON", "Make Reservation",
+                            WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+                            10, 310, 140, 30,
+                            hwnd, (HMENU)ID_BUTTON_SERVICE_RESERVE,
+                            ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+
+            // 创建列表视图
+            hWndListView_Service_Output = CreateWindow(WC_LISTVIEW, "",
+                            WS_CHILD | WS_VISIBLE | LVS_REPORT | WS_VSCROLL,
+                            180, 10, 450, 700,  // 位置和大小
+                            hwnd, (HMENU)ID_LISTVIEW_SERVICE_OUTPUT,
+                            ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+
+            AddColumnsToListView(hWndListView_Service_Output);  // 列表视图添加列
+
+
+            // hwndEditText_Service_Output = CreateWindowEx(0, "EDIT", "",
+            //                 WS_CHILD | WS_VISIBLE | WS_VSCROLL | ES_MULTILINE | ES_AUTOVSCROLL | ES_READONLY,
+            //                 300, 50, 200, 100, // 位置和大小
+            //                 hwnd, (HMENU)ID_EDITTEXT_SERVICE_OUTPUT,
+            //                 ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+
+            // 设置编辑控件内容
+            // SetWindowText(hwndEditText_Service_Output, "这里是长文本内容...\n可以包含多行\n以展示滚动效果。\n这里是更多的文本内容\n这里是长文本内容...\n可以包含多行\n以展示滚动效果。\n这里是长文本内容...\n可以包含多行\n以展示滚动效果。\n");
+
+            break;
+
+        case WM_COMMAND:
+
+            break;
+
+        case WM_CLOSE:
+            // 在这里添加其他关闭窗口前的处理
+
+            RefreshWindow(hwnd_Main_Window);
+            ShowWindow(hwnd_Main_Window, SW_SHOW);  // 隐藏窗口
+            DestroyWindow(hwnd);
+            break;
+
+        case WM_DESTROY:
+            // PostQuitMessage(0);
+            return 0;
+            break;
+
+        default:
+            return DefWindowProc(hwnd, msg, wParam, lParam);
+    }
+    return 0;
+}
 
 // 管理员窗口过程函数
 LRESULT CALLBACK Admin_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
@@ -1217,135 +1361,13 @@ LRESULT CALLBACK Admin_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
     switch (msg) {
 
                 case WM_CREATE: // 窗口创建消息
-                printf("Service Window WM_CREATE\n");
+                printf("Admin Window WM_CREATE\n");
                 
-                // 创建静态文本
-                hwndLabel_Login_Username = CreateWindow(
-                    _T("STATIC"),              // 控件类型：静态文本
-                    _T("USERNAME"),                    // 默认文本为空
-                    WS_CHILD | WS_VISIBLE,     // 样式：子窗口、可见
-                    10, 10, 100, 20,           // 位置和大小
-                    hwnd, (HMENU)ID_LABEL_LOGIN_USERNAME, hInst, NULL); // 父窗口和其他参数
-
-                // 创建静态文本
-                hwndLabel_Login_Password = CreateWindow(
-                    _T("STATIC"),              // 控件类型：静态文本
-                    _T("PASSWORD"),                    // 默认文本为空
-                    WS_CHILD | WS_VISIBLE,     // 样式：子窗口、可见
-                    10, 70, 100, 20,           // 位置和大小
-                    hwnd, (HMENU)ID_LABEL_LOGIN_PASSWORD, hInst, NULL); // 父窗口和其他参数
-
-                // 创建编辑框
-                hwndEdit_Login_Username = CreateWindow(
-                    _T("EDIT"),                // 控件类型：编辑框
-                    _T(""),                    // 默认文本为空
-                    WS_CHILD | WS_VISIBLE | WS_BORDER, // 样式：子窗口、可见、带边框
-                    10, 40, 100, 20,           // 位置和大小
-                    hwnd, (HMENU)ID_EDIT_LOGIN_USERNAME, hInst, NULL); // 父窗口和其他参数
-
-                // 创建编辑框
-                hwndEdit_Login_Password = CreateWindow(
-                    _T("EDIT"),                // 控件类型：编辑框
-                    _T(""),                    // 默认文本为空
-                    WS_CHILD | WS_VISIBLE | WS_BORDER, // 样式：子窗口、可见、带边框
-                    10, 100, 100, 20,           // 位置和大小
-                    hwnd, (HMENU)ID_EDIT_LOGIN_PASSWORD, hInst, NULL); // 父窗口和其他参数
-
-                // 创建按钮
-                hwndButton_Login = CreateWindow(
-                    _T("BUTTON"),              // 控件类型：按钮
-                    _T("LOGIN"),                // 按钮文本
-                    WS_CHILD | WS_VISIBLE,     // 样式：子窗口、可见
-                    120, 20, 60, 30,           // 位置和大小
-                    hwnd, (HMENU)ID_BUTTON_LOGIN, hInst, NULL); // 父窗口和其他参数
-
-                hwndButton_SginUp = CreateWindow(
-                    _T("BUTTON"),              // 控件类型：按钮
-                    _T("SIGNUP"),          // 按钮文本
-                    WS_CHILD | WS_VISIBLE,     // 样式：子窗口、可见
-                    120, 80, 60, 30,          // 位置和大小
-                    hwnd, (HMENU)ID_BUTTON_SGINUP, hInst, NULL); // 父窗口和其他参数
 
             break;
 
         case WM_COMMAND: // 命令消息
-                if (LOWORD(wParam) == ID_BUTTON_LOGIN) {    // 检查是哪个控件发出的消息
-
-                // 登录
-                TCHAR szText_username[100];  // 文本缓冲区
-                TCHAR szText_passwd[100];    // 文本缓冲区
-                GetWindowText(hwndEdit_Login_Username, szText_username, 100); // 获取用户名
-                GetWindowText(hwndEdit_Login_Password, szText_passwd, 100);   // 获取密码
-
-                // char username[100];
-                char password[100];
-                ConvertTCharToChar(szText_username, Login_User.username, 100); // 转换用户名
-                ConvertTCharToChar(szText_passwd, password, 100);   // 转换密码
-
-                char* UserInfoFilename = "UserInfo.json";
-                char* jsonStr = readFileToString(UserInfoFilename); // 读取文件内容到字符串
-                if (jsonStr != NULL) {
-                    printf("File content:\n%s\n", jsonStr);
-                }
-                else printf("Error reading user info file.\n");
-
-                // char passwd[64];
-                // short auth;
-                // unsigned int balance;
-                int userFound = findUser(jsonStr, Login_User.username, Login_User.passwd, &Login_User.auth, &Login_User.balance); // 查找用户信息
-                if (userFound) {
-                    printf("Password: %s\n", Login_User.passwd);
-                    printf("Auth: %d\n", Login_User.auth);
-                    printf("Balance: %u\n", Login_User.balance);
-                } else {
-                    printf("User not found.\n");
-                }
-                // printf("File content:\n%s\n", jsonStr);
-
-                if (strcmp(password, Login_User.passwd) == 0 && Login_User.username[0] != '\0' && Login_User.auth != 0 && Login_User.passwd != 0)  // 检查密码是否正确
-                {
-                    Auth_Flag = Login_User.auth;
-
-                    Login_Flag = 1;
-
-                    printf("Login Success!\n");
-
-                    RefreshWindow(hwnd_Main_Window);
-                    // ShowWindow(hwnd, SW_HIDE);  // 隐藏窗口
-                    ShowWindow(hwnd_Main_Window, SW_SHOW);  // 隐藏窗口
-
-                    DestroyWindow(hwnd);    // 销毁登录窗口
-
-                    // // 创建并显示第二个窗口
-                    // HWND hwndSecond = CreateWindow(
-                    //     _T("SecondWindowClass"), _T("第二个窗口"),
-                    //     WS_OVERLAPPEDWINDOW,
-                    //     CW_USEDEFAULT, CW_USEDEFAULT, 300, 200,
-                    //     NULL, NULL, hInst, NULL);
-                    // ShowWindow(hwndSecond, SW_SHOW);
-                    // // UpdateWindow(hwndSecond);
-                }
-                else
-                {
-                    Login_Flag = 0;
-                    printf("Login Failed!\n");
-                }
-
-                free(jsonStr); // 释放内存
-
-            }
-
-            if (LOWORD(wParam) == ID_BUTTON_SGINUP) { // 判断是否点击了打开新窗口的按钮
-                // 创建并显示第二个窗口
-                HWND hwndSecond = CreateWindow(
-                    _T("SecondWindowClass"), _T("第二个窗口"),
-                    WS_OVERLAPPEDWINDOW,
-                    CW_USEDEFAULT, CW_USEDEFAULT, 300, 200,
-                    NULL, NULL, hInst, NULL);
-                ShowWindow(hwndSecond, SW_SHOW);
-                UpdateWindow(hwndSecond);
-            }
-
+                
             break;
 
         case WM_CLOSE:
