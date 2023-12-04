@@ -306,7 +306,8 @@ int delete_entries_by_orderid(const char* filename, const char* target_orderid) 
                 entries[i].period_time_end,
                 entries[i].amount,
                 entries[i].order_id);
-        } else {
+        }
+        else {
             match_found = 1;
         }
     }
