@@ -363,7 +363,7 @@ LRESULT CALLBACK Main_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                         _T("UserWindowClass"),
                         _T("User Info"),
                         WS_OVERLAPPEDWINDOW,
-                        CW_USEDEFAULT, CW_USEDEFAULT, 210, 170,
+                        CW_USEDEFAULT, CW_USEDEFAULT, 250, 220,
                         NULL, NULL, hInst, NULL);
                     ShowWindow(hwnd_User_Window, SW_SHOW);
                     UpdateWindow(hwnd_User_Window);
@@ -423,7 +423,7 @@ LRESULT CALLBACK Main_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                         _T("AdminWindowClass"),
                         _T("Admin System"),
                         WS_OVERLAPPEDWINDOW,
-                        CW_USEDEFAULT, CW_USEDEFAULT, 300, 200,
+                        CW_USEDEFAULT, CW_USEDEFAULT, 530, 230,
                         NULL, NULL, hInst, NULL);
                     ShowWindow(hwnd_Admin_Window, SW_SHOW);
                     UpdateWindow(hwnd_Admin_Window);
@@ -781,8 +781,7 @@ LRESULT CALLBACK Signup_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 
                 if (username[0] != 0 && password[0] != 0) {
 
-                    char* UserInfoFilename = "UserInfo.json";
-                    char* jsonStr = readFileToString(UserInfoFilename); // 读取文件内容到字符串
+                    char* jsonStr = readFileToString(USER_INFO_DATABASE); // 读取文件内容到字符串
                     if (jsonStr != NULL) {
                         printf("File content:\n%s\n", jsonStr);
                     }
@@ -830,6 +829,9 @@ LRESULT CALLBACK Signup_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
     return 0;
 }
 
+
+HWND hwndLabel_User_Username, hwndLabel_User_Auth, hwndLabel_User_Balance, hwndEdit_User_Balance, hwndEdit_User_Password;
+
 // 用户信息窗口过程函数
 LRESULT CALLBACK User_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 
@@ -837,10 +839,176 @@ LRESULT CALLBACK User_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
                 case WM_CREATE: // 窗口创建消息
                     printf("Login Window WM_CREATE\n");
+                
+                // 创建静态文本
+                hwndLabel_User_Username = CreateWindow(
+                    _T("STATIC"),              // 控件类型：静态文本
+                    _T(Login_User.username),                    // 默认文本为空
+                    WS_CHILD | WS_VISIBLE,     // 样式：子窗口、可见
+                    10, 10, 60, 20,           // 位置和大小
+                    hwnd, (HMENU)1, hInst, NULL); // 父窗口和其他参数
 
-            break;
+                // 创建静态文本
+
+                    char authStr[20];
+                    // sprintf(authStr, "%d", Login_User.auth);
+
+                    if(Login_User.auth == 0)
+                        sprintf(authStr, "User");
+                    else if(Login_User.auth == 1)
+                        sprintf(authStr, "Admin");
+                
+                hwndLabel_User_Auth = CreateWindow(
+                    _T("STATIC"),              // 控件类型：静态文本
+                    _T(authStr),                    // 默认文本为空
+                    WS_CHILD | WS_VISIBLE,     // 样式：子窗口、可见
+                    80, 10, 80, 20,           // 位置和大小
+                    hwnd, (HMENU)2, hInst, NULL); // 父窗口和其他参数
+                
+
+                    char balanceStr[20];
+                    sprintf(balanceStr, "%u", Login_User.balance);
+                    
+                hwndLabel_User_Balance = CreateWindow(
+                    _T("STATIC"),              // 控件类型：静态文本
+                    _T(balanceStr),                    // 默认文本为空
+                    WS_CHILD | WS_VISIBLE,     // 样式：子窗口、可见
+                    10, 65, 100, 20,           // 位置和大小
+                    hwnd, (HMENU)3, hInst, NULL); // 父窗口和其他参数
+
+                // 创建编辑框
+                hwndEdit_User_Balance = CreateWindow(
+                    _T("EDIT"),                // 控件类型：编辑框
+                    _T(""),                    // 默认文本为空
+                    WS_CHILD | WS_VISIBLE | WS_BORDER, // 样式：子窗口、可见、带边框
+                    10, 100, 100, 30,           // 位置和大小
+                    hwnd, (HMENU)4, hInst, NULL); // 父窗口和其他参数
+
+                // 创建编辑框
+                hwndEdit_User_Password = CreateWindow(
+                    _T("EDIT"),                // 控件类型：编辑框
+                    _T(""),                    // 默认文本为空
+                    WS_CHILD | WS_VISIBLE | WS_BORDER, // 样式：子窗口、可见、带边框
+                    10, 40, 100, 30,           // 位置和大小
+                    hwnd, (HMENU)5, hInst, NULL); // 父窗口和其他参数
+
+                // 创建按钮
+                CreateWindow(
+                    _T("BUTTON"),              // 控件类型：按钮
+                    _T("Modify Password"),                // 按钮文本
+                    WS_CHILD | WS_VISIBLE,     // 样式：子窗口、可见
+                    120, 40, 100, 30,           // 位置和大小
+                    hwnd, (HMENU)6, hInst, NULL); // 父窗口和其他参数
+                
+                CreateWindow(
+                    _T("BUTTON"),              // 控件类型：按钮
+                    _T("PAY"),                // 按钮文本
+                    WS_CHILD | WS_VISIBLE,     // 样式：子窗口、可见
+                    120, 100, 70, 30,           // 位置和大小
+                    hwnd, (HMENU)7, hInst, NULL); // 父窗口和其他参数
+
+                CreateWindow(
+                    _T("BUTTON"),              // 控件类型：按钮
+                    _T("LOGOUT"),                // 按钮文本
+                    WS_CHILD | WS_VISIBLE,     // 样式：子窗口、可见
+                    10, 140, 90, 30,           // 位置和大小
+                    hwnd, (HMENU)8, hInst, NULL); // 父窗口和其他参数
+
+                break;
 
         case WM_COMMAND: // 命令消息
+
+                if (LOWORD(wParam) == 6) {    // 检查是哪个控件发出的消息
+                printf("hwndButton_User PULL\n");
+
+                TCHAR szText_password[100] = {'\0'};
+                GetWindowText(hwndEdit_User_Password, szText_password, 100);
+                printf("password = %s\n", szText_password);
+
+                char password[100];
+                ConvertTCharToChar(szText_password, password, 100);   // 转换密码
+
+                printf("password = %s\n", password);
+
+                if (password[0] != 0) {
+                    printf("密码不为空");
+
+                    char* jsonStr = readFileToString(USER_INFO_DATABASE); // 读取文件内容到字符串
+                    if (jsonStr != NULL) {
+                        printf("File content:\n%s\n", jsonStr);
+                    }
+                    else printf("Error reading user info file.\n");
+
+                    // 修改密码
+                    char* modifiedJsonStr = modifyUser(jsonStr, Login_User.username, password, Login_User.auth, Login_User.balance);
+                    cJSON* jsonObj = cJSON_Parse(jsonStr);
+                    if (modifiedJsonStr != NULL) {
+                        printf("添加新用户后：\n");
+                        viewUser(modifiedJsonStr);
+                        writeStringToFile(USER_INFO_DATABASE, modifiedJsonStr);
+
+                        free(jsonStr);         // 释放内存
+                        free(modifiedJsonStr);   // 释放内存
+
+                        // 返回登录窗口
+                        MessageBox(NULL, "OK to modify\n ", "OK", MB_ICONINFORMATION | MB_OK);
+                    }
+                    else {  // 如果用户名重复
+                        printf("添加新用户失败。\n");
+                        MessageBox(NULL, "Error to modify\nPlease try again\nUsernames May be Duplicated", "Error", MB_ICONINFORMATION | MB_OK);
+                    }
+                }
+            }
+
+            if (LOWORD(wParam) == 8) {
+                Login_Flag = 0;
+                MessageBox(NULL, "Success to Logout", "OK", MB_ICONINFORMATION | MB_OK);
+
+                RefreshWindow(hwnd_Main_Window);
+                ShowWindow(hwnd_Main_Window, SW_SHOW);  // 隐藏窗口
+                DestroyWindow(hwnd);
+            }
+
+            if  (LOWORD(wParam) == 7){
+                TCHAR szText_add_balance[100] = {'\0'};
+                GetWindowText(hwndEdit_User_Balance, szText_add_balance, 100);
+                printf("add?balance = %s\n", szText_add_balance);
+
+                char add_balance[100] = {'\0'};
+                ConvertTCharToChar(szText_add_balance, add_balance, 100);   // 转换密码
+                printf("balance = %s\n", add_balance);
+
+                Login_User.balance = atoi(add_balance) + Login_User.balance;
+                printf("Login_User.balance = %d\n", Login_User.balance);
+
+                char balance_str[100] = {'\0'}; // 用于存储转换后的字符串
+                snprintf(balance_str, sizeof(balance_str), "%d", Login_User.balance); // 将整数转换为字符串
+                printf("balance_str = %s\n", balance_str); // 打印转换后的字符串
+                
+                if (balance_str != 0){
+                    char* jsonStr = readFileToString(USER_INFO_DATABASE); // 读取文件内容到字符串
+                    if (jsonStr != NULL) {
+                        printf("File content:\n%s\n", jsonStr);
+                    }
+                    else printf("Error reading user info file.\n");
+                    char* modifiedJsonStr = modifyUser(jsonStr, Login_User.username, Login_User.passwd, Login_User.auth, Login_User.balance);
+                    cJSON* jsonObj = cJSON_Parse(jsonStr);
+                    if (modifiedJsonStr != NULL) {
+                        printf("添加新用户后：\n");
+                        viewUser(modifiedJsonStr);
+                        writeStringToFile(USER_INFO_DATABASE, modifiedJsonStr);
+
+                        free(jsonStr);         // 释放内存
+                        free(modifiedJsonStr);   // 释放内存
+
+                        // 返回登录窗口
+                        MessageBox(NULL, "OK to modify\n ", "OK", MB_ICONINFORMATION | MB_OK);
+                        SetWindowText(hwndLabel_User_Balance, balance_str);     // 设置静态文本显示
+                    }
+                }
+
+            }
+            
 
             break;
 
@@ -1580,18 +1748,85 @@ LRESULT CALLBACK Order_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
     return 0;
 }
 
+HWND hwndEditText_Admin_DeleteId, hwndEditText_Admin_AddType, hwndEditText_Admin_AddId, hwndEditText_Admin_AddAmount, hwndLable_Admin_Stat;
 // 管理员窗口过程函数
 LRESULT CALLBACK Admin_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 
-    switch (msg) {
+    SYSTEMTIME st;
+    // char buffer[128];
 
-                case WM_CREATE: // 窗口创建消息
-                printf("Admin Window WM_CREATE\n");
-                
+    switch (msg) {
+        case WM_CREATE: // 窗口创建消息
+            printf("Admin Window WM_CREATE\n");
+
+            hwndEditText_Admin_DeleteId = CreateWindowEx(0, "EDIT", "",
+                            WS_CHILD | WS_VISIBLE | WS_BORDER,
+                            10, 10, 80, 20, // 位置和大小
+                            hwnd, (HMENU)1,
+                            ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+
+            // 创建delete按钮
+            CreateWindowEx(0, "BUTTON", "Delete Seat-ID",
+                            WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+                            110, 10, 110, 30,
+                            hwnd, (HMENU)2,
+                            ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+
+            hwndEditText_Admin_AddType = CreateWindowEx(0, "EDIT", "",
+                            WS_CHILD | WS_VISIBLE | WS_BORDER,
+                            10, 60, 100, 20, // 位置和大小
+                            hwnd, (HMENU)3,
+                            ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+
+            hwndEditText_Admin_AddId = CreateWindowEx(0, "EDIT", "",
+                            WS_CHILD | WS_VISIBLE | WS_BORDER,
+                            120, 60, 100, 20, // 位置和大小
+                            hwnd, (HMENU)4,
+                            ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+
+            hwndEditText_Admin_AddAmount = CreateWindowEx(0, "EDIT", "",
+                            WS_CHILD | WS_VISIBLE | WS_BORDER,
+                            230, 60, 100, 20, // 位置和大小
+                            hwnd, (HMENU)5,
+                            ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+
+            // 创建add按钮
+            CreateWindowEx(0, "BUTTON", "Make Reservation",
+                            WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+                            350, 60, 140, 30,
+                            hwnd, (HMENU)6,
+                            ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+
+            // 创建静态文本显示统计
+            hwndLable_Admin_Stat = CreateWindow(
+                            _T("STATIC"),              // 控件类型：静态文本
+                            _T(""),                    // 默认文本为空
+                            WS_CHILD | WS_VISIBLE,     // 样式：子窗口、可见
+                            10, 110, 500, 20,           // 位置和大小
+                            hwnd, (HMENU)7, hInst, NULL); // 父窗口和其他参数
+
+            // 创建统计按钮
+            CreateWindowEx(0, "BUTTON", "Make Reservation",
+                            WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+                            10, 140, 140, 30,
+                            hwnd, (HMENU)8,
+                            ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+
+            // 设置编辑控件内容
+            // SetWindowText(hwndEditText_Service_Output, "这里是长文本内容...\n可以包含多行\n以展示滚动效果。\n这里是更多的文本内容\n这里是长文本内容...\n可以包含多行\n以展示滚动效果。\n这里是长文本内容...\n可以包含多行\n以展示滚动效果。\n");
 
             break;
 
         case WM_COMMAND: // 命令消息
+
+            if (LOWORD(wParam) == 2) {    // 按id删除座位
+                TCHAR szText_DeleteId[50];        // 文本缓冲区
+                GetWindowText(hwndEditText_Admin_DeleteId, szText_DeleteId, 50); // 获取编辑框文本
+
+                char str_DeleteId[50];
+                ConvertTCharToChar(szText_DeleteId, str_DeleteId, 50); // 转换文本
+
+            }
                 
             break;
 
@@ -1611,7 +1846,8 @@ LRESULT CALLBACK Admin_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
 
 
 int main() {
-    // Login_Flag = 1;
+    Login_Flag = 1;
+    Auth_Flag = 1;
     // HWND hWnd = GetConsoleWindow();
     // ShowWindow(hWnd, SW_HIDE);
     printf("Hello World!\n");
