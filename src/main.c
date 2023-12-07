@@ -978,7 +978,7 @@ LRESULT CALLBACK User_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 ConvertTCharToChar(szText_add_balance, add_balance, 100);   // 转换充值金额
                 printf("balance = %s\n", add_balance);
 
-                if (atoi(add_balance) != 0) {   // 判断输入是否正确
+                if (atoi(add_balance) > 0) {   // 判断输入是否正确
                     Login_User.balance = atoi(add_balance) + Login_User.balance;
                     printf("Login_User.balance = %d\n", Login_User.balance);
 
@@ -1003,7 +1003,7 @@ LRESULT CALLBACK User_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                             free(modifiedJsonStr);   // 释放内存
 
                             // 返回登录窗口
-                            MessageBox(NULL, "OK to modify\n ", "OK", MB_ICONINFORMATION | MB_OK);
+                            MessageBox(NULL, "OK to pay\n ", "OK", MB_ICONINFORMATION | MB_OK);
                             SetWindowText(hwndLabel_User_Balance, balance_str);     // 设置静态文本显示
                         }
                     }
