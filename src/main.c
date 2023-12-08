@@ -1098,19 +1098,19 @@ LRESULT CALLBACK Service_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
         case WM_CREATE: // 窗口创建消息
             printf("Service Window WM_CREATE\n");
 
-            // 创建第一个下拉框
+            // 创建Type下拉框
             hwndComboBox_Service_Type = CreateWindow(WC_COMBOBOX, "", 
                             CBS_DROPDOWN | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
-                            10, 10, 120, 150,  // 位置和大小
+                            10, 10, 150, 150,  // 位置和大小
                             hwnd, (HMENU)ID_COMBOBOX_SERVICE_TYPE,
                             ((LPCREATESTRUCT)lParam)->hInstance, NULL);
 
             SendMessage(hwndComboBox_Service_Type, CB_SELECTSTRING, -1, (LPARAM)"TYPE");
 
-            // 创建第二个下拉框
+            // 创建Id下拉框
             hwndComboBox_Service_Id = CreateWindow(WC_COMBOBOX, "", 
                             CBS_DROPDOWN | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
-                            10, 60, 120, 150,  // 位置和大小
+                            10, 60, 150, 150,  // 位置和大小
                             hwnd, (HMENU)ID_COMBOBOX_SERVICE_ID,
                             ((LPCREATESTRUCT)lParam)->hInstance, NULL);
 
@@ -1543,14 +1543,6 @@ LRESULT CALLBACK Order_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
         case WM_CREATE: // 窗口创建消息
             printf("Order Window WM_CREATE\n");
 
-            // 创建订单号下拉框
-            hwndComboBox_Order_OrderId = CreateWindow(WC_COMBOBOX, "", 
-                            CBS_DROPDOWN | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
-                            10, 310, 150, 20,  // 位置和大小
-                            hwnd, (HMENU)ID_COMBOBOX_ORDER_ORDERID,
-                            ((LPCREATESTRUCT)lParam)->hInstance, NULL);
-            SendMessage(hwndComboBox_Order_OrderId, CB_ADDSTRING, 0, (LPARAM)"Fuck");
-
             // 创建检查所有按钮
             CreateWindowEx(0, "BUTTON", "All Reservation",
                             WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
@@ -1581,13 +1573,21 @@ LRESULT CALLBACK Order_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
 
             AddColumnsToListView_Order(hWndListView_Order_Output);  // 列表视图添加列
 
-            // // 创建编辑框
+            // // 创建订单号编辑框
             // hwndEditText_Order_OrderId = CreateWindow(
             //                 _T("EDIT"),                // 控件类型：编辑框
             //                 _T(""),                    // 默认文本为空
             //                 WS_CHILD | WS_VISIBLE | WS_BORDER, // 样式：子窗口、可见、带边框
             //                 10, 160, 150, 20,           // 位置和大小
             //                 hwnd, (HMENU)ID_EDITTEXT_ORDER_ORDERID, hInst, NULL); // 父窗口和其他参数
+
+            // 创建订单号下拉框
+            hwndComboBox_Order_OrderId = CreateWindow(WC_COMBOBOX, "", 
+                            CBS_DROPDOWN | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
+                            10, 170, 150, 150,  // 位置和大小
+                            hwnd, (HMENU)ID_COMBOBOX_ORDER_ORDERID,
+                            ((LPCREATESTRUCT)lParam)->hInstance, NULL);
+            SendMessage(hwndComboBox_Order_OrderId, CB_ADDSTRING, 0, (LPARAM)"Order-Id");
 
             // 创建取消预约按钮
             CreateWindowEx(0, "BUTTON", "CANCEL ORDER",
@@ -1690,7 +1690,7 @@ LRESULT CALLBACK Order_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
                     LogEntry* bookedSlots = get_log_by_order_id(RESERVE_RECORD_LOG, str_orderid, &count2);
 
                     if (bookedSlots) {
-                        int delete_flag = delete_entries_by_orderid(RESERVE_RECORD_LOG, str_orderid);
+                        int delete_flag = delete_entries_by_orderid(RESERVE_RECORD_LOG, str_orderid);   // 删除旧订单记录
                         if (delete_flag == 1) {
 
                             // 返款
@@ -1700,7 +1700,7 @@ LRESULT CALLBACK Order_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
                                 printf("File content:\n%s\n", jsonStr_user);
                             }
                             else printf("Error reading user info file.\n");
-                            char* modifiedJsonStr = modifyUser(jsonStr_user, Login_User.username, Login_User.passwd, Login_User.auth, Login_User.balance);
+                            char* modifiedJsonStr = modifyUser(jsonStr_user, Login_User.username, Login_User.passwd, Login_User.auth, Login_User.balance);  // 写入新余额
                             if (modifiedJsonStr != NULL) {
                                 printf("修改用户信息后：\n");
                                 viewUser(modifiedJsonStr);
@@ -1944,6 +1944,24 @@ LRESULT CALLBACK Admin_WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
     return 0;
 }
 
+void check_data_file() {
+    if (check_and_create_file(USER_INFO_DATABASE) == 1)
+    {
+        writeStringToFile(USER_INFO_DATABASE, INIT_TEXT_USER_INFO_DATABASE);
+        printf("init USER_INFO_DATABASE Success");
+    }
+    if (check_and_create_file(SEAT_INFO_DATABASE) == 1)
+    {
+        writeStringToFile(SEAT_INFO_DATABASE, INIT_TEXT_SEAT_INFO_DATABASE);
+        printf("init SEAT_INFO_DATABASE Success");
+    }
+    if (check_and_create_file(RESERVE_RECORD_LOG) == 1)
+    {
+        writeStringToFile(RESERVE_RECORD_LOG, INIT_TEXT_RESERVE_RECORD_LOG);
+        printf("init RESERVE_RECORD_LOG Success");
+    }
+}
+
 
 // 终端控制台函数
 int main() {
@@ -1951,12 +1969,26 @@ int main() {
     // Login_Flag = 1;
     // Auth_Flag = 1;
 
-    // 据说可以隐藏控制台？
-    HWND hwnd = GetConsoleWindow();
-    ShowWindow(hwnd, SW_HIDE);
+    printf("\033[33m - Seat Booking System - \033[0m\n");
+    printf("########################################################\n");
+    printf("\n");
+    printf("\033[32m This window is used to visualize the software process and debugging, and can be hidden for actual delivery \033[0m\n");
+    printf("\n");
+    printf("########################################################\n");
+    printf("\033[31m [The following information is for testing purposes only!] \033[0m\n");
+    printf("\n");
+    printf("\033[31m [Common User] Username: user Password: passwd \033[0m\n");
+    printf("\033[31m [Admin User] Username: admin Password: edmin \033[0m\n");
+    printf("\n");
+    printf("\033[31m Three seats already exist: [Common_Seat], [Seat_with_Power_Supply], [Seat_with_Computer]. \033[0m\n");
+    printf("########################################################\n");
+    printf("\n");
 
-    printf("Hello World!\n");
-    // Login_Show();
+    // 据说可以隐藏控制台？
+    // HWND hwnd = GetConsoleWindow();
+    // ShowWindow(hwnd, SW_HIDE);
+
+    check_data_file();  // 检查数据文件完整性
 
     return WinMain(GetModuleHandle(NULL), NULL, GetCommandLine(), SW_SHOWNORMAL);
 }

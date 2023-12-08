@@ -115,6 +115,25 @@ void writeStringToFile(const char* filename, const char* jsonStr) {
 }
 
 
+// 检查文件存在并创建文件
+int check_and_create_file(const char *file_name) {
+    printf("Check File: '%s'\n", file_name);
+    int file_exists = access(file_name, F_OK);
+    if (file_exists == -1) {
+        FILE *file = fopen(file_name, "w");
+        if (file == NULL) {
+            fprintf(stderr, "Fail to Creat File!\n");
+            return -1;
+        }
+        fclose(file);
+        printf("File: '%s' Success Create File!\n", file_name);
+        return 1;
+    }
+    else {
+        printf("File: '%s' File Already Exists\n", file_name);
+        return 0;
+    }
+}
 
 
 // 创建文件

@@ -314,6 +314,7 @@ int delete_entries_by_orderid(const char* filename, const char* target_orderid) 
 
     fclose(file);
     free(entries);
+    // free(filename);
 
     if (!match_found) {
         printf("No match found for target_orderid\n");

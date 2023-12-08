@@ -7,6 +7,8 @@ char* readFileToString(const char* filename);
 
 void writeStringToFile(const char* filename, const char* jsonStr);
 
+int check_and_create_file(const char *file_name);
+
 int createFile(const char* filename);
 
 int deleteFile(const char* filename);

@@ -1,0 +1,35 @@
+{
+	"seats":	[{
+			"type":	"Common_Seat",
+			"id":	1,
+			"amount":	1000
+		}, {
+			"type":	"Seat_with_Power_Supply",
+			"id":	2,
+			"amount":	1000
+		}, {
+			"type":	"Seat_with_Computer",
+			"id":	3,
+			"amount":	1000
+		}, {
+			"id":	66,
+			"type":	"66µÄ×ùÎ»",
+			"amount":	13
+		}, {
+			"type":	"VIP",
+			"id":	101,
+			"amount":	1000
+		}, {
+			"type":	"Economy",
+			"id":	103,
+			"amount":	300
+		}, {
+			"type":	"Normal",
+			"id":	104,
+			"amount":	200
+		}, {
+			"id":	191,
+			"type":	"SIA",
+			"amount":	810
+		}]
+}
