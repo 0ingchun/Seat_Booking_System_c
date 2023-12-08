@@ -29,6 +29,7 @@
         "main.h": "c",
         "time.h": "c",
         "reserve_record.h": "c",
-        "cstdlib": "c"
+        "cstdlib": "c",
+        "user_lib.h": "c"
     }
 }
